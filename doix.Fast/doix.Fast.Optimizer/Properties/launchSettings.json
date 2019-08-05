@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "doix.Fast.Optimizer": {
+      "commandName": "Project",
+      "commandLineArgs": "\"..\\..\\..\\..\\doix.Fast.Optimizer.Demo\\bin\\$(ConfigurationName)\\netstandard2.0\\doix.Fast.Optimizer.Demo.dll\""
+    }
+  }
+}

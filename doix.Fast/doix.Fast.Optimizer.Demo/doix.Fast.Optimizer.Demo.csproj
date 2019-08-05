@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="dotnet &quot;$(SolutionDir)doix.Fast.Optimizer\bin\$(ConfigurationName)\netcoreapp2.1\doix.Fast.Optimizer.dll&quot; &quot;$(TargetPath)&quot;" />
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\doix.Fast\doix.Fast.csproj" />
+  </ItemGroup>
+
+</Project>

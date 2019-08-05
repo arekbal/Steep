@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MsBuild\_Microsoft.CodeAnalysis\Workspace.cs" />
+    <Compile Remove="MsBuild\_Microsoft.CodeAnalysis\Workspace.TextTracker.cs" />
+    <Compile Remove="MsBuild\_Microsoft.CodeAnalysis\Workspace_Editor.cs" />
+    <Compile Remove="MsBuild\_Microsoft.CodeAnalysis\Workspace_Events.cs" />
+    <Compile Remove="MsBuild\_Microsoft.CodeAnalysis\Workspace_Registration.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Buildalyzer.Workspaces" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Build" Version="15.9.20" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.9.20" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.9.20" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.0.0-beta3-final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.0.0-beta3-final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.0.0-beta3-final" />
+    <PackageReference Include="Mono.Cecil" Version="0.10.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\doix.Fast\doix.Fast.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MsBuild\Logging\" />
+  </ItemGroup>
+
+</Project>
