@@ -7,9 +7,30 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/doix.Fast.Analyzers/doix.Fast.Analyzers.Test/doix.Fast.Analyzers.Test.csproj"
+                "${workspaceFolder}/std.demo/std.demo.csproj"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$tsc"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/std.demo/std.demo.csproj"
+            ],
+            "problemMatcher": "$tsc"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "${workspaceFolder}/std.demo/std.demo.csproj"
+            ],
+            "problemMatcher": "$tsc"
         }
     ]
 }

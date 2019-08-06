@@ -210,9 +210,9 @@ namespace Steep
     {
       var index = InternalBinarySearch(key, 0, _length - 1);
       if (index > -1 && index < _length)
-        return OptionRef<TValue>.Some(ref InternalValues.ItemRefAt(InternalEntries.ItemRefAt(index)._valueIndex));
+        return Option.Some(ref InternalValues.ItemRefAt(InternalEntries.ItemRefAt(index)._valueIndex));
 
-      return OptionRef<TValue>.None;
+      return Option.None;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -220,7 +220,7 @@ namespace Steep
       => FindEntryIndex(key).HasValue;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int? FindEntryIndex(int key, int startFromIndex=0)
+    public int? FindEntryIndex(int key, int startFromIndex = 0)
       => FindEntryIndex(key, startFromIndex, _length - 1);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -308,7 +308,7 @@ namespace Steep
     }
 
     public void Dispose()
-    {      
+    {
       Dispose(true);
       GC.SuppressFinalize(this);
     }

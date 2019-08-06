@@ -4,25 +4,31 @@ using System.Text;
 
 namespace Steep
 {
-  public interface IReadOnlyBox<T> : IDisposable
+  public interface IBox<T> : IDisposable
    where T : struct
   {
     T Value { get; }
     ref readonly T Ref { get; }
   }
 
-  public class Box<T>: IReadOnlyBox<T>
+  public class Box<T> : IBox<T>
     where T : struct
   {
-    T _val;
+    internal T _val;
     public T Value => _val;
 
     public ref T Ref => ref _val;
 
-    ref readonly T IReadOnlyBox<T>.Ref => ref _val;
+    ref readonly T IBox<T>.Ref => ref _val;
 
-    public IReadOnlyBox<T> AsReadOnly()
-      => this;
+    public void Dispose()
+    {
+      // TODO: might still ignore not IDisposable Disposables, find alternative?
+      if (_val is IDisposable d)
+      {
+        d.Dispose();
+      }
+    }
 
     public Box()
     {

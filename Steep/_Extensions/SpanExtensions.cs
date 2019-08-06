@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Text;
 
-namespace doix.Fast
+namespace Steep
 {
   public static class SpanExtensions
   {
@@ -19,7 +17,7 @@ namespace doix.Fast
       {
         ref var vec0 = ref vectors[0];
 
-        for (i = 0; i < Vector<float>.Count; i++)
+        for (i = 0; i < System.Numerics.Vector<float>.Count; i++)
           sum += vec0[i];
       }
       else if (vectors.Length > 1)
@@ -29,16 +27,16 @@ namespace doix.Fast
         for (i = 1; i < length; i++)
           vSum += vectors[i];
 
-        for (i = 0; i < Vector<float>.Count; i++)
+        for (i = 0; i < System.Numerics.Vector<float>.Count; i++)
           sum += vSum[i];
       }
 
-      var spare = that.Length % Vector<float>.Count;
+      var spare = that.Length % System.Numerics.Vector<float>.Count;
 
       if (spare == 0)
         return sum;
 
-      for (i = vectors.Length * Vector<float>.Count; i < that.Length; i++)
+      for (i = vectors.Length * System.Numerics.Vector<float>.Count; i < that.Length; i++)
         sum += that[i];
 
       return sum;
@@ -67,7 +65,7 @@ namespace doix.Fast
       that[b] = temp;
     }
 
-    public static SortState GetSortState<T>(this Span<T> that, bool verify=true, IComparer<T> comparer = null)
+    public static SortState GetSortState<T>(this Span<T> that, bool verify = true, IComparer<T> comparer = null)
     {
       if (that.Length < 2)
         return SortState.SingleOrZero;
@@ -110,7 +108,7 @@ namespace doix.Fast
 
     public static int CountNonZero(this Span<char> span)
     {
-      for(var i = 0; i < span.Length; i++)
+      for (var i = 0; i < span.Length; i++)
       {
         if (span[i] == 0)
           return i;
@@ -124,7 +122,7 @@ namespace doix.Fast
       if (that.Length < 2)
         return;
 
-      if(that.Length == 2)
+      if (that.Length == 2)
       {
         if (comparer.Compare(that[0], that[1]) > 0)
           that.Swap(0, 1);
@@ -138,7 +136,7 @@ namespace doix.Fast
 
       if (comparer.Compare(that[left], that[right]) > 0)
       {
-        that.Swap(left, right);        
+        that.Swap(left, right);
       }
 
       left++;
@@ -153,7 +151,7 @@ namespace doix.Fast
       if (that._src.Length == 0)
         return Array.Empty<T>();
 
-      UnmanagedBuffer<T> buffer = default;      
+      UnmanagedBuffer<T> buffer = default;
       buffer.Alloc(that._src.Length);
 
       try
@@ -175,11 +173,11 @@ namespace doix.Fast
       }
     }
 
-    public static FastList<T> ToFastList<T>(this Span<T> that)
+    public static List<T> ToList<T>(this Span<T> that)
     {
-      var list = new FastList<T>(that.Length, that.Length); 
-      
-      for(var i = 0; i < that.Length; i++)
+      var list = new List<T>(that.Length, that.Length);
+
+      for (var i = 0; i < that.Length; i++)
         list.ItemByRef(i) = that[i];
 
       return list;
@@ -190,7 +188,7 @@ namespace doix.Fast
       if (that.Length < skip)
         return default;
 
-      if(that.Length - skip > take)
+      if (that.Length - skip > take)
       {
         take = that.Length - skip;
       }
@@ -210,7 +208,7 @@ namespace doix.Fast
         {
           ref var vec0 = ref vectors[0];
 
-          for (i = 0; i < Vector<int>.Count; i++)
+          for (i = 0; i < System.Numerics.Vector<int>.Count; i++)
             sum += vec0[i];
         }
         else if (vectors.Length > 1)
@@ -220,16 +218,16 @@ namespace doix.Fast
           for (i = 1; i < length; i++)
             vSum += vectors[i];
 
-          for (i = 0; i < Vector<int>.Count; i++)
+          for (i = 0; i < System.Numerics.Vector<int>.Count; i++)
             sum += vSum[i];
         }
 
-        var spare = that.Length / Vector<int>.Count;
+        var spare = that.Length / System.Numerics.Vector<int>.Count;
 
         if (spare == 0)
           return sum;
 
-        for (i = vectors.Length * Vector<int>.Count; i < that.Length; i++)
+        for (i = vectors.Length * System.Numerics.Vector<int>.Count; i < that.Length; i++)
           sum += that[i];
 
         return sum;
@@ -245,17 +243,18 @@ namespace doix.Fast
         return default;
 
       ref var fieldRef = ref func(ref that[0]);
-      unsafe {
+      unsafe
+      {
         return StrideSpan<TResult>.Create(Unsafe.AsPointer(ref fieldRef), ValueMarshal.SizeOf<T>(), that.Length);
-          }
+      }
     }
 
-    static Span<Vector<T>> GetVectors<T>(ref Span<T> that)
+    static Span<System.Numerics.Vector<T>> GetVectors<T>(ref Span<T> that)
       where T : struct
     {
       unsafe
       {
-        return new Span<Vector<T>>(Unsafe.AsPointer(ref that[0]), that.Length / Vector<T>.Count);
+        return new Span<System.Numerics.Vector<T>>(Unsafe.AsPointer(ref that[0]), that.Length / System.Numerics.Vector<T>.Count);
       }
     }
 

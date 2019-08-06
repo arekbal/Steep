@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -22,7 +21,7 @@ namespace Steep
     int _size;
 
     static T[] _emptyArray = Array.Empty<T>();
-    
+
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
     public T[] RawArray => _items;
@@ -60,7 +59,7 @@ namespace Steep
         _items = new T[capacity];
     }
 
-    public FastList(int capacity, int reserve)
+    public List(int capacity, int reserve)
     {
       if (capacity < 0)
         Throw.ArgOutOfRange(nameof(capacity), "NeedNonNegNum");
@@ -90,14 +89,14 @@ namespace Steep
     // size and capacity of the new list will both be equal to the size of the
     // given collection.
     // 
-    public List(IEnumerable<T> collection)
+    public List(System.Collections.Generic.IEnumerable<T> collection)
     {
       if (collection == null)
         Throw.ArgOutOfRange(nameof(collection));
 
       Contract.EndContractBlock();
 
-      var c = collection as ICollection<T>;
+      var c = collection as System.Collections.Generic.ICollection<T>;
       if (c != null)
       {
         int count = c.Count;
@@ -171,7 +170,7 @@ namespace Steep
         return _size;
       }
     }
-    
+
     public ref T ItemByRef(int index)
     {
       // Following trick can reduce the range check by one
@@ -248,7 +247,7 @@ namespace Steep
     // required, the capacity of the list is increased to twice the previous
     // capacity or the new size, whichever is larger.
     //
-    public void AddRange(IEnumerable<T> collection)
+    public void AddRange(System.Collections.Generic.IEnumerable<T> collection)
     {
       Contract.Ensures(Count >= Contract.OldValue(Count));
 
@@ -295,7 +294,7 @@ namespace Steep
     // The method uses the Array.BinarySearch method to perform the
     // search.
     // 
-    public int BinarySearch(int index, int count, T item, IComparer<T> comparer)
+    public int BinarySearch(int index, int count, T item, System.Collections.Generic.IComparer<T> comparer)
     {
       if (index < 0)
         Throw.ArgOutOfRange("index", "NeedNonNegNum");
@@ -318,7 +317,7 @@ namespace Steep
       return BinarySearch(0, Count, item, null);
     }
 
-    public int BinarySearch(T item, IComparer<T> comparer)
+    public int BinarySearch(T item, System.Collections.Generic.IComparer<T> comparer)
     {
       Contract.Ensures(Contract.Result<int>() <= Count);
       return BinarySearch(0, Count, item, comparer);
@@ -351,7 +350,7 @@ namespace Steep
       }
       else
       {
-        var c = EqualityComparer<T>.Default;
+        var c = System.Collections.Generic.EqualityComparer<T>.Default;
         for (int i = 0; i < _size; i++)
         {
           if (c.Equals(_items[i], item))
@@ -361,7 +360,7 @@ namespace Steep
         return false;
       }
     }
-  
+
     // Copies this List into array, which must be of a 
     // compatible array type.  
     //
@@ -427,14 +426,14 @@ namespace Steep
       return default;
     }
 
-    public FastList<T> FindAll(Predicate<T> match)
+    public List<T> FindAll(Predicate<T> match)
     {
       if (match == null)
         Throw.ArgOutOfRange("match");
 
       Contract.EndContractBlock();
 
-      var list = new FastList<T>();
+      var list = new List<T>();
       for (int i = 0; i < _size; i++)
         if (match(_items[i]))
           list.Add(_items[i]);
@@ -566,7 +565,7 @@ namespace Steep
     //  return new Enumerator(this);
     //}
 
-    public FastList<T> GetRange(int index, int count)
+    public List<T> GetRange(int index, int count)
     {
       if (index < 0)
         Throw.ArgOutOfRange("index", "NeedNonNegNum");
@@ -577,10 +576,10 @@ namespace Steep
       if (_size - index < count)
         Throw.ArgOutOfRange("InvalidOffLen");
 
-      Contract.Ensures(Contract.Result<FastList<T>>() != null);
+      Contract.Ensures(Contract.Result<List<T>>() != null);
       Contract.EndContractBlock();
 
-      var list = new FastList<T>(count);
+      var list = new List<T>(count);
       Array.Copy(_items, index, list._items, 0, count);
       list._size = count;
 
@@ -676,14 +675,14 @@ namespace Steep
       }
       _items[index] = item;
       _size++;
-    }   
+    }
 
     // Inserts the elements of the given collection at a given index. If
     // required, the capacity of the list is increased to twice the previous
     // capacity or the new size, whichever is larger.  Ranges may be added
     // to the end of the list by setting index to the List's size.
     //
-    public void InsertRange(int index, IEnumerable<T> collection)
+    public void InsertRange(int index, System.Collections.Generic.IEnumerable<T> collection)
     {
       if (collection == null)
         Throw.ArgOutOfRange("collection");
@@ -693,7 +692,7 @@ namespace Steep
 
       Contract.EndContractBlock();
 
-      var c = collection as ICollection<T>;
+      var c = collection as System.Collections.Generic.ICollection<T>;
       if (c != null)
       {    // if collection is ICollection<T>
         int count = c.Count;
@@ -935,7 +934,7 @@ namespace Steep
 
     // Sorts the elements in this list.  Uses Array.Sort with the
     // provided comparer.
-    public void Sort(IComparer<T> comparer)
+    public void Sort(System.Collections.Generic.IComparer<T> comparer)
     {
       Sort(0, Count, comparer);
     }
@@ -948,7 +947,7 @@ namespace Steep
     // 
     // This method uses the Array.Sort method to sort the elements.
     // 
-    public void Sort(int index, int count, IComparer<T> comparer)
+    public void Sort(int index, int count, System.Collections.Generic.IComparer<T> comparer)
     {
       if (index < 0)
         Throw.ArgOutOfRange("index", "NeedNonNegNum");

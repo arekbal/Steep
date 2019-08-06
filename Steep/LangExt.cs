@@ -1,8 +1,10 @@
-﻿using doix.Fast;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+
+using Steep;
 
 public static partial class LangExt
 {
@@ -13,4 +15,5 @@ public static partial class LangExt
   public static Promise Cancelled => Promise.Cancelled;
 
   public static Promise<T> DoneWith<T>(T val) => Promise<T>.DoneWith(val);
+
 }

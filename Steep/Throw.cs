@@ -1,51 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 
-public static partial class Throw
+namespace Steep
 {
-  public static void InvalidOp()
+  static class Throw
   {
-    throw new InvalidOperationException();
-  }
+    public static void InvalidOperation(string s) => throw new InvalidOperationException(s);
 
-  public static void InvalidOp(string msg)
-  {
-    throw new InvalidOperationException(msg);
-  }
+    public static void VectorIsEmpty() => throw new InvalidOperationException(Errors.VectorIsEmpty);
 
-  public static void InvalidOp(string msg, Exception innerEx)
-  {
-    throw new InvalidOperationException(msg, innerEx);
-  }
+    public static void VectorCapacitySmallerThanCount() => throw new InvalidOperationException(Errors.VectorCapacitySmallerThanCount);
 
-  public static void ArgOutOfRange()
-  {
-    throw new ArgumentOutOfRangeException();
-  }
+    public static void OptionIsNone() => throw new InvalidOperationException(Errors.OptionIsNone);
 
-  public static void ArgOutOfRange(string paramName)
-  {
-    throw new ArgumentOutOfRangeException(paramName);
-  }
+    public static void CountLessThanOne() => throw new InvalidOperationException(Errors.CountLessThanOne);
 
-  public static void ArgOutOfRange(string msg, Exception innerEx)
-  {
-    throw new ArgumentOutOfRangeException(msg, innerEx);
-  }
+    public static void Expectation() => throw new ExpectationException<bool>();
 
-  public static void ArgOutOfRange(string paramName, string msg)
-  {
-    throw new ArgumentOutOfRangeException(paramName, msg);
-  }
+    public static void Expectation<TErr>(TErr err) => throw new ExpectationException<TErr>(err);
 
-  public static void ArgNull(string paramName)
-  {
-    throw new ArgumentNullException(paramName);
-  }
+    public static void InvalidOp() => throw new InvalidOperationException();
 
-  public static void Arg(string msg)
-  {
-    throw new ArgumentException(msg);
+    public static void InvalidOp(string msg) => throw new InvalidOperationException(msg);
+
+    public static void InvalidOp(string msg, Exception innerEx) => throw new InvalidOperationException(msg, innerEx);
+
+    public static void ArgOutOfRange() => throw new ArgumentOutOfRangeException();
+
+    public static void ArgOutOfRange(string paramName) => throw new ArgumentOutOfRangeException(paramName);
+
+    public static void ArgOutOfRange(string msg, Exception innerEx) => throw new ArgumentOutOfRangeException(msg, innerEx);
+
+    public static void ArgOutOfRange(string paramName, string msg) => throw new ArgumentOutOfRangeException(paramName, msg);
+
+    public static void ArgNull(string paramName) => throw new ArgumentNullException(paramName);
+
+    public static void Arg(string msg) => throw new ArgumentException(msg);
   }
 }

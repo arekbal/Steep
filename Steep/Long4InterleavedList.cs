@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Steep
 {
@@ -23,7 +20,7 @@ namespace Steep
       public ref long X => ref _itemRef.A;
       public ref long Y => ref _itemRef.B;
       public ref long Z => ref _itemRef.C;
-      public ref long W => ref _itemRef.D;      
+      public ref long W => ref _itemRef.D;
     }
 
     public Span<long> ItemsX

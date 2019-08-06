@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Steep
 {
-  public struct InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC, TValueTypeD> : InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC>
+  public class InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC, TValueTypeD> : InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC>
     where TValueTypeA : unmanaged
       where TValueTypeB : unmanaged
       where TValueTypeC : unmanaged
@@ -112,7 +112,7 @@ namespace Steep
     }
   }
 
-  public struct InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC> : InterleavedList<TValueTypeA, TValueTypeB>
+  public class InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC> : InterleavedList<TValueTypeA, TValueTypeB>
     where TValueTypeA : unmanaged
       where TValueTypeB : unmanaged
       where TValueTypeC : unmanaged
@@ -205,10 +205,10 @@ namespace Steep
             (ValueMarshal.SizeOf<TValueTypeA>() + ValueMarshal.SizeOf<TValueTypeB>()) * _capacity), _length);
         }
       }
-    }  
+    }
   }
 
-  public struct InterleavedList<TValueTypeA, TValueTypeB> : IDisposable
+  public class InterleavedList<TValueTypeA, TValueTypeB> : IDisposable
     where TValueTypeA : unmanaged
       where TValueTypeB : unmanaged
   {
@@ -373,7 +373,7 @@ namespace Steep
     }
 
     public void Dispose()
-    {      
+    {
       Dispose(true);
       GC.SuppressFinalize(this);
     }
