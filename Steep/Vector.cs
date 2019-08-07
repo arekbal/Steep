@@ -24,7 +24,7 @@ namespace Steep
       get
       {
 
-        if (length == 0) new OptionRef<T>();
+        if (length == 0) return new OptionRef<T>();
         unsafe { return Option.Some(ref Unsafe.AsRef<T>(p.ToPointer())); }
       }
     }
@@ -33,7 +33,7 @@ namespace Steep
     {
       get
       {
-        if (length == 0) new OptionRef<T>();
+        if (length == 0) return new OptionRef<T>();
         unsafe
         {
           return Option.Some(ref Unsafe.AsRef<T>(new IntPtr(p.ToInt64() + ((length - 1) * SizeOfItem)).ToPointer()));

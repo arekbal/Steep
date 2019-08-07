@@ -999,7 +999,7 @@ namespace Steep
     // 
     // list.Clear();
     // list.TrimExcess();
-    // 
+    //
     public void TrimExcess()
     {
       int threshold = (int)(((double)_items.Length) * 0.9);
