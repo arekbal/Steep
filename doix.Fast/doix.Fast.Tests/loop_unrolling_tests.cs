@@ -25,7 +25,6 @@ namespace doix.Fast.Tests
     [Test]
     public async Task debugger_display()
     {
-      var x = "Hello World";
       var z = Some(new Nullable<int>(32));
 
       var o = z.Fold('a')(r => (char)r);

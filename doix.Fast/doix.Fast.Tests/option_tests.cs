@@ -11,7 +11,7 @@ namespace doix.Fast.Tests
   public class loop_unrolling_tests
   {
     [Test]
-    public async Task compare_loop_unrolling()
+    public void compare_loop_unrolling()
     {
     
     }

@@ -31,9 +31,8 @@ namespace doix.Fast.Tests
     }
 
     [Test]
-    public async Task debugger_display()
-    {
-      var x = "Hello World";
+    public void debugger_display()
+    {    
       var z = Some(new Nullable<int>(32));
 
       var display = z.ToString();

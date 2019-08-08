@@ -461,13 +461,13 @@ namespace Steep
     public int FindIndex(int startIndex, int count, Predicate<T> match)
     {
       if ((uint)startIndex > (uint)_size)
-        Throw.ArgOutOfRange("startIndex", "Index");
+        Throw.ArgOutOfRange(nameof(startIndex), "Index");
 
       if (count < 0 || startIndex > _size - count)
-        Throw.ArgOutOfRange("count", "Count");
+        Throw.ArgOutOfRange(nameof(count), "Count");
 
       if (match == null)
-        Throw.ArgOutOfRange("match");
+        Throw.ArgOutOfRange(nameof(match));
 
       Contract.Ensures(Contract.Result<int>() >= -1);
       Contract.Ensures(Contract.Result<int>() < startIndex + count);

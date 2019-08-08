@@ -18,7 +18,7 @@ namespace Steep
   }
 
   /// <summary>
-  /// Efficient with large values, minimal removes, ordered key, processor cache, and separate value key
+  /// Efficient with large values (each entry takes extra 8 bytes), minimal removes, ordered key, processor cache, and separate value key
   /// </summary>
   public partial class IntIndexVec<T> : IDisposable
     where T : unmanaged
@@ -29,7 +29,7 @@ namespace Steep
     internal UnmanagedBuffer<T> InternalValues;
     internal int _length;
 
-    public int Capacity => InternalEntries.Length; // no need for separate capacity field
+    public int Capacity => InternalEntries.Length;
     public int Length => _length;
 
     public Span<IntIndexVecEntry> Entries => InternalEntries.AsSpan().Slice(0, _length);
@@ -241,13 +241,9 @@ namespace Steep
 
         if (order == 0) return i;
         if (order < 0)
-        {
           lo = i + 1;
-        }
         else
-        {
           hi = i - 1;
-        }
       }
 
       return ~lo;
