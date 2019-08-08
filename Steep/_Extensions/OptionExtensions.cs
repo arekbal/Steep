@@ -1,9 +1,9 @@
-
 using System;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
-  public static class Extensions
+  public static class OptionExtensions
   {
     public static Option<T> Unwrap<T>(this Option<Option<T>> o)
     {
@@ -65,30 +65,6 @@ namespace Steep
       return false;
     }
 
-    public static TVal Expect<TVal, TErr>(this Result<TVal, TErr> that)
-    {
-      if (that.byteIsErr != 0)
-        Throw.Expectation(that.Err);
-
-      return that.val;
-    }
-
-    public static TVal Or<TVal, TErr>(this Result<TVal, TErr> that, TVal val)
-    {
-      if (that.byteIsErr != 0)
-        return val;
-
-      return that.val;
-    }
-
-    public static TVal Or<TVal, TErr>(this Result<TVal, TErr> that, Func<TVal> valFactory)
-    {
-      if (that.byteIsErr != 0)
-        return valFactory();
-
-      return that.val;
-    }
-
     public static TVal Expect<TVal>(this Option<TVal> that)
     {
       if (that.byteIsSome == 0)
@@ -113,12 +89,63 @@ namespace Steep
       return that.val;
     }
 
-    public static TVal Or<TVal>(this Option<TVal> that, Func<TVal> valFactory)
+    public static Option<TVal> Or<TVal>(this Option<TVal> that, Option<TVal> b)
+    {
+      if (that.byteIsSome == 0)
+        return b;
+
+      return that;
+    }
+
+    public static TVal OrMake<TVal>(this Option<TVal> that, Func<TVal> valFactory)
     {
       if (that.byteIsSome == 0)
         return valFactory();
 
       return that.val;
+    }
+
+    public static T OrDefault<T>(this Option<T> that)
+      => that ? that.Val : default;
+
+    public static bool AsVar<T>(this Option<T> that, out T x)
+    {
+      if (that)
+      {
+        x = that.val;
+        return true;
+      }
+
+      x = default;
+      return false;
+    }
+
+    public static Func<T> Bind<T>(this Option<T> that, T val)
+    {
+      if (that)
+        return () => { return that.val; };
+      return () => { return val; };
+    }
+
+    public static Func<T> BindMake<T>(this Option<T> that, Func<T> val)
+    {
+      if (that)
+        return () => { return that.val; };
+      return () => { return val(); };
+    }
+
+    public static Func<Func<T, TResult>, TResult> OrBind<T, TResult>(this Option<T> that, TResult val)
+    {
+      if (that)
+        return (Func<T, TResult> action) => { return action(that.val); };
+      return (Func<T, TResult> action) => { return val; };
+    }
+
+    public static Func<Func<T, TResult>, TResult> OrBind<T, TResult>(this Option<T> that, Func<TResult> val)
+    {
+      if (that)
+        return (Func<T, TResult> action) => { return action(that.val); };
+      return (Func<T, TResult> action) => { return val(); };
     }
 
     public static Option<TNewVal> Map<TVal, TNewVal>(this Option<TVal> that, Func<TVal, TNewVal> map)
@@ -127,38 +154,6 @@ namespace Steep
         return new Option<TNewVal>();
 
       return new Option<TNewVal> { val = map(that.val), byteIsSome = 1 };
-    }
-
-    public static Result<TNewVal, TErr> Map<TVal, TErr, TNewVal>(this Result<TVal, TErr> that, Func<TVal, TNewVal> map)
-    {
-      if (that.byteIsErr != 0)
-        return new Result<TNewVal, TErr> { err = that.err, byteIsErr = 1 };
-
-      return new Result<TNewVal, TErr> { val = map(that.val) };
-    }
-
-    public static Result<TVal, TNewErr> MapErr<TVal, TErr, TNewErr>(this Result<TVal, TErr> that, Func<TErr, TNewErr> map)
-    {
-      if (that.byteIsErr != 0)
-        return new Result<TVal, TNewErr> { err = map(that.err), byteIsErr = 1 };
-
-      return new Result<TVal, TNewErr> { val = that.val };
-    }
-
-    public static Result<TVal, TErr> ToResult<TVal, TErr>(this Option<TVal> that, TErr err)
-    {
-      if (that.byteIsSome != 0)
-        return new Result<TVal, TErr> { val = that.val };
-
-      return new Result<TVal, TErr> { err = err, byteIsErr = 1 };
-    }
-
-    public static Result<TVal, TErr> ToResult<TVal, TErr>(this Option<TVal> that, Func<TErr> errFactory)
-    {
-      if (that.byteIsSome != 0)
-        return new Result<TVal, TErr> { val = that.val };
-
-      return new Result<TVal, TErr> { err = errFactory(), byteIsErr = 1 };
     }
   }
 }

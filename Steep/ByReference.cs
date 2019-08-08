@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Steep
 {
@@ -11,7 +9,7 @@ namespace Steep
   {
     IntPtr _ptr;
 
-    public ref TValue ValueRef
+    public ref TValue Ref
     {
       get
       {
@@ -33,7 +31,7 @@ namespace Steep
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [DebuggerHidden]
-    public ref TValue RawValueRef
+    public ref TValue RawRef
     {
       get
       {
@@ -47,7 +45,7 @@ namespace Steep
 
 #if DEBUG
     [MonitoringDescription("debug only property")]
-    TValue Value => ValueRef;
+    TValue Value => Ref;
 #endif
 
     public static ByReference<TValue> Create(ref TValue refVal)
@@ -58,7 +56,8 @@ namespace Steep
         x._ptr = (IntPtr)Unsafe.AsPointer(ref refVal);
       }
       return x;
-
     }
   }
+
+
 }

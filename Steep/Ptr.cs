@@ -1,9 +1,10 @@
+
 using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Steep
 {
+  [UnsafeValueType]
   public struct Ptr<T> where T : unmanaged
   {
     internal IntPtr p;

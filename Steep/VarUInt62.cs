@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
@@ -21,7 +19,7 @@ namespace Steep
     const ulong Flag1 = 1uL << 62;
     const ulong FlagsBoth = Flag0 | Flag1;
 
-    static readonly ulong Offset = (ulong)Math.Pow(2, 62); // TODO: replace with bit shift
+    static readonly ulong Offset = (ulong)Math.Pow(2, 62); // TODO: replace with bit plain const bitshift
 
     ulong _val;
 
@@ -99,8 +97,8 @@ namespace Steep
     public static implicit operator VarUInt62(ulong val)
     {
       if (val > MaxValue)
-        throw new OverflowException("VarUInt62 cannot contain so big ulong value"); // TODO: No direct throws
-      
+        Throw.Overflow(Errors.VarUInt62Overflow); // TODO: No direct throws
+
       var v = val & MaxValue;
 
       var bits = (ulong)1 << 30;
@@ -113,7 +111,7 @@ namespace Steep
       }
 
       bits = (ulong)1 << 14;
-      if(val > bits)
+      if (val > bits)
       {
         v |= Flag1;
 
@@ -127,13 +125,13 @@ namespace Steep
 
         return new VarUInt62 { _val = v };
       }
-      
+
       return new VarUInt62 { _val = v };
     }
 
     public override string ToString() => ((ulong)this).ToString();
 
-// TODO: Drop BitConverter... creates new array
+    // TODO: Drop BitConverter... creates new array
     public Span<byte> GetEncodedBytes()
       => new Span<byte>(BitConverter.GetBytes(EncodedValue), 0, (int)ByteSize);
 

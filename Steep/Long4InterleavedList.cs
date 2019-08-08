@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Steep
 {
-  public class Long4InterleavedList : InterleavedList<long, long, long, long>
+  public class Long4InterleavedList : StrideList<long, long, long, long>
   {
     public Long4InterleavedList(int capacity = DefaultCapacity) : base(capacity)
     {
@@ -12,7 +12,7 @@ namespace Steep
     public ref struct Long4Ref
     {
       ItemRef4 _itemRef;
-      public Long4Ref(InterleavedList<long, long, long, long> src, int index)
+      public Long4Ref(StrideList<long, long, long, long> src, int index)
       {
         _itemRef = new ItemRef4(src, index);
       }

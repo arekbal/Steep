@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
-  public struct Vector<T> : IDisposable
+  [UnsafeValueType]
+  public struct Vec<T> : IDisposable
   where T : unmanaged
   {
     public readonly static int SizeOfItem = Unsafe.SizeOf<T>();

@@ -7,7 +7,17 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/doix.Fast.Analyzers/doix.Fast.Analyzers.Test/doix.Fast.Analyzers.Test.csproj"
+                "${workspaceFolder}/Steep/Steep.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "${workspaceFolder}/Steep.Test/Steep.Test.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

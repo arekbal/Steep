@@ -7,7 +7,7 @@ using System.Text;
 namespace Steep
 {
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
-  public struct IntIndexedVectorEntry
+  public struct IntIndexVecEntry
   {
     internal const int SizeOf = sizeof(int) + sizeof(int);
 
@@ -20,28 +20,27 @@ namespace Steep
   /// <summary>
   /// Efficient with large values, minimal removes, ordered key, processor cache, and separate value key
   /// </summary>
-  /// <typeparam name="TValue"></typeparam>
-  public partial class IntIndexedVector<TValue> : IDisposable
-    where TValue : struct
+  public partial class IntIndexVec<T> : IDisposable
+    where T : unmanaged
   {
-    static readonly int SizeOfValue = Marshal.SizeOf<TValue>();
+    static readonly int SizeOfValue = Marshal.SizeOf<T>();
 
-    internal UnmanagedBuffer<IntIndexedVectorEntry> InternalEntries;
-    internal UnmanagedBuffer<TValue> InternalValues;
+    internal UnmanagedBuffer<IntIndexVecEntry> InternalEntries;
+    internal UnmanagedBuffer<T> InternalValues;
     internal int _length;
 
     public int Capacity => InternalEntries.Length; // no need for separate capacity field
     public int Length => _length;
 
-    public Span<IntIndexedVectorEntry> Entries => InternalEntries.AsSpan().Slice(0, _length);
+    public Span<IntIndexVecEntry> Entries => InternalEntries.AsSpan().Slice(0, _length);
 
-    public IntIndexedVector(int capacity = 4)
+    public IntIndexVec(int capacity = 4)
     {
       InternalEntries.Alloc(capacity);
       InternalValues.Alloc(capacity);
     }
 
-    public ref TValue Add(int key) // adding same as existing will fail
+    public ref T Add(int key) // adding same as existing will fail
     {
       if (_length == Capacity)
         Resize(_length + 1);
@@ -53,7 +52,7 @@ namespace Steep
       return ref InternalInsert(key, index);
     }
 
-    public ref TValue FindOrAdd(int key)
+    public ref T FindOrAdd(int key)
     {
       var index = InternalBinarySearch(key, 0, _length - 1);
       if (index > -1 && index < _length)
@@ -62,13 +61,13 @@ namespace Steep
       return ref InternalInsert(key, index);
     }
 
-    internal ref TValue InternalInsert(int key, int index) // adding same as existing will fail
+    internal ref T InternalInsert(int key, int index) // adding same as existing will fail
     {
       index = ~index;
 
       if (index < _length) // not last elem
       {
-        var count = (_length - index) * IntIndexedVectorEntry.SizeOf;
+        var count = (_length - index) * IntIndexVecEntry.SizeOf;
 
         MoveEntriesRight(index, count);
       }
@@ -99,7 +98,7 @@ namespace Steep
             entries[_length - 1]._valueIndex = entry._valueIndex;
           }
 
-          var count = (_length - 1 - index) * IntIndexedVectorEntry.SizeOf;
+          var count = (_length - 1 - index) * IntIndexVecEntry.SizeOf;
 
           MoveEntriesLeft(index, count);
         }
@@ -138,8 +137,8 @@ namespace Steep
             unsafe
             {
               Buffer.MemoryCopy(
-                (InternalEntries._ptr + index * IntIndexedVectorEntry.SizeOf).ToPointer(),
-                (InternalEntries._ptr + (index + 1) * IntIndexedVectorEntry.SizeOf).ToPointer(),
+                (InternalEntries._ptr + index * IntIndexVecEntry.SizeOf).ToPointer(),
+                (InternalEntries._ptr + (index + 1) * IntIndexVecEntry.SizeOf).ToPointer(),
                 count,
                 count);
             }
@@ -175,8 +174,8 @@ namespace Steep
             unsafe
             {
               Buffer.MemoryCopy(
-                (InternalEntries._ptr + (index + 1) * IntIndexedVectorEntry.SizeOf).ToPointer(),
-                (InternalEntries._ptr + index * IntIndexedVectorEntry.SizeOf).ToPointer(),
+                (InternalEntries._ptr + (index + 1) * IntIndexVecEntry.SizeOf).ToPointer(),
+                (InternalEntries._ptr + index * IntIndexVecEntry.SizeOf).ToPointer(),
                 count,
                 count);
             }
@@ -194,19 +193,19 @@ namespace Steep
       {
         unsafe
         {
-          return StrideSpan<int>.Create(InternalEntries.IntPtr.ToPointer(), IntIndexedVectorEntry.SizeOf, _length);
+          return StrideSpan<int>.Create(InternalEntries.IntPtr.ToPointer(), IntIndexVecEntry.SizeOf, _length);
         }
       }
     }
 
-    public Span<TValue> Values
+    public Span<T> Values
     {
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       get => InternalValues.AsSpan().Slice(0, _length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public OptionRef<TValue> Find(int key)
+    public OptionRef<T> Find(int key)
     {
       var index = InternalBinarySearch(key, 0, _length - 1);
       if (index > -1 && index < _length)
@@ -302,7 +301,7 @@ namespace Steep
       }
     }
 
-    ~IntIndexedVector()
+    ~IntIndexVec()
     {
       Dispose(false);
     }

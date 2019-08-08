@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Steep
 {
@@ -12,7 +10,7 @@ namespace Steep
       unsafe
       {
         return new string((char*)Unsafe.AsPointer(ref s), 0, s.Count());
-      }      
+      }
     }
 
     public static void ToStr4(this string that, out Str4 s)
@@ -32,11 +30,11 @@ namespace Steep
       s = new Str4();
 
       if (that < 0)
-      { 
+      {
         s.f00 = '-';
         that = -that;
 
-        if(that < 10)
+        if (that < 10)
         {
           s.f01 = (char)(that + 48);
           s.f02 = (char)0;
@@ -99,6 +97,11 @@ namespace Steep
     public static void ToStr4(this short that, out Str4 s)
       => ToStr4((int)that, out s);
 
+    public static AsUpperString AsUpper(this string s)
+      => new AsUpperString { s = s };
+
+    public static AsLowerString AsLower(this string s)
+    => new AsLowerString { s = s };
 
     public static void ToStr4(this uint that, out Str4 s)
     {
@@ -157,7 +160,7 @@ namespace Steep
       if (thatSpan.Length != s.Length)
         return false;
 
-      for(var i = 0; i < thatSpan.Length; i++)
+      for (var i = 0; i < thatSpan.Length; i++)
       {
         if (thatSpan[i] != s[i])
           return false;
@@ -166,7 +169,7 @@ namespace Steep
       return true;
     }
 
-    public static bool StrEquals<TStr0, TStr1>(this ref TStr0 that, ref TStr1 s) 
+    public static bool StrEquals<TStr0, TStr1>(this ref TStr0 that, ref TStr1 s)
       where TStr0 : struct, IStr
       where TStr1 : struct, IStr
     {
@@ -175,7 +178,7 @@ namespace Steep
 
       // easiest, but could be optimized so we wouldn't count extensively both strings
       var aSpan = that.AsCountedSpan();
-      var bSpan = s.AsCountedSpan(); 
+      var bSpan = s.AsCountedSpan();
 
       if (aSpan.Length != bSpan.Length)
         return false;
@@ -211,7 +214,7 @@ namespace Steep
 
       int i_plus_count;
 
-      for(var i = 0; i < s.Length; i++)
+      for (var i = 0; i < s.Length; i++)
       {
         i_plus_count = i + count;
         if (i_plus_count == that.Capacity)
@@ -221,7 +224,7 @@ namespace Steep
       }
     }
 
-    public static void Append<TStr0, TStr1>(this ref TStr0 that, ref TStr1 s) 
+    public static void Append<TStr0, TStr1>(this ref TStr0 that, ref TStr1 s)
       where TStr0 : struct, IStr
       where TStr1 : struct, IStr
     {

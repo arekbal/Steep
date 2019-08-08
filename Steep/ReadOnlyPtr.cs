@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Steep
 {
+  [UnsafeValueType]
   public struct ReadOnlyPtr<T> where T : unmanaged
   {
     internal IntPtr p;

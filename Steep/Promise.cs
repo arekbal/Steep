@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Steep
 {
@@ -70,7 +67,6 @@ namespace Steep
     void Cancel();
   }
 
-
   public class Promise : IPromise, IPromiseSource, IPromiseCancellation
   {
     internal const int DELAY_GRANULARITY_MILLISECONDS = 30;
@@ -122,7 +118,7 @@ namespace Steep
               ((IPromiseSource)p).Cancel();
             else
               ((IPromiseSource)p).Complete();
-          }, o);          
+          }, o);
         }, promise);
       }
       else
@@ -142,7 +138,7 @@ namespace Steep
 
     public static IPromise Async(Action<IPromiseCancellation> a, bool syncBack = true)
     {
-      var promise = new Promise(()=> { });
+      var promise = new Promise(() => { });
 
       if (syncBack)
       {
@@ -184,7 +180,7 @@ namespace Steep
 
     public static IPromise Delay(long milliseconds, bool syncBack = true)
     {
-      var promise = new Promise(()=> { });
+      var promise = new Promise(() => { });
 
       var stopWatch = new Stopwatch();
 
@@ -199,6 +195,7 @@ namespace Steep
         }
 
         var autoResetEvent = new AutoResetEvent(false);
+
         stopWatch.Start();
         RegisteredWaitHandle waitHandle = null;
         waitHandle = ThreadPool.RegisterWaitForSingleObject(autoResetEvent, (o, b) =>
@@ -246,7 +243,7 @@ namespace Steep
 
             ((IPromiseSource)o).Cancel();
             return;
-          }          
+          }
         }, promise, DELAY_GRANULARITY_MILLISECONDS, false);
         // TODO: unregister handle on cancellation for delay;
       }
@@ -476,7 +473,7 @@ namespace Steep
     public static Promise<T> DoneWith(T value) => new Promise<T> { _result = value, _action = s_Done };
     public static readonly new Promise<T> Cancelled = new Promise<T> { _action = s_Cancelled };
 
-    public static IPromise<T> Async(Func<T> a, bool syncBack=true)
+    public static IPromise<T> Async(Func<T> a, bool syncBack = true)
     {
       var promise = new Promise<T>();
 
@@ -867,5 +864,5 @@ namespace Steep
         });
       }
     }
-    }
+  }
 }

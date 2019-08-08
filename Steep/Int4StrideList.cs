@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Steep
 {
-  public class Int4InterleavedList : InterleavedList<int, int, int, int>
+  public class Int4StrideList : StrideList<int, int, int, int>
   {
-    public Int4InterleavedList(int capacity = DefaultCapacity) : base(capacity)
+    public Int4StrideList(int capacity = DefaultCapacity) : base(capacity)
     {
     }
 
     public ref struct Int4Ref
     {
       ItemRef4 _itemRef;
-      public Int4Ref(InterleavedList<int, int, int, int> src, int index)
+      public Int4Ref(StrideList<int, int, int, int> src, int index)
       {
         _itemRef = new ItemRef4(src, index);
       }
@@ -23,7 +20,7 @@ namespace Steep
       public ref int X => ref _itemRef.A;
       public ref int Y => ref _itemRef.B;
       public ref int Z => ref _itemRef.C;
-      public ref int W => ref _itemRef.D;      
+      public ref int W => ref _itemRef.D;
     }
 
     public Span<int> X

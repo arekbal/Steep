@@ -1,53 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Steep
 {
-  public class InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC, TValueTypeD> : InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC>
-    where TValueTypeA : unmanaged
-      where TValueTypeB : unmanaged
-      where TValueTypeC : unmanaged
-    where TValueTypeD : unmanaged
+  public class StrideList<A, B, C, D> : StrideList<A, B, C>
+    where A : unmanaged
+      where B : unmanaged
+      where C : unmanaged
+    where D : unmanaged
   {
     static readonly int SizeOfComponents =
-      ValueMarshal.SizeOf<TValueTypeA>() +
-      ValueMarshal.SizeOf<TValueTypeB>() +
-      ValueMarshal.SizeOf<TValueTypeC>() +
-      ValueMarshal.SizeOf<TValueTypeD>();
+      ValMarshal.SizeOf<A>() +
+      ValMarshal.SizeOf<B>() +
+      ValMarshal.SizeOf<C>() +
+      ValMarshal.SizeOf<D>();
 
     public ref struct ItemRef4
     {
-      internal InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC, TValueTypeD> _src;
+      internal StrideList<A, B, C, D> _src;
       internal int _i;
 
-      public ref TValueTypeA A => ref _src.ItemARefAt(_i);
-      public ref TValueTypeB B => ref _src.ItemBRefAt(_i);
-      public ref TValueTypeC C => ref _src.ItemCRefAt(_i);
-      public ref TValueTypeD D => ref _src.ItemDRefAt(_i);
+      public ref A A => ref _src.ItemARefAt(_i);
+      public ref B B => ref _src.ItemBRefAt(_i);
+      public ref C C => ref _src.ItemCRefAt(_i);
+      public ref D D => ref _src.ItemDRefAt(_i);
 
-      public ItemRef4(InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC, TValueTypeD> src, int index)
+      public ItemRef4(StrideList<A, B, C, D> src, int index)
       {
         _src = src;
         _i = index;
       }
     }
 
-    public InterleavedList(int capacity = DefaultCapacity) : base(capacity)
+    public StrideList(int capacity = DefaultCapacity) : base(capacity)
     {
     }
 
-    protected ref TValueTypeD ItemDRefAt(int index)
+    protected ref D ItemDRefAt(int index)
     {
       unsafe
       {
-        return ref Unsafe.AsRef<TValueTypeD>((void*)(
+        return ref Unsafe.AsRef<D>((void*)(
           _buffer._ptr +
-          ValueMarshal.SizeOf<TValueTypeA>() * _capacity +
-          ValueMarshal.SizeOf<TValueTypeB>() * _capacity +
-          ValueMarshal.SizeOf<TValueTypeC>() * _capacity +
-          ValueMarshal.SizeOf<TValueTypeD>() * index));
+          ValMarshal.SizeOf<A>() * _capacity +
+          ValMarshal.SizeOf<B>() * _capacity +
+          ValMarshal.SizeOf<C>() * _capacity +
+          ValMarshal.SizeOf<D>() * index));
       }
     }
 
@@ -61,10 +59,10 @@ namespace Steep
         unsafe
         {
           var pointer = _buffer.IntPtr;
-          var sizeOfA = ValueMarshal.SizeOf<TValueTypeA>();
-          var sizeOfB = ValueMarshal.SizeOf<TValueTypeB>();
-          var sizeOfC = ValueMarshal.SizeOf<TValueTypeC>();
-          var sizeOfD = ValueMarshal.SizeOf<TValueTypeD>();
+          var sizeOfA = ValMarshal.SizeOf<A>();
+          var sizeOfB = ValMarshal.SizeOf<B>();
+          var sizeOfC = ValMarshal.SizeOf<C>();
+          var sizeOfD = ValMarshal.SizeOf<D>();
 
           Buffer.MemoryCopy(
           movedBuffer.IntPtr.ToPointer(),
@@ -99,43 +97,43 @@ namespace Steep
       _capacity = newCap;
     }
 
-    protected Span<TValueTypeD> ItemsD
+    protected Span<D> ItemsD
     {
       get
       {
         unsafe
         {
-          return new Span<TValueTypeD>((void*)(_buffer._ptr +
-            (ValueMarshal.SizeOf<TValueTypeA>() + ValueMarshal.SizeOf<TValueTypeB>() + ValueMarshal.SizeOf<TValueTypeC>()) * _capacity), _length);
+          return new Span<D>((void*)(_buffer._ptr +
+            (ValMarshal.SizeOf<A>() + ValMarshal.SizeOf<B>() + ValMarshal.SizeOf<C>()) * _capacity), _length);
         }
       }
     }
   }
 
-  public class InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC> : InterleavedList<TValueTypeA, TValueTypeB>
-    where TValueTypeA : unmanaged
-      where TValueTypeB : unmanaged
-      where TValueTypeC : unmanaged
+  public class StrideList<A, B, C> : StrideList<A, B>
+    where A : unmanaged
+      where B : unmanaged
+      where C : unmanaged
   {
     protected ref struct ItemRef3
     {
-      internal InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC> _src;
+      internal StrideList<A, B, C> _src;
       internal int _i;
 
-      public ref TValueTypeA A => ref _src.ItemARefAt(_i);
-      public ref TValueTypeB B => ref _src.ItemBRefAt(_i);
-      public ref TValueTypeC C => ref _src.ItemCRefAt(_i);
+      public ref A A => ref _src.ItemARefAt(_i);
+      public ref B B => ref _src.ItemBRefAt(_i);
+      public ref C C => ref _src.ItemCRefAt(_i);
 
-      public ItemRef3(InterleavedList<TValueTypeA, TValueTypeB, TValueTypeC> src, int index)
+      public ItemRef3(StrideList<A, B, C> src, int index)
       {
         _src = src;
         _i = index;
       }
     }
 
-    static readonly int SizeOfComponents = ValueMarshal.SizeOf<TValueTypeA>() + ValueMarshal.SizeOf<TValueTypeB>() + ValueMarshal.SizeOf<TValueTypeC>();
+    static readonly int SizeOfComponents = ValMarshal.SizeOf<A>() + ValMarshal.SizeOf<B>() + ValMarshal.SizeOf<C>();
 
-    public InterleavedList(int capacity = DefaultCapacity) : base(capacity)
+    public StrideList(int capacity = DefaultCapacity) : base(capacity)
     {
     }
 
@@ -149,9 +147,9 @@ namespace Steep
         unsafe
         {
           var pointer = _buffer.IntPtr;
-          var sizeOfA = ValueMarshal.SizeOf<TValueTypeA>();
-          var sizeOfB = ValueMarshal.SizeOf<TValueTypeB>();
-          var sizeOfC = ValueMarshal.SizeOf<TValueTypeC>();
+          var sizeOfA = ValMarshal.SizeOf<A>();
+          var sizeOfB = ValMarshal.SizeOf<B>();
+          var sizeOfC = ValMarshal.SizeOf<C>();
 
           Buffer.MemoryCopy(
           movedBuffer.IntPtr.ToPointer(),
@@ -180,41 +178,41 @@ namespace Steep
       _capacity = newCap;
     }
 
-    protected ref TValueTypeC ItemCRefAt(int index)
+    protected ref C ItemCRefAt(int index)
     {
       unsafe
       {
-        return ref Unsafe.AsRef<TValueTypeC>((void*)(
+        return ref Unsafe.AsRef<C>((void*)(
           _buffer._ptr +
-          ValueMarshal.SizeOf<TValueTypeA>() * _capacity +
-          ValueMarshal.SizeOf<TValueTypeB>() * _capacity +
-          ValueMarshal.SizeOf<TValueTypeC>() * index));
+          ValMarshal.SizeOf<A>() * _capacity +
+          ValMarshal.SizeOf<B>() * _capacity +
+          ValMarshal.SizeOf<C>() * index));
       }
     }
 
     protected new ItemRef3 ItemRefAt(int index)
       => new ItemRef3 { _src = this, _i = index };
 
-    protected Span<TValueTypeC> ItemsC
+    protected Span<C> ItemsC
     {
       get
       {
         unsafe
         {
-          return new Span<TValueTypeC>((void*)(_buffer._ptr +
-            (ValueMarshal.SizeOf<TValueTypeA>() + ValueMarshal.SizeOf<TValueTypeB>()) * _capacity), _length);
+          return new Span<C>((void*)(_buffer._ptr +
+            (ValMarshal.SizeOf<A>() + ValMarshal.SizeOf<B>()) * _capacity), _length);
         }
       }
     }
   }
 
-  public class InterleavedList<TValueTypeA, TValueTypeB> : IDisposable
-    where TValueTypeA : unmanaged
-      where TValueTypeB : unmanaged
+  public class StrideList<A, B> : IDisposable
+    where A : unmanaged
+      where B : unmanaged
   {
     protected const int DefaultCapacity = 4;
 
-    static readonly int SizeOfComponents = ValueMarshal.SizeOf<TValueTypeA>() + ValueMarshal.SizeOf<TValueTypeB>();
+    static readonly int SizeOfComponents = ValMarshal.SizeOf<A>() + ValMarshal.SizeOf<B>();
 
     internal UnmanagedBuffer<byte> _buffer;
 
@@ -224,20 +222,20 @@ namespace Steep
 
     protected ref struct ItemRef2
     {
-      internal InterleavedList<TValueTypeA, TValueTypeB> _src;
+      internal StrideList<A, B> _src;
       internal int _i;
 
-      public ref TValueTypeA A => ref _src.ItemARefAt(_i);
-      public ref TValueTypeB B => ref _src.ItemBRefAt(_i);
+      public ref A A => ref _src.ItemARefAt(_i);
+      public ref B B => ref _src.ItemBRefAt(_i);
 
-      public ItemRef2(InterleavedList<TValueTypeA, TValueTypeB> src, int index)
+      public ItemRef2(StrideList<A, B> src, int index)
       {
         _src = src;
         _i = index;
       }
     }
 
-    public InterleavedList(int capacity = DefaultCapacity)
+    public StrideList(int capacity = DefaultCapacity)
     {
       _capacity = capacity;
       _buffer.Alloc(SizeOfComponents * _capacity);
@@ -284,8 +282,8 @@ namespace Steep
         unsafe
         {
           var pointer = _buffer.IntPtr;
-          var sizeOfA = ValueMarshal.SizeOf<TValueTypeA>();
-          var sizeOfB = ValueMarshal.SizeOf<TValueTypeB>();
+          var sizeOfA = ValMarshal.SizeOf<A>();
+          var sizeOfB = ValMarshal.SizeOf<B>();
 
           Buffer.MemoryCopy(
           movedBuffer.IntPtr.ToPointer(),
@@ -308,47 +306,47 @@ namespace Steep
       _capacity = newCap;
     }
 
-    protected ref TValueTypeA ItemARefAt(int index)
+    protected ref A ItemARefAt(int index)
     {
       unsafe
       {
-        return ref Unsafe.AsRef<TValueTypeA>((void*)(_buffer._ptr + ValueMarshal.SizeOf<TValueTypeA>() * index));
+        return ref Unsafe.AsRef<A>((void*)(_buffer._ptr + ValMarshal.SizeOf<A>() * index));
       }
     }
 
-    protected ref TValueTypeB ItemBRefAt(int index)
+    protected ref B ItemBRefAt(int index)
     {
       unsafe
       {
-        return ref Unsafe.AsRef<TValueTypeB>((void*)(
+        return ref Unsafe.AsRef<B>((void*)(
           _buffer._ptr +
-          ValueMarshal.SizeOf<TValueTypeA>() * _capacity +
-          ValueMarshal.SizeOf<TValueTypeB>() * index));
+          ValMarshal.SizeOf<A>() * _capacity +
+          ValMarshal.SizeOf<B>() * index));
       }
     }
 
     protected ItemRef2 ItemRefAt(int index)
      => new ItemRef2 { _src = this, _i = index };
 
-    protected Span<TValueTypeA> ItemsA
+    protected Span<A> ItemsA
     {
       get
       {
         unsafe
         {
-          return new Span<TValueTypeA>((void*)_buffer._ptr, _length);
+          return new Span<A>((void*)_buffer._ptr, _length);
         }
       }
     }
 
-    protected Span<TValueTypeB> ItemsB
+    protected Span<B> ItemsB
     {
       get
       {
         unsafe
         {
-          return new Span<TValueTypeB>((void*)(_buffer._ptr +
-            ValueMarshal.SizeOf<TValueTypeA>() * _capacity), _length);
+          return new Span<B>((void*)(_buffer._ptr +
+            ValMarshal.SizeOf<A>() * _capacity), _length);
         }
       }
     }
@@ -367,7 +365,7 @@ namespace Steep
       }
     }
 
-    ~InterleavedList()
+    ~StrideList()
     {
       Dispose(false);
     }

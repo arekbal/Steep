@@ -5,12 +5,12 @@ using System.Runtime.CompilerServices;
 
 namespace Steep
 {
-  public partial class IntIndexedVector<TValue> : IDisposable
-    where TValue : struct
+  public partial class IntIndexVec<T> : IDisposable
+    where T : unmanaged
   {
     public ref struct KeyValueRefEnumerable
     {
-      internal IntIndexedVector<TValue> _source;
+      internal IntIndexVec<T> _source;
 
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public KeyValueRefEnumerator GetEnumerator()
@@ -24,7 +24,7 @@ namespace Steep
 
     public ref struct KeyValueRefEnumerator
     {
-      internal IntIndexedVector<TValue> _source;
+      internal IntIndexVec<T> _source;
 
       internal int _i;
 
@@ -39,13 +39,13 @@ namespace Steep
         return false;
       }
 
-      public KeyValueRef<int, TValue> Current
+      public KeyValueRef<int, T> Current
       {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
           ref var entry = ref _source.InternalEntries.ItemRefAt(_i);
-          return KeyValueRef<int, TValue>.Create(ref entry._indexKey, ref _source.InternalValues.ItemRefAt(entry._valueIndex));
+          return KeyValueRef<int, T>.Create(ref entry._indexKey, ref _source.InternalValues.ItemRefAt(entry._valueIndex));
         }
       }
 

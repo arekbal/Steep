@@ -1,26 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
-  public static class ValueMarshal
+  public static class ValMarshal
   {
-    static class SizeOfValueType<TValueType>
-      where TValueType : struct
+    static class SizeOfCache<T>
+      where T : unmanaged
     {
-      public static readonly int Value = SizeOf(typeof(TValueType));
+      public static readonly int Val = SizeOf(typeof(T));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int SizeOf<TValueType>()
-      where TValueType : struct
+    public static int SizeOf<T>()
+      where T : unmanaged
     {
-      return SizeOfValueType<TValueType>.Value;
+      return SizeOfCache<T>.Val;
     }
 
     /// <summary>
@@ -35,17 +33,17 @@ namespace Steep
         if (!valueType.IsLayoutSequential)
         {
           var layout = valueType.StructLayoutAttribute;
-          throw new NotSupportedException("Non sequential layout on generic types is not support. Please use StructLayoutAttribute to describe layout");
+          Throw.NotSupported(Errors.NonSequentialLayoutOnGenericTypesIsNotSupported);
         }
 
         int byteSize = 0;
-        foreach(var field in valueType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+        foreach (var field in valueType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
           byteSize += SizeOf(field.FieldType);
 
         return byteSize;
       }
 
-      if(valueType.IsEnum)
+      if (valueType.IsEnum)
       {
         return Marshal.SizeOf(Enum.GetUnderlyingType(valueType));
       }

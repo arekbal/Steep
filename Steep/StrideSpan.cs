@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
   public ref struct StrideSpan<TValue>
   {
     readonly static int SizeOfTValue = Marshal.SizeOf<TValue>();
-    
+
     internal IntPtr _ptr;
     internal int _stride;
     internal int _length;
+
     public int Stride => _stride;
     public int Length => _length;
 
@@ -23,7 +23,7 @@ namespace Steep
       get
       {
         if (index < 0 && index >= _length)
-          throw new KeyNotFoundException();
+          Throw.KeyNotFound();
 
         unsafe
         {
@@ -43,7 +43,7 @@ namespace Steep
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public bool MoveNext()
       {
-        if(_i < _length - 1)
+        if (_i < _length - 1)
         {
           _i++;
           return true;
@@ -77,13 +77,13 @@ namespace Steep
     public unsafe static StrideSpan<TValue> Create(void* ptr, int stride, int length)
     {
       if (stride < SizeOfTValue)
-        throw new ArgumentException("\"stride\" is shorter than SizeOf(T)"); // TODO: no direct throws
+        Throw.Arg("\"stride\" is shorter than SizeOf(T)");
 
       StrideSpan<TValue> x = default;
 
       x._ptr = (IntPtr)ptr;
       x._stride = stride;
-      x._length = length;      
+      x._length = length;
 
       return x;
     }

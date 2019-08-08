@@ -6,16 +6,16 @@ using System.Text;
 
 namespace Steep
 {
-  public class Float4InterleavedList : InterleavedList<float, float, float, float>
+  public class Float4StrideList : StrideList<float, float, float, float>
   {
-    public Float4InterleavedList(int capacity = DefaultCapacity) : base(capacity)
+    public Float4StrideList(int capacity = DefaultCapacity) : base(capacity)
     {
     }
 
     public ref struct Float4Ref
     {
       ItemRef4 _itemRef;
-      public Float4Ref(InterleavedList<float, float, float, float> src, int index)
+      public Float4Ref(StrideList<float, float, float, float> src, int index)
       {
         _itemRef = new ItemRef4(src, index);
       }
@@ -69,7 +69,7 @@ namespace Steep
       public void FromXY(Vector3 vec3)
       {
         X = vec3.X;
-        Y = vec3.Y;      
+        Y = vec3.Y;
       }
 
       public void FromXY(Vector4 vec4)

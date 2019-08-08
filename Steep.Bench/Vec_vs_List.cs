@@ -1,9 +1,6 @@
 
 using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Running;
 
 namespace Steep.Bench
 {
@@ -29,7 +26,7 @@ namespace Steep.Bench
 
   [CoreJob(baseline: true)]
   [RPlotExporter, RankColumn]
-  public class VectorVsList
+  public class Vec_vs_List
   {
     private byte[] data;
 
@@ -66,7 +63,7 @@ namespace Steep.Bench
     [Benchmark]
     public int Vector16()
     {
-      using var vector = new Vector<Struct16>();
+      using var vector = new Vec<Struct16>();
 
       for (var i = 0; i < N; i++)
         vector.Emplace() = new Struct16 { _0 = (byte)i };
@@ -104,17 +101,17 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    public int Vector32()
+    public int Vec32()
     {
-      using var vector = new Vector<Struct32>();
+      using var vec = new Vec<Struct32>();
 
       for (var i = 0; i < N; i++)
-        vector.Emplace() = new Struct32 { _0 = (byte)i };
+        vec.Emplace() = new Struct32 { _0 = (byte)i };
 
       var totalSum = 0;
       unchecked
       {
-        foreach (var item in vector.Span)
+        foreach (var item in vec.Span)
         {
           totalSum += item._0;
         }
@@ -144,17 +141,17 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    public int Vector64()
+    public int Vec64()
     {
-      using var vector = new Vector<Struct64>();
+      using var vec = new Vec<Struct64>();
 
       for (var i = 0; i < N; i++)
-        vector.Emplace() = new Struct64 { _0 = (byte)i };
+        vec.Emplace() = new Struct64 { _0 = (byte)i };
 
       var totalSum = 0;
       unchecked
       {
-        foreach (var item in vector.Span)
+        foreach (var item in vec.Span)
         {
           totalSum += item._0;
         }

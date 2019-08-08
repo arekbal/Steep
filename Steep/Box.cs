@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Steep
 {
@@ -23,7 +21,7 @@ namespace Steep
 
     public void Dispose()
     {
-      // TODO: might still ignore not IDisposable Disposables, find alternative?
+      // TODO: might still ignore not IDisposable Disposables, use alternative like Cached DynamicMethod???
       if (_val is IDisposable d)
       {
         d.Dispose();

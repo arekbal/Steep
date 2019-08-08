@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
@@ -88,10 +86,9 @@ namespace Steep
     public static implicit operator VarUInt15(ushort val)
     {
       if (val > MaxValue)
-        throw new OverflowException("VarUInt15 cannot contain so big uint value"); // TODO: no direct throws
-      
-      var v = (ushort)(val & MaxValue);
+        Throw.Overflow(Errors.VarUInt15Overflow);
 
+      var v = (ushort)(val & MaxValue);
 
       var bits = (ushort)(1 << 7);
       if (val > bits)
@@ -99,7 +96,7 @@ namespace Steep
         v |= Flag;
         return new VarUInt15 { _val = v };
       }
-      
+
       return new VarUInt15 { _val = v };
     }
 
@@ -111,7 +108,7 @@ namespace Steep
       return (x.ByteSize, x.EncodedValue);
     }
 
-// TODO: Drop BitConverter... creates new array
+    // TODO: Drop BitConverter... creates new array
     public Span<byte> GetEncodedBytes()
      => new Span<byte>(BitConverter.GetBytes(EncodedValue), 0, (int)ByteSize);
 
@@ -127,7 +124,7 @@ namespace Steep
       var byteSize = encodedValue & 1u;
       if (byteSize == 1uL)
         val |= Flag;
-     
+
       VarUInt15 v;
       v._val = val;
 

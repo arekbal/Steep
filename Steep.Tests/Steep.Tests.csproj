@@ -10,7 +10,8 @@
     <ProjectReference Include="..\Steep\Steep.csproj" />
   </ItemGroup>  
 
-  <PropertyGroup>
+  <PropertyGroup>  
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>    
     <LangVersion>preview</LangVersion>

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
@@ -20,7 +18,7 @@ namespace Steep
     const uint Flag0 = 1u << 31;
     const uint Flag1 = 1u << 30;
     const uint FlagsBoth = Flag0 | Flag1;
-    
+
     static readonly uint Offset = (uint)Math.Pow(2, 30);
 
     uint _val;
@@ -99,8 +97,8 @@ namespace Steep
     public static implicit operator VarUInt30(uint val)
     {
       if (val > MaxValue)
-        throw new OverflowException("VarUInt30 cannot contain so big uint value");// TODO: no direct throws
-      
+        Throw.Overflow(Errors.VarUInt30Overflow);
+
       var v = val & MaxValue;
 
       var bits = (uint)1 << 22;
@@ -112,7 +110,7 @@ namespace Steep
       }
 
       bits = (uint)1 << 14;
-      if(val > bits)
+      if (val > bits)
       {
         v |= Flag1;
         return new VarUInt30 { _val = v };
@@ -124,19 +122,19 @@ namespace Steep
         v |= Flag0;
         return new VarUInt30 { _val = v };
       }
-      
+
       return new VarUInt30 { _val = v };
     }
 
     public override string ToString() => ((uint)this).ToString();
 
-    public static (VarUInt30ByteSize,  uint) EncodeValue(uint val)
+    public static (VarUInt30ByteSize, uint) EncodeValue(uint val)
     {
       VarUInt30 x = val;
       return (x.ByteSize, x.EncodedValue);
     }
 
-// TODO: Drop BitConverter... creates new array
+    // TODO: Drop BitConverter... creates new array
     public Span<byte> GetEncodedBytes()
      => new Span<byte>(BitConverter.GetBytes(EncodedValue), 0, (int)ByteSize);
 

@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security;
-using System.Text;
 
 namespace Steep
 {
-  public class ValueList<TValue> : IDisposable
-    where TValue : struct
+  public class ValList<TValue> : IDisposable
+    where TValue : unmanaged
   {
     const int DefaultCapacity = 4;
 
@@ -28,7 +23,7 @@ namespace Steep
       get => _buffer.Length;
     }
 
-    public ValueList(int capacity = DefaultCapacity)
+    public ValList(int capacity = DefaultCapacity)
     {
       _buffer.Alloc(capacity);
     }
@@ -59,7 +54,7 @@ namespace Steep
             newCap1 = newCap;
 
           _buffer.Resize(newCap1);
-        }        
+        }
       }
     }
 
@@ -71,7 +66,7 @@ namespace Steep
 
       _length++;
 
-      return ref ItemRefAt(_length - 1);   
+      return ref ItemRefAt(_length - 1);
     }
 
     public ref TValue LastRef => ref ItemRefAt(_length - 1);
@@ -140,7 +135,7 @@ namespace Steep
             unsafe
             {
               var pointer = _buffer.IntPtr;
-              var sizeOf = ValueMarshal.SizeOf<TValue>();
+              var sizeOf = ValMarshal.SizeOf<TValue>();
 
               Buffer.MemoryCopy(
               (pointer + index * sizeOf).ToPointer(),
@@ -183,7 +178,7 @@ namespace Steep
             unsafe
             {
               var pointer = _buffer.IntPtr;
-              var sizeOf = ValueMarshal.SizeOf<TValue>();
+              var sizeOf = ValMarshal.SizeOf<TValue>();
 
               Buffer.MemoryCopy(
                 (pointer + (index + 1) * sizeOf).ToPointer(),
@@ -206,7 +201,7 @@ namespace Steep
     {
       unsafe
       {
-        return ref Unsafe.AsRef<TValue>((void*)(_buffer._ptr + (index * ValueMarshal.SizeOf<TValue>())));// Span[index];
+        return ref Unsafe.AsRef<TValue>((void*)(_buffer._ptr + (index * ValMarshal.SizeOf<TValue>())));// Span[index];
       }
     }
 
@@ -216,7 +211,7 @@ namespace Steep
       {
         unsafe
         {
-          return ref Unsafe.AsRef<TValue>((void*)(_buffer._ptr + (index * ValueMarshal.SizeOf<TValue>())));// Span[index];
+          return ref Unsafe.AsRef<TValue>((void*)(_buffer._ptr + (index * ValMarshal.SizeOf<TValue>())));// Span[index];
         }
       }
     }
@@ -244,18 +239,19 @@ namespace Steep
     public Span<TValue> AsSpan()
       => _buffer.AsSpan(_length);
 
-    /*protected virtual*/ void Dispose(bool disposing)
-    { 
+    /*protected virtual*/
+    void Dispose(bool disposing)
+    {
       _buffer.Free();
     }
 
-    ~ValueList()
+    ~ValList()
     {
       Dispose(false);
     }
 
     public void Dispose()
-    {     
+    {
       Dispose(true);
       GC.SuppressFinalize(this);
     }

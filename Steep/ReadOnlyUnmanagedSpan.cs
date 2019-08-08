@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Steep
 {
   public ref struct ReadOnlyUnmanagedSpan<T>
-    where T : struct
+    where T : unmanaged
   {
     IntPtr _ptr;
     int _length;
     public int Length => _length;
 
-    static readonly int SizeofT = ValueMarshal.SizeOf<T>();
+    static readonly int SizeofT = ValMarshal.SizeOf<T>();
 
     public static ReadOnlyUnmanagedSpan<T> Create(ref T item, int length)
     {
@@ -35,7 +33,7 @@ namespace Steep
       public bool MoveNext()
       {
         _index++;
-        return _index < _length;          
+        return _index < _length;
       }
 
       public void Reset()

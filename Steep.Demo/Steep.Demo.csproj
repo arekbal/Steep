@@ -7,6 +7,7 @@
   <PropertyGroup>  
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>   
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>

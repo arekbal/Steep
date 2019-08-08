@@ -13,7 +13,7 @@ namespace Steep
 
     public static string Type(Type t)
     {
-      if(t.IsGenericTypeDefinition)
+      if (t.IsGenericTypeDefinition)
       {
         var typeName = t.Name.Substring(0, t.Name.IndexOf('`'));
         return typeName + "<>";
@@ -101,15 +101,23 @@ namespace Steep
         var formatInfo = NumberFormatInfo.InvariantInfo;
         var clonedFormatInfo = (NumberFormatInfo)formatInfo.Clone();
         clonedFormatInfo.NumberDecimalSeparator = ".";
-        return string.Format(clonedFormatInfo, "{0:0.0f}", val);
+        return string.Format(clonedFormatInfo, "{0:0.0#########################}f", val);
       }
 
       if (t == typeof(double))
       {
         var formatInfo = NumberFormatInfo.InvariantInfo;
         var clonedFormatInfo = (NumberFormatInfo)formatInfo.Clone();
-        clonedFormatInfo.NumberDecimalSeparator = ".";       
-        return string.Format(clonedFormatInfo, "{0:0.0}", val);
+        clonedFormatInfo.NumberDecimalSeparator = ".";
+        return string.Format(clonedFormatInfo, "{0:0.0#########################}", val);
+      }
+
+      if (t == typeof(decimal))
+      {
+        var formatInfo = NumberFormatInfo.InvariantInfo;
+        var clonedFormatInfo = (NumberFormatInfo)formatInfo.Clone();
+        clonedFormatInfo.NumberDecimalSeparator = ".";
+        return string.Format(clonedFormatInfo, "{0:0.0#########################}m", val);
       }
 
       return t.ToString();
@@ -119,10 +127,14 @@ namespace Steep
     {
       var t = typeof(T);
 
-      if (t.IsConstructedGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
+      if (t.IsConstructedGenericType)
       {
-        var tValue = Nullable.GetUnderlyingType(t);
-        return $"{Type(tValue)}?({Instance(tValue, val)})";
+        var genericTypeDef = t.GetGenericTypeDefinition();
+        if (genericTypeDef == typeof(Nullable<>))
+        {
+          var tValue = Nullable.GetUnderlyingType(t);
+          return $"{Type(tValue)}?({Instance(tValue, val)})";
+        }
       }
 
       return Instance(t, val);

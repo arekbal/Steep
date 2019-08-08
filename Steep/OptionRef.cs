@@ -1,11 +1,11 @@
 
 using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
-  public struct OptionRef<T>
+  public ref struct OptionRef<T>
   {
     internal IntPtr p;
     internal byte byteIsSome;

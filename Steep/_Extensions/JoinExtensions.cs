@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System.Runtime.CompilerServices;
 
 namespace Steep
 {
@@ -15,13 +12,13 @@ namespace Steep
 
       public int Key => _key;
 
-      public TValA A => _aRef.ValueRef;
+      public TValA A => _aRef.Ref;
 
-      public ref TValA ARef => ref _aRef.ValueRef;
+      public ref TValA ARef => ref _aRef.Ref;
 
-      public ref TValB BRef => ref _bRef.ValueRef;
+      public ref TValB BRef => ref _bRef.Ref;
 
-      public TValB B => _bRef.ValueRef;
+      public TValB B => _bRef.Ref;
 
       public static JoinResult<TValA, TValB> Create(int key, ref TValA aRef, ref TValB bRef)
       {
@@ -42,17 +39,17 @@ namespace Steep
 
       public int Key => _key;
 
-      public TValA A => _aRef.ValueRef;
+      public TValA A => _aRef.Ref;
 
-      public ref TValA ARef => ref _aRef.ValueRef;
+      public ref TValA ARef => ref _aRef.Ref;
 
-      public ref TValB BRef => ref _bRef.ValueRef;
+      public ref TValB BRef => ref _bRef.Ref;
 
-      public TValB B => _bRef.ValueRef;
+      public TValB B => _bRef.Ref;
 
-      public ref TValC CRef => ref _cRef.ValueRef;
+      public ref TValC CRef => ref _cRef.Ref;
 
-      public TValC C => _cRef.ValueRef;
+      public TValC C => _cRef.Ref;
 
       public static JoinResult<TValA, TValB, TValC> Create(int key, ref TValA aRef, ref TValB bRef, ref TValC cRef)
       {
@@ -66,13 +63,13 @@ namespace Steep
     }
 
     public ref struct JoinRefEnumerable<TValA, TValB, TValC>
-      where TValA : struct
-      where TValB : struct
-      where TValC : struct
+      where TValA : unmanaged
+      where TValB : unmanaged
+      where TValC : unmanaged
     {
-      internal IntIndexedVector<TValA> _a;
-      internal IntIndexedVector<TValB> _b;
-      internal IntIndexedVector<TValC> _c;
+      internal IntIndexVec<TValA> _a;
+      internal IntIndexVec<TValB> _b;
+      internal IntIndexVec<TValC> _c;
 
       public JoinRefEnumerator<TValA, TValB, TValC> GetEnumerator()
       {
@@ -81,11 +78,11 @@ namespace Steep
     }
 
     public ref struct JoinRefEnumerator<TValA, TValB>
-      where TValA : struct
-      where TValB : struct
+      where TValA : unmanaged
+      where TValB : unmanaged
     {
-      internal IntIndexedVector<TValA> _a;
-      internal IntIndexedVector<TValB> _b;
+      internal IntIndexVec<TValA> _a;
+      internal IntIndexVec<TValB> _b;
 
       internal int _aIterator, _bIterator;
 
@@ -94,8 +91,8 @@ namespace Steep
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-          return JoinResult<TValA, TValB>.Create(_a.Entries[_aIterator].IndexKey, 
-            ref _a.InternalValues.ItemRefAt(_a.Entries[_aIterator].ValueIndex), 
+          return JoinResult<TValA, TValB>.Create(_a.Entries[_aIterator].IndexKey,
+            ref _a.InternalValues.ItemRefAt(_a.Entries[_aIterator].ValueIndex),
             ref _b.InternalValues.ItemRefAt(_b.Entries[_bIterator].ValueIndex));
         }
       }
@@ -130,13 +127,13 @@ namespace Steep
     }
 
     public ref struct JoinRefEnumerator<TValA, TValB, TValC>
-      where TValA : struct
-      where TValB : struct
-      where TValC : struct
+      where TValA : unmanaged
+      where TValB : unmanaged
+      where TValC : unmanaged
     {
-      internal IntIndexedVector<TValA> _a;
-      internal IntIndexedVector<TValB> _b;
-      internal IntIndexedVector<TValC> _c;
+      internal IntIndexVec<TValA> _a;
+      internal IntIndexVec<TValB> _b;
+      internal IntIndexVec<TValC> _c;
 
       internal int _aIterator, _bIterator, _cIterator;
 
@@ -146,8 +143,8 @@ namespace Steep
         get
         {
           return JoinResult<TValA, TValB, TValC>.Create(
-            _a.Entries[_aIterator].IndexKey, 
-            ref _a.InternalValues.ItemRefAt(_a.Entries[_aIterator].ValueIndex), 
+            _a.Entries[_aIterator].IndexKey,
+            ref _a.InternalValues.ItemRefAt(_a.Entries[_aIterator].ValueIndex),
             ref _b.InternalValues.ItemRefAt(_b.Entries[_bIterator].ValueIndex),
             ref _c.InternalValues.ItemRefAt(_c.Entries[_cIterator].ValueIndex));
         }
@@ -187,11 +184,11 @@ namespace Steep
     }
 
     public ref struct JoinRefEnumerable<TValA, TValB>
-         where TValA : struct
-        where TValB : struct
+         where TValA : unmanaged
+        where TValB : unmanaged
     {
-      internal IntIndexedVector<TValA> _a;
-      internal IntIndexedVector<TValB> _b;
+      internal IntIndexVec<TValA> _a;
+      internal IntIndexVec<TValB> _b;
 
       public JoinRefEnumerator<TValA, TValB> GetEnumerator()
       {
@@ -199,17 +196,17 @@ namespace Steep
       }
     }
 
-    public static JoinRefEnumerable<TValA, TValB> Join<TValA, TValB>(this IntIndexedVector<TValA> a, IntIndexedVector<TValB> b)
-        where TValA : struct
-        where TValB : struct
+    public static JoinRefEnumerable<TValA, TValB> Join<TValA, TValB>(this IntIndexVec<TValA> a, IntIndexVec<TValB> b)
+        where TValA : unmanaged
+        where TValB : unmanaged
     {
       return new JoinRefEnumerable<TValA, TValB> { _a = a, _b = b };
     }
 
-    public static JoinRefEnumerable<TValA, TValB, TValC> Join<TValA, TValB, TValC>(this IntIndexedVector<TValA> a, IntIndexedVector<TValB> b, IntIndexedVector<TValC> c)
-       where TValA : struct
-       where TValB : struct
-       where TValC : struct
+    public static JoinRefEnumerable<TValA, TValB, TValC> Join<TValA, TValB, TValC>(this IntIndexVec<TValA> a, IntIndexVec<TValB> b, IntIndexVec<TValC> c)
+       where TValA : unmanaged
+       where TValB : unmanaged
+       where TValC : unmanaged
     {
       return new JoinRefEnumerable<TValA, TValB, TValC> { _a = a, _b = b, _c = c };
     }

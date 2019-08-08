@@ -2,14 +2,65 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build-core",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/std.demo/std.demo.csproj"
+                "${workspaceFolder}/Steep/Steep.csproj",
+                "/property:GenerateFullPaths=true"
             ],
-            "problemMatcher": "$tsc"
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "build-demo",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Steep.Demo/Steep.Demo.csproj",
+                "/property:GenerateFullPaths=true"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "bench",
+            "command": "dotnet",
+            "type": "process",
+            "options": {
+                "cwd": "${workspaceFolder}/Steep.Bench"
+            },
+            "args": [
+                "run",
+                "-c",
+                "RELEASE",
+                "/property:GenerateFullPaths=true"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
+        },
+        {
+            "label": "test",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "${workspaceFolder}/Steep.Tests/Steep.Tests.csproj",
+                "/property:GenerateFullPaths=true"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
         },
         {
             "label": "publish",
@@ -17,9 +68,10 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/std.demo/std.demo.csproj"
+                "${workspaceFolder}/Steep/Steep.csproj",
+                "/property:GenerateFullPaths=true"
             ],
-            "problemMatcher": "$tsc"
+            "problemMatcher": "$msCompile",
         },
         {
             "label": "watch",
@@ -28,9 +80,11 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/std.demo/std.demo.csproj"
+                "${workspaceFolder}/Steep/Steep.csproj",
+                "/property:GenerateFullPaths=true"
             ],
-            "problemMatcher": "$tsc"
+            "problemMatcher": "$msCompile",
+            "group": "build"
         }
     ]
 }

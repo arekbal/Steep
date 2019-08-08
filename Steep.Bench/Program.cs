@@ -6,7 +6,7 @@ namespace Steep.Bench
   {
     static void Main(string[] args)
     {
-      var summary = BenchmarkRunner.Run<VectorVsList>();
+      var summary = BenchmarkRunner.Run<ValList_vs_StrideList>();
     }
   }
 }

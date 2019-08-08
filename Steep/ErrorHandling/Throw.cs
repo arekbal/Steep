@@ -1,6 +1,7 @@
 using System;
+using System.Collections.Generic;
 
-namespace Steep
+namespace Steep.ErrorHandling
 {
   static class Throw
   {
@@ -35,5 +36,17 @@ namespace Steep
     public static void ArgNull(string paramName) => throw new ArgumentNullException(paramName);
 
     public static void Arg(string msg) => throw new ArgumentException(msg);
+
+    public static void KeyNotFound() => throw new KeyNotFoundException();
+
+    public static void NotSupported() => throw new NotSupportedException();
+
+    public static void NotSupported(string msg) => throw new NotSupportedException(msg);
+
+    public static void OutOfMemory() => throw new OutOfMemoryException();
+
+    public static void Overflow() => throw new OverflowException();
+
+    public static void Overflow(string msg) => throw new OverflowException(msg);
   }
 }

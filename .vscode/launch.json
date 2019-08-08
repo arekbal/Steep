@@ -1,24 +1,30 @@
 {
-    // Use IntelliSense to find out which attributes exist for C# debugging
-    // Use hover for the description of the existing attributes
-    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Demo",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
+            "preLaunchTask": "build-demo",
             "program": "${workspaceFolder}/Steep.Demo/bin/Debug/netcoreapp2.2/Steep.Demo.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Steep.Demo",
-            // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
             "console": "internalConsole",
             "stopAtEntry": false
         },
         {
-            "name": ".NET Core Attach",
+            "name": "Bench",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Steep.Bench/bin/Debug/netcoreapp2.2/Steep.Bench.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Steep.Bench",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Attach",
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:pickProcess}"

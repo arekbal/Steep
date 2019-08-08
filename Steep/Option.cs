@@ -1,7 +1,8 @@
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Steep
 {
@@ -11,6 +12,13 @@ namespace Steep
     {
       return 0;
     }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    string DebuggerDisplay
+      => "None";
+
+    public override string ToString()
+      => "None";
 
     public static implicit operator bool(OptionNone o) => false;
   }
@@ -292,6 +300,11 @@ namespace Steep
 
     public static implicit operator Option<T>(OptionNone o) => new Option<T> { };
 
+    public static implicit operator Option<T>(Option<NoType> o) => new Option<T> { };
+
+    public static implicit operator Option<T>(T o)
+      => o == null ? default : new Option<T> { byteIsSome = 1, val = o };
+
     public static implicit operator Option(Option<T> o) => new Option { byteIsSome = o.byteIsSome };
 
     public static implicit operator bool(Option<T> o) => o.byteIsSome != 0;
@@ -359,15 +372,6 @@ namespace Steep
       return b.byteIsSome != c.byteIsSome;
     }
 
-    public override int GetHashCode()
-    {
-      if (byteIsSome != 0)
-        if (val != null)
-          return val.GetHashCode();
-
-      return 0;
-    }
-
     public override bool Equals(object obj)
     {
       switch (obj)
@@ -378,6 +382,62 @@ namespace Steep
         case OptionNone optNone: return this == optNone;
         default: return false;
       }
+    }
+
+    public static T operator |(Option<T> b, T defaultValue)
+     => b.Or(defaultValue);
+
+    public static T operator |(Option<T> b, Func<T> defaultValueFunc)
+      => b.OrMake(defaultValueFunc);
+
+    public static Option<T> operator |(Option<T> b, Option<T> a)
+      => b.Or(a);
+
+    public static bool operator true(Option<T> a)
+      => a.byteIsSome != 0;
+
+    public static bool operator false(Option<T> a)
+      => a.byteIsSome == 0;
+
+    // TODO: Add Deconstruction methods
+
+    public bool Equals(Option<T> other) => this == other;
+
+    public bool Equals(T other)
+    {
+      if (other is Option)
+        return byteIsSome == 0;
+
+      if (other is Option<T> o)
+        return byteIsSome == o.byteIsSome && EqualityComparer<T>.Default.Equals(val, o.OrDefault());
+
+      return byteIsSome != 0 && EqualityComparer<T>.Default.Equals(val, other);
+    }
+
+    public override int GetHashCode()
+    {
+      if (byteIsSome == 0)
+        return -1;
+
+      if (val == null)
+        return 0;
+
+      return val.GetHashCode();
+    }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    string DebuggerDisplay
+    {
+      get
+      {
+        var self = this;
+        return self.byteIsSome != 0 ? $"Some({Print.Instance(val)})" : $"None";
+      }
+    }
+
+    public override string ToString()
+    {
+      return DebuggerDisplay;
     }
   }
 }

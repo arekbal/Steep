@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
   [UnsafeValueType]
-  public struct UnmanagedBuffer<TValueType> : IDisposable
-    where TValueType : struct
+  public struct UnmanagedBuffer<T> : IDisposable
+    where T : unmanaged
   {
-    static int sizeOfT = -1;   
+    static int sizeOfT = -1;
     static int SizeOfT
     {
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       get
       {
         if (sizeOfT == -1)
-          sizeOfT = ValueMarshal.SizeOf<TValueType>();
+          sizeOfT = ValMarshal.SizeOf<T>();
 
         return sizeOfT;
       }
@@ -25,7 +26,7 @@ namespace Steep
 
     public static void SetSizeOfTValueType(int sizeOfT)
     {
-      UnmanagedBuffer<TValueType>.sizeOfT = sizeOfT;
+      UnmanagedBuffer<T>.sizeOfT = sizeOfT;
     }
 
     internal IntPtr _ptr;
@@ -49,10 +50,10 @@ namespace Steep
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public UnmanagedBuffer<TValueType> Move()
+    public UnmanagedBuffer<T> Move()
     {
       var copy = this;
-      _ptr = IntPtr.Zero;               
+      _ptr = IntPtr.Zero;
       _length = 0;
       return copy;
     }
@@ -63,14 +64,14 @@ namespace Steep
     /// <param name="length"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Alloc(int length)
-    {      
-      if(_ptr != IntPtr.Zero)
+    {
+      if (_ptr != IntPtr.Zero)
       {
         Free();
         throw new InvalidOperationException();
       }
 
-      _ptr = Marshal.AllocCoTaskMem(length * SizeOfT);
+      _ptr = Marshal.AllocHGlobal(length * SizeOfT);
 
       if (_ptr == null)
         throw new OutOfMemoryException();
@@ -79,50 +80,50 @@ namespace Steep
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Span<TValueType> AsSpan()
-    { 
-      unsafe
-      {
-        return new Span<TValueType>(_ptr.ToPointer(), _length);
-      }
-    }
-
-    public ReadOnlyUnmanagedSpan<TValueType> AsUnmanagedReadOnlySpan()
+    public Span<T> AsSpan()
     {
       unsafe
       {
-        return ReadOnlyUnmanagedSpan<TValueType>.Create(ref Unsafe.AsRef<TValueType>((void*)(_ptr)), _length);
+        return new Span<T>(_ptr.ToPointer(), _length);
+      }
+    }
+
+    public ReadOnlyUnmanagedSpan<T> AsUnmanagedReadOnlySpan()
+    {
+      unsafe
+      {
+        return ReadOnlyUnmanagedSpan<T>.Create(ref Unsafe.AsRef<T>((void*)(_ptr)), _length);
       }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Span<TValueType> AsSpan(int newLength)
+    public Span<T> AsSpan(int newLength)
     {
       if (newLength > _length)
-        throw new ArgumentOutOfRangeException(nameof(newLength));
+        Throw.ArgOutOfRange(nameof(newLength));
 
       unsafe
       {
-        return new Span<TValueType>(_ptr.ToPointer(), newLength);
+        return new Span<T>(_ptr.ToPointer(), newLength);
       }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ref TValueType ItemRefAt(int index)
+    public ref T ItemRefAt(int index)
     {
       unsafe
       {
-        return ref Unsafe.AsRef<TValueType>((void*)(_ptr + (index * ValueMarshal.SizeOf<TValueType>())));
+        return ref Unsafe.AsRef<T>((void*)(_ptr + (index * ValMarshal.SizeOf<T>())));
       }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Resize(int newLength)
     {
-      _ptr = Marshal.ReAllocCoTaskMem(_ptr, newLength * SizeOfT);
+      _ptr = Marshal.ReAllocHGlobal(_ptr, (IntPtr)(newLength * SizeOfT));
 
       if (_ptr == null)
-        throw new OutOfMemoryException();
+        Throw.OutOfMemory();
 
       _length = newLength;
     }
@@ -135,7 +136,7 @@ namespace Steep
         Unsafe.InitBlockUnaligned((void*)_ptr, 0, (uint)(SizeOfT * _length));
       }
 
-      //AsSpan().Fill(default);
+      // AsSpan().Fill(default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -143,7 +144,7 @@ namespace Steep
     {
       if (_ptr != IntPtr.Zero)
       {
-        Marshal.FreeCoTaskMem(_ptr);
+        Marshal.FreeHGlobal(_ptr);
         _ptr = IntPtr.Zero;
       }
     }

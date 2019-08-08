@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Steep
 {
   public static class EnumerableExtensions
   {
-    public static IEnumerable<KeyValuePair<int, TValue>> ToEnumerable<TValue>(this IntIndexedVector<TValue>.KeyValueRefEnumerable that) // TODO: move into the structure and don't expose these vars?
-      where TValue : struct
+    public static IEnumerable<KeyValuePair<int, TValue>> ToEnumerable<TValue>(this IntIndexVec<TValue>.KeyValueRefEnumerable that) // TODO: move into the structure and don't expose these vars?
+      where TValue : unmanaged
     {
       return GetInternals(that._source);
     }
 
-    static IEnumerable<KeyValuePair<int, TValue>> GetInternals<TValue>(IntIndexedVector<TValue> source)
-         where TValue : struct
+    static IEnumerable<KeyValuePair<int, TValue>> GetInternals<TValue>(IntIndexVec<TValue> source)
+         where TValue : unmanaged
     {
       for (var i = 0; i < source._length; i++)
       {

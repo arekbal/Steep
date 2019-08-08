@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Steep
 {
@@ -22,7 +20,7 @@ namespace Steep
       if (length > 8)
       {
         length = (length / UnrollSize) * UnrollSize;
-        
+
         for (; i < length; i += UnrollSize)
         {
           action(that[i]);
@@ -53,7 +51,7 @@ namespace Steep
       int i = 0;
       if (length > 8)
       {
-        length = (length / UnrollSize) * UnrollSize;       
+        length = (length / UnrollSize) * UnrollSize;
         for (; i < length; i += UnrollSize)
         {
           seed = func(that[i], seed);

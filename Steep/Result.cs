@@ -138,7 +138,7 @@ namespace Steep
     public TErr Error => err;
   }
 
-  public struct Result<TVal, TErr> : IDisposable
+  public struct Result<TVal, TErr>
   {
     internal TVal val;
     internal TErr err;
@@ -149,12 +149,8 @@ namespace Steep
     public bool IsErr => byteIsErr != 0;
     public bool IsOk => byteIsErr == 0;
 
-    public void Dispose()
-    {
-
-    }
-
     public static implicit operator Result<TVal, TErr>(ResultOk o) => new Result<TVal, TErr>();
+    public static implicit operator bool(Result<TVal, TErr> o) => o.byteIsErr == 0;
     public static implicit operator Result<TVal, TErr>(ResultVal<TVal> o) => new Result<TVal, TErr> { val = o.val };
     public static implicit operator Result<TVal, TErr>(ResultErr<TErr> o) => new Result<TVal, TErr> { err = o.err, byteIsErr = 1 };
   }

@@ -1,7 +1,4 @@
-using System;
-using System.Threading.Tasks;
 using NUnit.Framework;
-using static Steep.Result;
 
 namespace Steep.Tests
 {
@@ -20,12 +17,12 @@ namespace Steep.Tests
     }
 
     [Test]
-    public void Vector()
+    public void Vec()
     {
-      using var v = new Vector<Struct16>();
+      using var v = new Vec<Struct16>();
 
       for (var i = 0; i < 1000; i++)
-        v.Emplace() = new Struct16 { X = i };
+        v.Emplace() = new Struct16 { X = i, Y = 0, Z = 0 };
 
       Assert.AreEqual(v.Length, 1000);
     }

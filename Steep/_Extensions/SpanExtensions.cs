@@ -146,7 +146,7 @@ namespace Steep
     }
 
     public static T[] ToArray<T>(this Enumerators.SpanWhereEnumerator<T> that)
-      where T : struct
+      where T : unmanaged
     {
       if (that._src.Length == 0)
         return Array.Empty<T>();
@@ -237,7 +237,7 @@ namespace Steep
     public delegate ref TResult FieldGetter<T, TResult>(ref T item);
 
     public static StrideSpan<TResult> ToStride<T, TResult>(this Span<T> that, FieldGetter<T, TResult> func)
-      where T : struct
+      where T : unmanaged
     {
       if (that.Length == 0)
         return default;
@@ -245,12 +245,12 @@ namespace Steep
       ref var fieldRef = ref func(ref that[0]);
       unsafe
       {
-        return StrideSpan<TResult>.Create(Unsafe.AsPointer(ref fieldRef), ValueMarshal.SizeOf<T>(), that.Length);
+        return StrideSpan<TResult>.Create(Unsafe.AsPointer(ref fieldRef), ValMarshal.SizeOf<T>(), that.Length);
       }
     }
 
     static Span<System.Numerics.Vector<T>> GetVectors<T>(ref Span<T> that)
-      where T : struct
+      where T : unmanaged
     {
       unsafe
       {

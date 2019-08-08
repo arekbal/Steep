@@ -289,7 +289,7 @@ namespace Steep
 
   public ref struct AsUpperString
   {
-    string s;
+    internal string s;
 
     public char this[int index]
     {
@@ -301,7 +301,7 @@ namespace Steep
 
     public int IndexOf(char c)
     {
-      if (char.IsLetter(c) && (!char.IsUpper(c)))
+      if (char.IsLetter(c) && char.IsLower(c))
         return -1;
 
       return s.IndexOf(c);
@@ -309,8 +309,8 @@ namespace Steep
 
     public int IndexOf(string s)
     {
-      if (ContainsNonUpLetters(s))
-        return -1;     
+      if (StringContainsLowerLetters(s))
+        return -1;
 
       return s.IndexOf(s);
     }
@@ -319,14 +319,14 @@ namespace Steep
     => IndexOf(c) > -1;
 
     public bool Contains(string s)
-      => IndexOf(s) > -1;   
+      => IndexOf(s) > -1;
 
-    private bool ContainsNonUpLetters(string s)
+    private static bool StringContainsLowerLetters(string s)
     {
       for (var i = 0; i < s.Length; i++)
       {
         var c = s[i];
-        if (char.IsLetter(c) && (!char.IsUpper(c)))
+        if (char.IsLetter(c) && char.IsLower(c))
           return false;
       }
 
@@ -338,7 +338,7 @@ namespace Steep
 
   public ref struct AsLowerString
   {
-    string s;
+    internal string s;
 
     public char this[int index]
     {
@@ -358,7 +358,7 @@ namespace Steep
 
     public int IndexOf(string s)
     {
-      if (ContainsNonLowLetters(s))
+      if (StringContainsUpperLetters(s))
         return -1;
 
       return s.IndexOf(s);
@@ -370,12 +370,12 @@ namespace Steep
     public bool Contains(string s)
       => IndexOf(s) > -1;
 
-    private bool ContainsNonLowLetters(string s)
+    private static bool StringContainsUpperLetters(string s)
     {
       for (var i = 0; i < s.Length; i++)
       {
         var c = s[i];
-        if (char.IsLetter(c) && (!char.IsLower(c)))
+        if (char.IsLetter(c) && char.IsUpper(c))
           return false;
       }
 
@@ -433,7 +433,7 @@ namespace Steep
     public static void StackString4Demo()
     {
       4.ToStr4(out Str4 s);
-      
+
     }
 
     //public override string ToString()

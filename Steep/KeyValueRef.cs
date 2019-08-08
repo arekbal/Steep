@@ -10,13 +10,13 @@ namespace Steep
 
     ByReference<TValue> _valueRef;
 
-    public TKey Key => _keyRef.ValueRef;
+    public TKey Key => _keyRef.Ref;
 
-    public ref TKey KeyRef => ref _keyRef.ValueRef;
+    public ref TKey KeyRef => ref _keyRef.Ref;
 
-    public ref TValue ValueRef => ref _valueRef.ValueRef;
+    public ref TValue ValueRef => ref _valueRef.Ref;
 
-    public TValue Value => _valueRef.ValueRef;
+    public TValue Value => _valueRef.Ref;
 
     public KeyValuePair<TKey, TValue> ToKeyValuePair()
       => new KeyValuePair<TKey, TValue>(Key, Value);
