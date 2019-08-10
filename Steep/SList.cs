@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Collections.Generic;
 using Steep.ErrorHandling;
 
 namespace Steep
@@ -9,17 +10,17 @@ namespace Steep
   //[DebuggerTypeProxy(typeof(Mscorlib_CollectionDebugView<>))]
   [DebuggerDisplay("Count = {Count}")]
   [Serializable]
-  public class List<T> // : IList<T>, System.Collections.IList, IReadOnlyList<T>
+  public class SList<T> : IList<T>, IReadOnlyList<T>
   {
     const int DefaultCapacity = 4;
 
     internal const int Array_MaxArrayLength = 0X7FEFFFFF;
     internal const int Array_MaxByteArrayLength = 0x7FFFFFC7;
 
-    T[] _items;
+    internal T[] _items;
 
     [ContractPublicPropertyName("Count")]
-    int _size;
+    internal int _size;
 
     static T[] _emptyArray = Array.Empty<T>();
 
@@ -27,10 +28,12 @@ namespace Steep
     [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
     public T[] RawArray => _items;
 
+    public bool IsReadOnly => false;
+
     // Constructs a List. The list is initially empty and has a capacity
     // of zero. Upon adding the first element to the list the capacity is
     // increased to 4, and then increased in multiples of two as required.
-    public List()
+    public SList()
     {
       _items = _emptyArray;
     }
@@ -47,7 +50,7 @@ namespace Steep
     // initially empty, but will have room for the given number of elements
     // before any reallocations are required.
     // 
-    public List(int capacity)
+    public SList(int capacity)
     {
       if (capacity < 0)
         Throw.ArgOutOfRange(nameof(capacity), "NeedNonNegNum");
@@ -60,7 +63,7 @@ namespace Steep
         _items = new T[capacity];
     }
 
-    public List(int capacity, int reserve)
+    public SList(int capacity, int reserve)
     {
       if (capacity < 0)
         Throw.ArgOutOfRange(nameof(capacity), "NeedNonNegNum");
@@ -90,7 +93,7 @@ namespace Steep
     // size and capacity of the new list will both be equal to the size of the
     // given collection.
     // 
-    public List(System.Collections.Generic.IEnumerable<T> collection)
+    public SList(System.Collections.Generic.IEnumerable<T> collection)
     {
       if (collection == null)
         Throw.ArgOutOfRange(nameof(collection));
@@ -159,6 +162,28 @@ namespace Steep
             _items = _emptyArray;
           }
         }
+      }
+    }
+
+    public OptionRef<T> First
+    {
+      get
+      {
+        if (_size == 0) 
+          return new OptionRef<T>();
+
+        return Option.Some(ref _items[0]);
+      }
+    }
+
+    public OptionRef<T> Last
+    {
+      get
+      {
+        if (_size == 0)
+         return new OptionRef<T>();
+
+        return Option.Some(ref _items[_size - 1]);
       }
     }
 
@@ -427,14 +452,14 @@ namespace Steep
       return default;
     }
 
-    public List<T> FindAll(Predicate<T> match)
+    public SList<T> FindAll(Predicate<T> match)
     {
       if (match == null)
         Throw.ArgOutOfRange("match");
 
       Contract.EndContractBlock();
 
-      var list = new List<T>();
+      var list = new SList<T>();
       for (int i = 0; i < _size; i++)
         if (match(_items[i]))
           list.Add(_items[i]);
@@ -556,17 +581,19 @@ namespace Steep
     //   
 
     /// <internalonly/>
-    //IEnumerator<T> IEnumerable<T>.GetEnumerator()
-    //{
-    //  return new Enumerator(this);
-    //}
+    // NOTE: for IList<T>
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+      => System.Linq.Enumerable.Skip(_items, _size).GetEnumerator();
 
-    //System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    //{
-    //  return new Enumerator(this);
-    //}
+    // <internalonly/>
+    // NOTE: for IList<T>
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => System.Linq.Enumerable.Skip(_items, _size).GetEnumerator();
 
-    public List<T> GetRange(int index, int count)
+    public ReadOnlySpan<T>.Enumerator GetEnumerator()
+      => new ReadOnlySpan<T>(_items, 0, _size).GetEnumerator();
+
+    public SList<T> GetRange(int index, int count)
     {
       if (index < 0)
         Throw.ArgOutOfRange("index", "NeedNonNegNum");
@@ -577,10 +604,10 @@ namespace Steep
       if (_size - index < count)
         Throw.ArgOutOfRange("InvalidOffLen");
 
-      Contract.Ensures(Contract.Result<List<T>>() != null);
+      Contract.Ensures(Contract.Result<SList<T>>() != null);
       Contract.EndContractBlock();
 
-      var list = new List<T>(count);
+      var list = new SList<T>(count);
       Array.Copy(_items, index, list._items, 0, count);
       list._size = count;
 

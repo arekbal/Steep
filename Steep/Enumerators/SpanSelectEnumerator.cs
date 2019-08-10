@@ -7,9 +7,9 @@ namespace Steep.Enumerators
     internal Span<T> _src;
     internal Func<T, TResult> _map;
 
-    public List<TResult> ToList()
+    public SList<TResult> ToSList()
     {
-      var list = new List<TResult>(_src.Length, _src.Length);
+      var list = new SList<TResult>(_src.Length, _src.Length);
 
       var i = 0;
       foreach (var item in _src)

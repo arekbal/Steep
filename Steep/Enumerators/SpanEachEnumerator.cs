@@ -7,9 +7,9 @@ namespace Steep.Enumerators
     internal Span<T> _src;
     internal Action<T> _action;
 
-    public List<T> ToList()
+    public SList<T> ToSList()
     {
-      var list = new List<T>(_src.Length);
+      var list = new SList<T>(_src.Length);
       foreach (var item in _src)
       {
         _action(item);

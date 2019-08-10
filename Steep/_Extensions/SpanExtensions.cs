@@ -173,9 +173,9 @@ namespace Steep
       }
     }
 
-    public static List<T> ToList<T>(this Span<T> that)
+    public static SList<T> ToSList<T>(this Span<T> that)
     {
-      var list = new List<T>(that.Length, that.Length);
+      var list = new SList<T>(that.Length, that.Length);
 
       for (var i = 0; i < that.Length; i++)
         list.ItemByRef(i) = that[i];

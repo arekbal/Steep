@@ -11,10 +11,7 @@
                 "/property:GenerateFullPaths=true"
             ],
             "problemMatcher": "$msCompile",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "group": "build"
         },
         {
             "label": "build-demo",

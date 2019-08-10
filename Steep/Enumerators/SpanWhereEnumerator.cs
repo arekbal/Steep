@@ -8,9 +8,9 @@ namespace Steep.Enumerators
     internal Func<T, bool> _filter;
     internal int _i;
 
-    public List<T> ToFastList()
+    public SList<T> ToSList()
     {
-      var fastList = new List<T>(_src.Length);
+      var fastList = new SList<T>(_src.Length);
       foreach (var item in _src)
         fastList.Add(item);
 
