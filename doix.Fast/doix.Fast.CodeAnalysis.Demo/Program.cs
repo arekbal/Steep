@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace doix.Fast.CodeAnalysis.Demo
+namespace doix.Fast.CodeAnalysis.Examples
 {
   class Program
   {

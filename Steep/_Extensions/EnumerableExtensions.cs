@@ -13,7 +13,7 @@ namespace Steep
     }
 
     static IEnumerable<KeyValuePair<int, TValue>> GetInternals<TValue>(IntIndexVec<TValue> source)
-         where TValue : unmanaged
+      where TValue : unmanaged
     {
       for (var i = 0; i < source._length; i++)
       {
@@ -23,26 +23,30 @@ namespace Steep
     }
 
     public static IEnumerable<TValue> ToEnumerable<TValue>(this StrideSpan<TValue> that)  // TODO: move into the structure and don't expose these vars?
-    where TValue : struct
+      where TValue : struct
     {
       return ToUnsafeEnumerable<TValue>(that._ptr, that._stride, that._length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static IEnumerable<TValue> ToUnsafeEnumerable<TValue>(IntPtr ptr, int stride, int length)
-     where TValue : struct
+      where TValue : struct
     {
       for (var i = 0; i < length; i++)
         yield return GetUnsafeValue<TValue>(ptr, stride * i);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static TValue GetUnsafeValue<TValue>(IntPtr ptr, int offset) where TValue : struct
+    static TValue GetUnsafeValue<TValue>(IntPtr ptr, int offset) 
+      where TValue : struct
     {
-      unsafe
-      {
-        return Unsafe.AsRef<TValue>((ptr + offset).ToPointer());
-      }
+      unsafe { return Unsafe.AsRef<TValue>((ptr + offset).ToPointer()); }
+    }
+
+    public static void Each<T>(this IEnumerable<T> that, Action<T> a)
+    {
+      foreach(var x in that)
+        a(x);
     }
   }
 }

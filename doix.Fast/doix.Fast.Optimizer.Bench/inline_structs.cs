@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using BenchmarkDotNet.Attributes;
-using doix.Fast.Optimizer.Demo;
+using doix.Fast.Optimizer.Examples;
 
 namespace doix.Fast.Optimizer.Bench
 {

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\doix.Fast.Optimizer.Demo\doix.Fast.Optimizer.Demo.csproj" />
+    <ProjectReference Include="..\doix.Fast.Optimizer.Examples\doix.Fast.Optimizer.Examples.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,12 +14,12 @@
             "group": "build"
         },
         {
-            "label": "build-demo",
+            "label": "build-examples",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Steep.Demo/Steep.Demo.csproj",
+                "${workspaceFolder}/Steep.Examples/Steep.Examples.csproj",
                 "/property:GenerateFullPaths=true"
             ],
             "problemMatcher": "$msCompile",

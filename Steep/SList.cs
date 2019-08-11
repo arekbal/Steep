@@ -438,7 +438,7 @@ namespace Steep
       return FindIndex(match) != -1;
     }
 
-    public T Find(Predicate<T> match)
+    public Option<T> Find(Predicate<T> match)
     {
       if (match == null)
         Throw.ArgOutOfRange("match");

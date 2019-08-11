@@ -5,24 +5,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Steep
-{
-  public struct OptionNone
-  {
-    public override int GetHashCode()
-    {
-      return 0;
-    }
-
-    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    string DebuggerDisplay
-      => "None";
-
-    public override string ToString()
-      => "None";
-
-    public static implicit operator bool(OptionNone o) => false;
-  }
-
+{ 
   public struct Option
   {
     ///<summary>Uses NaN to store 0f and 0f to store None state</summary>
@@ -167,9 +150,11 @@ namespace Steep
       ///<summary>No extra checks - Doesn't throw if Option is None</summary>
       public int Val => val;
 
-      public static implicit operator int(Option.NotZeroInt32 o) => o.val;
+      public static implicit operator int(Option.NotZeroInt32 o) 
+        => o.val;
 
-      public static implicit operator bool(Option.NotZeroInt32 o) => o.val != 0;
+      public static implicit operator bool(Option.NotZeroInt32 o) 
+        => o.val != 0;
 
       public static implicit operator Option<int>(Option.NotZeroInt32 o)
       {
@@ -185,14 +170,21 @@ namespace Steep
     public struct NotMaxInt32
     {
       internal int val;
-      public bool IsNone => val == 0;
-      public bool IsSome => val != 0;
 
-      public int Val => val == int.MaxValue ? 0 : val;
+      public bool IsNone 
+        => val == 0;
 
-      public static implicit operator int(Option.NotMaxInt32 o) => o.val == int.MaxValue ? 0 : o.val;
+      public bool IsSome 
+        => val != 0;
 
-      public static implicit operator bool(Option.NotMaxInt32 o) => o.val != 0;
+      public int Val 
+        => val == int.MaxValue ? 0 : val;
+
+      public static implicit operator int(Option.NotMaxInt32 o) 
+        => o.val == int.MaxValue ? 0 : o.val;
+
+      public static implicit operator bool(Option.NotMaxInt32 o) 
+        => o.val != 0;
 
       public static implicit operator Option<int>(Option.NotMaxInt32 o)
       {
@@ -205,69 +197,86 @@ namespace Steep
     }
 
     internal byte byteIsSome;
-    public bool IsNone => byteIsSome == 0;
-    public bool IsSome => byteIsSome != 0;
+
+    public bool IsNone 
+      => byteIsSome == 0;
+
+    public bool IsSome 
+      => byteIsSome != 0;
 
     public static readonly OptionNone None = new OptionNone();
-    public static Option Some() => new Option { byteIsSome = 1 };
-    public static Option<T> Some<T>(T value) => new Option<T> { byteIsSome = value != null ? (byte)1 : (byte)0, val = value };
-    public static Option.NotNaNSingle NotNaN(float value) => new Option.NotNaNSingle { val = value != 0f ? value : float.NaN };
-    public static Option.NotNaNDouble NotNaN(double value) => new Option.NotNaNDouble { val = value != 0d ? value : double.NaN };
-    public static Option.NotZeroInt32 NotZero(int value) => new Option.NotZeroInt32 { val = value };
+
+    public static Option Some() 
+      => new Option { byteIsSome = 1 };
+
+    public static Option<T> Some<T>(T value) 
+      => new Option<T> { byteIsSome = value != null ? (byte)1 : (byte)0, val = value };
+
+     public static Option<T> Some<T>(Nullable<T> value) where T : struct 
+      => new Option<T> { byteIsSome = value != null ? (byte)1 : (byte)0, val = value.Value };
+
+    public static Option.NotNaNSingle NotNaN(float value) 
+      => new Option.NotNaNSingle { val = value != 0f ? value : float.NaN };
+
+    public static Option.NotNaNDouble NotNaN(double value) 
+      => new Option.NotNaNDouble { val = value != 0d ? value : double.NaN };
+
+    public static Option.NotZeroInt32 NotZero(int value) 
+      => new Option.NotZeroInt32 { val = value };
+
     ///<summary> it still supports neg zero as valid value</summary>
-    public static Option.NotZeroSingle NotZero(float value) => new Option.NotZeroSingle { val = value };
+    public static Option.NotZeroSingle NotZero(float value) 
+      => new Option.NotZeroSingle { val = value };
+
     ///<summary> it still supports neg zero as valid value</summary>
-    public static Option.NotZeroDouble NotZero(double value) => new Option.NotZeroDouble { val = value };
+    public static Option.NotZeroDouble NotZero(double value) 
+      => new Option.NotZeroDouble { val = value };
+
     ///<summary> it still supports  as valid value</summary>
-    public static Option.NotMaxInt32 NotMax(int value) => new Option.NotMaxInt32 { val = value };
+    public static Option.NotMaxInt32 NotMax(int value) 
+      => new Option.NotMaxInt32 { val = value };
+
     public static OptionRef<T> Some<T>(ref T reference)
     {
       unsafe
       {
-        // Still could lead to Option being 'some' and then reference being nulled afterwards.
+        // Still could lead to Option being 'some' and then referenced value being nulled afterwards.
         return new OptionRef<T> { byteIsSome = (reference != null && (IntPtr)Unsafe.AsPointer(ref reference) != IntPtr.Zero) ? (byte)1 : (byte)0, p = (IntPtr)Unsafe.AsPointer(ref reference) };
       }
     }
 
-    public static implicit operator Option(OptionNone o) => new Option { };
+    public static implicit operator Option(OptionNone o) 
+      => new Option { };
 
-    public static implicit operator Option(Option.NotNaNSingle o) => new Option { byteIsSome = o.val == 0f ? (byte)0 : (byte)1 };
+    public static implicit operator Option(Option.NotNaNSingle o) 
+      => new Option { byteIsSome = o.val == 0f ? (byte)0 : (byte)1 };
 
-    public static implicit operator Option(Option.NotNaNDouble o) => new Option { byteIsSome = o.val == 0d ? (byte)0 : (byte)1 };
+    public static implicit operator Option(Option.NotNaNDouble o) 
+      => new Option { byteIsSome = o.val == 0d ? (byte)0 : (byte)1 };
 
-    public static implicit operator bool(Option o) => o.byteIsSome != 0;
+    public static implicit operator bool(Option o) 
+      => o.byteIsSome != 0;
 
     public static bool operator ==(Option b, Option c)
-    {
-      return b.byteIsSome == c.byteIsSome;
-    }
+      => b.byteIsSome == c.byteIsSome;
 
     public static bool operator !=(Option b, Option c)
-    {
-      return b.byteIsSome != c.byteIsSome;
-    }
+      => b.byteIsSome != c.byteIsSome;
 
     public static bool operator ==(Option b, bool c)
-    {
-      return (b.byteIsSome != 0) == c;
-    }
+      => (b.byteIsSome != 0) == c;
 
     public static bool operator !=(Option b, bool c)
-    {
-      return (b.byteIsSome != 0) != c;
-    }
+      => (b.byteIsSome != 0) != c;
 
     public static bool operator ==(Option b, OptionNone c)
-    {
-      return b.byteIsSome == 0;
-    }
+      => b.byteIsSome == 0;
 
     public static bool operator !=(Option b, OptionNone c)
-    {
-      return b.byteIsSome != 0;
-    }
+      => b.byteIsSome != 0;
 
-    public override int GetHashCode() => byteIsSome;
+    public override int GetHashCode() 
+      => byteIsSome;
 
     public override bool Equals(object obj)
     {
@@ -277,167 +286,6 @@ namespace Steep
         case OptionNone optNone: return this == optNone;
         default: return false;
       }
-    }
-  }
-
-  public struct Option<T>
-  {
-    internal T val;
-    internal byte byteIsSome;
-
-    public bool IsNone => byteIsSome == 0;
-    public bool IsSome => byteIsSome != 0;
-
-    // No ifs on get. That just 'should' be faster. 
-    // TODO: Prove it in benchmarks
-    public T Val => val;
-
-    public bool TryVal(out T value)
-    {
-      value = this.val;
-      return byteIsSome != 0;
-    }
-
-    public static implicit operator Option<T>(OptionNone o) => new Option<T> { };
-
-    public static implicit operator Option<T>(Option<NoType> o) => new Option<T> { };
-
-    public static implicit operator Option<T>(T o)
-      => o == null ? default : new Option<T> { byteIsSome = 1, val = o };
-
-    public static implicit operator Option(Option<T> o) => new Option { byteIsSome = o.byteIsSome };
-
-    public static implicit operator bool(Option<T> o) => o.byteIsSome != 0;
-
-    public static bool operator ==(Option<T> b, Option<T> c)
-    {
-      if (b.byteIsSome != 0)
-      {
-        if (c.byteIsSome != 0)
-        {
-          if (b.val == null)
-          {
-            return c.val == null;
-          }
-          else
-            return b.val.Equals(c.val);
-        }
-        return false;
-      }
-      else
-        return c.byteIsSome != 0;
-    }
-
-    public static bool operator !=(Option<T> b, Option<T> c)
-    {
-      return !(b == c);
-    }
-
-    public static bool operator ==(Option<T> b, T c)
-    {
-      if (b.byteIsSome == 0)
-      {
-        if (b.val == null)
-        {
-          return c == null;
-        }
-        else
-          return b.val.Equals(c);
-      }
-      return false;
-    }
-
-    public static bool operator !=(Option<T> b, T c)
-    {
-      return !(b == c);
-    }
-
-    public static bool operator ==(Option<T> b, OptionNone c)
-    {
-      return b.byteIsSome != 0;
-    }
-
-    public static bool operator !=(Option<T> b, OptionNone c)
-    {
-      return b.byteIsSome != 0;
-    }
-
-    public static bool operator ==(Option<T> b, Option c)
-    {
-      return b.byteIsSome == c.byteIsSome;
-    }
-
-    public static bool operator !=(Option<T> b, Option c)
-    {
-      return b.byteIsSome != c.byteIsSome;
-    }
-
-    public override bool Equals(object obj)
-    {
-      switch (obj)
-      {
-        case Option<T> opt: return this == opt;
-        case T val: return this == val;
-        case Option opt: return this == opt;
-        case OptionNone optNone: return this == optNone;
-        default: return false;
-      }
-    }
-
-    public static T operator |(Option<T> b, T defaultValue)
-     => b.Or(defaultValue);
-
-    public static T operator |(Option<T> b, Func<T> defaultValueFunc)
-      => b.OrMake(defaultValueFunc);
-
-    public static Option<T> operator |(Option<T> b, Option<T> a)
-      => b.Or(a);
-
-    public static bool operator true(Option<T> a)
-      => a.byteIsSome != 0;
-
-    public static bool operator false(Option<T> a)
-      => a.byteIsSome == 0;
-
-    // TODO: Add Deconstruction methods
-
-    public bool Equals(Option<T> other) => this == other;
-
-    public bool Equals(T other)
-    {
-      if (other is Option)
-        return byteIsSome == 0;
-
-      if (other is Option<T> o)
-        return byteIsSome == o.byteIsSome && EqualityComparer<T>.Default.Equals(val, o.OrDefault());
-
-      return byteIsSome != 0 && EqualityComparer<T>.Default.Equals(val, other);
-    }
-
-    public override int GetHashCode()
-    {
-      if (byteIsSome == 0)
-        return -1;
-
-      if (val == null)
-        return 0;
-
-      return val.GetHashCode();
-    }
-
-    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    string DebuggerDisplay
-    {
-      get
-      {
-        var self = this;
-        return self.byteIsSome != 0 ? $"Some({Print.Instance(val)})" : $"None";
-      }
-    }
-
-    public override string ToString()
-    {
-      return DebuggerDisplay;
     }
   }
 }

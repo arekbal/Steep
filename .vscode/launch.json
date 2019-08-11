@@ -2,13 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Demo",
+            "name": "Examples",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build-demo",
-            "program": "${workspaceFolder}/Steep.Demo/bin/Debug/netcoreapp2.2/Steep.Demo.dll",
+            "preLaunchTask": "build-examples",
+            "program": "${workspaceFolder}/Steep.Examples/bin/Debug/netcoreapp2.2/Steep.Examples.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Steep.Demo",
+            "cwd": "${workspaceFolder}/Steep.Examples",
             "console": "internalConsole",
             "stopAtEntry": false
         },

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace doix.Fast.Optimizer.Demo
+namespace doix.Fast.Optimizer.Examples
 {
   class GenericSomethingOfInt
   {

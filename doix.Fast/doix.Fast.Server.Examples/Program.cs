@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace doix.Fast.Server.Demo
+namespace doix.Fast.Server.Examples
 {
   class Program
   {

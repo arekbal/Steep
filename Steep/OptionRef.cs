@@ -71,10 +71,13 @@ namespace Steep
       return false;
     }
 
-    public static implicit operator OptionRef<T>(OptionNone o) => new OptionRef<T>();
-    public static implicit operator Option(OptionRef<T> o) => new Option { byteIsSome = o.byteIsSome };
+    public static implicit operator OptionRef<T>(OptionNone o) 
+      => new OptionRef<T>();
 
-    public OptionReadOnlyRef<T> AsReadOnly() =>
-      new OptionReadOnlyRef<T> { byteIsSome = byteIsSome, p = p };
+    public static implicit operator Option(OptionRef<T> o) 
+      => new Option { byteIsSome = o.byteIsSome };
+
+    public OptionReadOnlyRef<T> AsReadOnly() 
+      => new OptionReadOnlyRef<T> { byteIsSome = byteIsSome, p = p };
   }
 }

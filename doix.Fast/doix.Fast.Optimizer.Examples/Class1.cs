@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace doix.Fast.Optimizer.Demo
+namespace doix.Fast.Optimizer.Examples
 {
   public class Class1<T>
   {

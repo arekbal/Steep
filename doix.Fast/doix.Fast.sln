@@ -15,13 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.CodeAnalysis", "d
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Optimization", "Optimization", "{DC560986-D0D2-43AC-85BA-28BE16B90DCB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.CodeAnalysis.Demo", "doix.Fast.CodeAnalysis.Demo\doix.Fast.CodeAnalysis.Demo.csproj", "{794D46E8-CAFE-485E-8A11-F34F52276583}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.CodeAnalysis.Examples", "doix.Fast.CodeAnalysis.Examples\doix.Fast.CodeAnalysis.Examples.csproj", "{794D46E8-CAFE-485E-8A11-F34F52276583}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.CodeAnalysis.Test", "doix.Fast.CodeAnalysis.Test\doix.Fast.CodeAnalysis.Test.csproj", "{3457F66E-24DD-4F13-AE6E-4AE921ED845F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.Optimizer", "doix.Fast.Optimizer\doix.Fast.Optimizer.csproj", "{53A3597C-4F66-456F-BEC8-365DB2A87161}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.Optimizer.Demo", "doix.Fast.Optimizer.Demo\doix.Fast.Optimizer.Demo.csproj", "{4E10453F-17EF-43FD-A0D1-12146DA24BCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.Optimizer.Examples", "doix.Fast.Optimizer.Examples\doix.Fast.Optimizer.Examples.csproj", "{4E10453F-17EF-43FD-A0D1-12146DA24BCE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{53A3597C-4F66-456F-BEC8-365DB2A87161} = {53A3597C-4F66-456F-BEC8-365DB2A87161}
 	EndProjectSection
@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "doix.Fast.Analyzers.Vsix", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.Jobs", "doix.Fast.Jobs\doix.Fast.Jobs.csproj", "{6BE4CE86-B3C9-451B-A838-89E466888ABF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.Server.Demo", "doix.Fast.Server.Demo\doix.Fast.Server.Demo.csproj", "{7B604BE9-5876-4FCA-806D-A348CC85BD4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.Server.Examples", "doix.Fast.Server.Examples\doix.Fast.Server.Examples.csproj", "{7B604BE9-5876-4FCA-806D-A348CC85BD4B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doix.Fast.Generator", "doix.Fast.Generator\doix.Fast.Generator.csproj", "{71CB5C74-3B49-43C7-BE40-E540E9EAF73A}"
 EndProject

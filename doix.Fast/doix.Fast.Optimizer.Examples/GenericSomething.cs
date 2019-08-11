@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using doix.Fast.Metadata;
 
-[assembly: Specialization(typeof(doix.Fast.Optimizer.Demo.GenericSomething<int>), typeof(doix.Fast.Optimizer.Demo.GenericSomethingOfInt))]
+[assembly: Specialization(typeof(doix.Fast.Optimizer.Examples.GenericSomething<int>), typeof(doix.Fast.Optimizer.Examples.GenericSomethingOfInt))]
 
-namespace doix.Fast.Optimizer.Demo
+namespace doix.Fast.Optimizer.Examples
 {
   public class GenericSomething<T>
   {

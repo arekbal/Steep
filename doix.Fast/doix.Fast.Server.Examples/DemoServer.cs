@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using doix.Fast.ECS;
 
-namespace doix.Fast.Server.Demo
+namespace doix.Fast.Server.Examples
 {
   public class DemoServer : ECSEngine
   {
