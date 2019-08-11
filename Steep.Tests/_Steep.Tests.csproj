@@ -7,10 +7,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Steep\Steep.csproj" />
+    <ProjectReference Include="..\Steep\_Steep.csproj" />
   </ItemGroup>  
 
-  <PropertyGroup>  
+  <PropertyGroup>
+    <TargetName>Steep.Tests</TargetName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>    

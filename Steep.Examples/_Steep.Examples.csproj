@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Steep\Steep.csproj" />
+    <ProjectReference Include="..\Steep\_Steep.csproj" />
   </ItemGroup>
 
-  <PropertyGroup>  
+  <PropertyGroup>
+    <TargetName>Steep.Examples</TargetName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputType>Exe</OutputType>    
     <IsPackable>false</IsPackable>   

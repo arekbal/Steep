@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
- <PropertyGroup>
- 
+  <PropertyGroup>
+    <TargetName>Steep.Bench</TargetName>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -10,7 +10,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\Steep\Steep.csproj" />
+    <ProjectReference Include="..\Steep\_Steep.csproj" />
     <PackageReference Include="BenchmarkDotNet" Version="0.11.5" />
   </ItemGroup>
 

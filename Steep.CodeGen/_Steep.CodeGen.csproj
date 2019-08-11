@@ -6,6 +6,7 @@
   </ItemGroup>
   
   <PropertyGroup>
+    <TargetName>Steep.CodeGen</TargetName>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <LangVersion>preview</LangVersion>

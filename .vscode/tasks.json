@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Steep/Steep.csproj",
+                "${workspaceFolder}/Steep/_Steep.csproj",
                 "/property:GenerateFullPaths=true"
             ],
             "problemMatcher": "$msCompile",
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Steep.Examples/Steep.Examples.csproj",
+                "${workspaceFolder}/Steep.Examples/_Steep.Examples.csproj",
                 "/property:GenerateFullPaths=true"
             ],
             "problemMatcher": "$msCompile",
