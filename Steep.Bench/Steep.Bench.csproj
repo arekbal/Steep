@@ -10,7 +10,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\Steep\_Steep.csproj" />
+    <ProjectReference Include="..\Steep\Steep.csproj" />
     <PackageReference Include="BenchmarkDotNet" Version="0.11.5" />
   </ItemGroup>
 

@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steep.Examples", "Steep.Examples\_Steep.Examples.csproj", "{301B5B3E-202B-4B2A-8E77-0D75B2BB3B78}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steep.Examples", "Steep.Examples\Steep.Examples.csproj", "{301B5B3E-202B-4B2A-8E77-0D75B2BB3B78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steep", "Steep\_Steep.csproj", "{D4986DE8-73B0-47F8-9782-3550F2D844FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steep", "Steep\Steep.csproj", "{D4986DE8-73B0-47F8-9782-3550F2D844FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steep.Bench", "Steep.Bench\_Steep.Bench.csproj", "{1BD179EC-61F8-41DE-A51C-42AFE831BD0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steep.Bench", "Steep.Bench\Steep.Bench.csproj", "{1BD179EC-61F8-41DE-A51C-42AFE831BD0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steep.Tests", "Steep.Tests\_Steep.Tests.csproj", "{79CE2CFF-C29F-4743-AADD-38EFC7245C8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steep.Tests", "Steep.Tests\Steep.Tests.csproj", "{79CE2CFF-C29F-4743-AADD-38EFC7245C8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

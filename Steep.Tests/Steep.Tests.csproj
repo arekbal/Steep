@@ -7,7 +7,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Steep\_Steep.csproj" />
+    <ProjectReference Include="..\Steep\Steep.csproj" />
   </ItemGroup>  
 
   <PropertyGroup>

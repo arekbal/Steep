@@ -9,7 +9,8 @@ namespace Steep.Tests
     public double Z;
   }
 
-  public class VectorTests
+  [TestFixture]
+  public class vec_tests
   {
     [SetUp]
     public void Setup()

@@ -16,7 +16,7 @@
   </PropertyGroup>
 
    <Target Name="MyPreCompileTarget" BeforeTargets="Build">
-        <Exec Command="dotnet run -p ../Steep.CodeGen/_Steep.CodeGen.csproj"/>
+        <Exec Command="dotnet run -p ../Steep.CodeGen/Steep.CodeGen.csproj"/>
     </Target>
 
 </Project>
