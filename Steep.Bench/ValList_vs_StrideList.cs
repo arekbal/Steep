@@ -11,9 +11,9 @@ namespace Steep.Bench
   {
     const int Length = 500000;
 
-    public List<int> plainIntList = new List<int>();
+    public SList<int> plainIntList = new SList<int>();
 
-    public List<Value16> plainValue16List = new List<Value16>();
+    public SList<Value16> plainValue16List = new SList<Value16>();
 
     public ValList<Value16> valListValue16 = new ValList<Value16>();
 

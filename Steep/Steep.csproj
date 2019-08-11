@@ -15,8 +15,6 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
-   <Target Name="MyPreCompileTarget" BeforeTargets="Build">
-        <Exec Command="dotnet run -p ../Steep.CodeGen/Steep.CodeGen.csproj"/>
-    </Target>
+  
 
 </Project>

@@ -47,7 +47,7 @@
         {
             "label": "test",
             "command": "dotnet",
-            "type": "process",
+            "type": "process",            
             "args": [
                 "test",
                 "${workspaceFolder}/Steep.Tests/Steep.Tests.csproj",

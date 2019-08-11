@@ -13,7 +13,6 @@ namespace Steep.Tests
   {
     struct Generic<T>
     {
-      T val;
     }
 
     ValueTask<Option<int>> GetSomeOptionAsync()
@@ -26,13 +25,11 @@ namespace Steep.Tests
     [Test]
     public async Task debugger_display()
     {
-      var z = Some(new Nullable<int>(32));
+      var oNullable = Some<Nullable<int>>(new Nullable<int>(32));
 
-      var o = z.OrBind('4')(r => (char)r);
+      var o = oNullable.OrBind('4')(r => (char)r);
 
-      var q = z.OrBind(() => (int?)7000)(r => r);
-
-      var display = z.ToString();
+      var q = oNullable.OrBind(() => (int?)7000)(r => r);
 
       var y = await GetSomeOptionAsync();
       var u = Some(123);
@@ -40,26 +37,13 @@ namespace Steep.Tests
       {
       }
 
-      Assert.AreEqual(display, "Some(int?(32))");
+      Assert.AreEqual("Some(int?(32))", oNullable.ToString());
 
+      Assert.AreEqual("Generic<Generic<float>>", Print.Type(typeof(Generic<Generic<float>>)));
 
-      var t = typeof(Generic<Generic<float>>);
+      Assert.AreEqual("Some(3.0f)", Some(3.0f).ToString());
 
-      display = Print.Type(t);
-
-      Assert.AreEqual(display, "Generic<Generic<float>>");
-
-
-      var m = Some(3.0f);
-      display = m.ToString();
-
-      Assert.AreEqual(display, "Some(3.0f)");
-
-
-      var p = Some(7.0);
-      display = p.ToString();
-
-      Assert.AreEqual(display, "Some(7.0)");
+      Assert.AreEqual("Some(7.0)", Some(7.0).ToString());
     }
   }
 }

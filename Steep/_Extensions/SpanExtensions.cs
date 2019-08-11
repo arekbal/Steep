@@ -117,34 +117,6 @@ namespace Steep
       return span.Length;
     }
 
-    public static void Sort<T>(this Span<T> that, IComparer<T> comparer)
-    {
-      if (that.Length < 2)
-        return;
-
-      if (that.Length == 2)
-      {
-        if (comparer.Compare(that[0], that[1]) > 0)
-          that.Swap(0, 1);
-
-        return;
-      }
-
-      var left = 0;
-
-      var right = that.Length - 1;
-
-      if (comparer.Compare(that[left], that[right]) > 0)
-      {
-        that.Swap(left, right);
-      }
-
-      left++;
-      right--;
-
-      throw new NotImplementedException("missing alot of work");
-    }
-
     public static T[] ToArray<T>(this Enumerators.SpanWhereEnumerator<T> that)
       where T : unmanaged
     {

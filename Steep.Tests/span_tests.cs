@@ -50,19 +50,6 @@ namespace Steep.Tests
     }
 
     [Test]
-    public void span_sort()
-    {
-      var rand = new Random(425335265);
-
-      var arr = Enumerable.Range(1, 4).Select(x => rand.Next(1000)).ToArray();
-
-      var span = new Span<int>(arr);
-      span.Sort(Comparer<int>.Default);
-
-      Assert.AreEqual(SortState.Asc, span.GetSortState());
-    }
-
-    [Test]
     public void span_where()
     {
       var rand = new Random(4542235);

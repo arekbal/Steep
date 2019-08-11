@@ -10,7 +10,7 @@ namespace Steep.Bench
   {
     int[] array;
     System.Collections.Generic.List<int> list;
-    Steep.List<int> fastList;
+    SList<int> sList;
 
     int calcSum;
 
@@ -18,7 +18,7 @@ namespace Steep.Bench
     {
       array = Enumerable.Range(1, 999).ToArray();
       list = new System.Collections.Generic.List<int>(array);
-      fastList = new List<int>(array);
+      sList = new SList<int>(array);
 
       var length = array.Length;
       for (var i = 0; i < length; i++)
@@ -123,8 +123,8 @@ namespace Steep.Bench
     public void steeplist_by_array_index()
     {
       var sum = 0;
-      var length = fastList.Count;
-      var rawArray = fastList.RawArray;
+      var length = sList.Count;
+      var rawArray = sList.RawArray;
       for (var i = 0; i < length; i++)
         sum += rawArray[i];
 
@@ -136,8 +136,8 @@ namespace Steep.Bench
     public void steeplist_by_span_index()
     {
       var sum = 0;
-      var length = fastList.Count;
-      var items = fastList.AsSpan();
+      var length = sList.Count;
+      var items = sList.AsSpan();
       for (var i = 0; i < length; i++)
         sum += items[i];
 
@@ -149,8 +149,8 @@ namespace Steep.Bench
     public void steeplist_by_span_enumerator()
     {
       var sum = 0;
-      var length = fastList.Count;
-      foreach (var item in fastList.AsSpan())
+      var length = sList.Count;
+      foreach (var item in sList.AsSpan())
       {
         sum += item;
       }
@@ -162,7 +162,7 @@ namespace Steep.Bench
     [Benchmark(Baseline = true)]
     public void steeplist_by_span_unrolled_vectors()
     {
-      var sum = fastList.AsSpan().Sum();
+      var sum = sList.AsSpan().Sum();
 
       if (calcSum != sum)
         throw new Exception("calcSum != sum");
@@ -172,7 +172,7 @@ namespace Steep.Bench
     public void steeplist_by_span_ForEach()
     {
       int sum = 0;
-      fastList.AsSpan().ForEach(x => sum += x);
+      sList.AsSpan().ForEach(x => sum += x);
 
       if (calcSum != sum)
         throw new Exception("calcSum != sum");

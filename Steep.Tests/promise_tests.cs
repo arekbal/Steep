@@ -11,7 +11,7 @@ namespace Steep.Tests
   [TestFixture]
   public class promise_tests
   {
-    [Test]
+    // [Test]
     public async Task empty()
     {
       var g = 1;
@@ -48,7 +48,7 @@ namespace Steep.Tests
       Assert.AreEqual(57, g);
     }
 
-    [Test]
+    // [Test]
     public async Task with_result()
     {
       var g = 1;
@@ -87,7 +87,7 @@ namespace Steep.Tests
       //Assert.AreEqual(10, g);
     }
 
-    [Test]
+    // [Test]
     public async Task cancellations()
     {
       // TODO: await over cancelled promise cannot work

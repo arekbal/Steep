@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 
 namespace Steep.Bench
@@ -43,7 +44,7 @@ namespace Steep.Bench
     [Benchmark]
     public int List16()
     {
-      var list = new List<Struct16>();
+      var list = new SList<Struct16>();
 
       for (var i = 0; i < N; i++)
         list.Add(new Struct16 { _0 = (byte)i });
@@ -83,7 +84,7 @@ namespace Steep.Bench
     [Benchmark]
     public int List32()
     {
-      var list = new List<Struct32>();
+      var list = new SList<Struct32>();
 
       for (var i = 0; i < N; i++)
         list.Add(new Struct32 { _0 = (byte)i });
@@ -123,7 +124,7 @@ namespace Steep.Bench
     [Benchmark]
     public int List64()
     {
-      var list = new List<Struct64>();
+      var list = new SList<Struct64>();
 
       for (var i = 0; i < N; i++)
         list.Add(new Struct64 { _0 = (byte)i });
