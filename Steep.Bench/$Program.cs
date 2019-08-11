@@ -1,4 +1,6 @@
-﻿using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Toolchains.InProcess;
 
 namespace Steep.Bench
 {
@@ -6,7 +8,8 @@ namespace Steep.Bench
   {
     static void Main(string[] args)
     {
-      var summary = BenchmarkRunner.Run<ValList_vs_StrideList>();
+     
+      var summary = BenchmarkRunner.Run<SList_Find_refs>();
     }
   }
 }

@@ -16,8 +16,8 @@ namespace Steep.Bench
     readonly List<long> _listOfLongs;
     readonly ValList<long> _valsOfLongs;
 
-    readonly List<Value32> _listOf16Bytes;
-    readonly ValList<Value32> _valsOf16Bytes;
+    readonly List<Value64> _listOf16Bytes;
+    readonly ValList<Value64> _valsOf16Bytes;
 
     readonly List<Value64> _listOf64Bytes;
     readonly ValList<Value64> _valsOf64Bytes;
@@ -35,11 +35,11 @@ namespace Steep.Bench
       foreach (var x in Enumerable.Range(1, _length))
         _valsOfLongs.EmplaceBack() = x;
 
-      _listOf16Bytes = new List<Value32>(_length);
+      _listOf16Bytes = new List<Value64>(_length);
       foreach (var x in Enumerable.Range(1, _length))
-        _listOf16Bytes.Add(new Value32 { Value = x });
+        _listOf16Bytes.Add(new Value64 { Value = x });
 
-      _valsOf16Bytes = new ValList<Value32>(_length);
+      _valsOf16Bytes = new ValList<Value64>(_length);
       foreach (var x in Enumerable.Range(1, _length))
         _valsOf16Bytes.EmplaceBack().Value = x;
 
@@ -69,7 +69,7 @@ namespace Steep.Bench
     [Benchmark(Baseline = true), BenchmarkCategory("16 Bytes")]
     public void list_of_16byte()
     {
-      RunList(_listOf16Bytes, x => new Value32 { Value = x }, x => x.Value);
+      RunList(_listOf16Bytes, x => new Value64 { Value = x }, x => x.Value);
     }
 
     [Benchmark(Baseline = true), BenchmarkCategory("64 Bytes")]
@@ -94,7 +94,7 @@ namespace Steep.Bench
     [Benchmark, BenchmarkCategory("16 Bytes")]
     public void vallist_of_16byte()
     {
-      RunValueList(_valsOf16Bytes, (ref Value32 x) => ref x.Value);
+      RunValueList(_valsOf16Bytes, (ref Value64 x) => ref x.Value);
     }
 
     [Benchmark, BenchmarkCategory("64 Bytes")]

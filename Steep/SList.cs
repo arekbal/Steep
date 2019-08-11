@@ -7,10 +7,13 @@ using Steep.ErrorHandling;
 
 namespace Steep
 {
-  //[DebuggerTypeProxy(typeof(Mscorlib_CollectionDebugView<>))]
+  public delegate bool PredicateRef<T>(ref T obj);
+  // https://github.com/dotnet/corefx/issues/19814
+  // https://github.com/dotnet/corefx/issues/36415
+  //[DebuggerTypeProxy(typeof(Mscorlib_CollectionDebugView<>))]  
   [DebuggerDisplay("Count = {Count}")]
   [Serializable]
-  public class SList<T> : IList<T>, IReadOnlyList<T>
+  public struct SList<T> : IList<T>, IReadOnlyList<T>
   {
     const int DefaultCapacity = 4;
 
@@ -22,61 +25,26 @@ namespace Steep
     [ContractPublicPropertyName("Count")]
     internal int _size;
 
-    static T[] _emptyArray = Array.Empty<T>();
-
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
     public T[] RawArray => _items;
 
     public bool IsReadOnly => false;
 
-    // Constructs a List. The list is initially empty and has a capacity
-    // of zero. Upon adding the first element to the list the capacity is
-    // increased to 4, and then increased in multiples of two as required.
-    public SList()
-    {
-      _items = _emptyArray;
-    }
+    public Span<T> AsSpan() 
+      => _items == null ? new Span<T>() : new Span<T>(_items, 0, _size);
 
-    public Span<T> AsSpan() => new Span<T>(_items, 0, _size);
-    public ReadOnlySpan<T> AsReadOnlySpan() => new ReadOnlySpan<T>(_items, 0, _size);
+    public ReadOnlySpan<T> AsReadOnlySpan() 
+      => _items == null ? new ReadOnlySpan<T>() : new ReadOnlySpan<T>(_items, 0, _size);
 
-    public Memory<T> AsMemory() => new Memory<T>(_items, 0, _size);
-    public ReadOnlyMemory<T> AsReadOnlyMemory() => new ReadOnlyMemory<T>(_items, 0, _size);
+    public Memory<T> AsMemory() 
+      => _items == null ? new Memory<T>() : new Memory<T>(_items, 0, _size);
 
-    public ArraySegment<T> AsArraySegment() => new ArraySegment<T>(_items, 0, _size);
+    public ReadOnlyMemory<T> AsReadOnlyMemory() 
+      =>  _items == null ? new ReadOnlyMemory<T>() : new ReadOnlyMemory<T>(_items, 0, _size);
 
-    // Constructs a List with a given initial capacity. The list is
-    // initially empty, but will have room for the given number of elements
-    // before any reallocations are required.
-    // 
-    public SList(int capacity)
-    {
-      if (capacity < 0)
-        Throw.ArgOutOfRange(nameof(capacity), "NeedNonNegNum");
-
-      Contract.EndContractBlock();
-
-      if (capacity == 0)
-        _items = _emptyArray;
-      else
-        _items = new T[capacity];
-    }
-
-    public SList(int capacity, int reserve)
-    {
-      if (capacity < 0)
-        Throw.ArgOutOfRange(nameof(capacity), "NeedNonNegNum");
-
-      Contract.EndContractBlock();
-
-      if (capacity == 0)
-        _items = _emptyArray;
-      else
-        _items = new T[capacity];
-
-      _size = reserve;
-    }
+    public ArraySegment<T> AsArraySegment()
+      =>  _items == null ? new ArraySegment<T>() : new ArraySegment<T>(_items, 0, _size);
 
     public int ReserveItems(int count)
     {
@@ -89,6 +57,13 @@ namespace Steep
       return oldSize;
     }
 
+    public SList(int capacity)
+    {
+      _size = 0;
+      _items = null;
+      EnsureCapacity(capacity);
+    }
+
     // Constructs a List, copying the contents of the given collection. The
     // size and capacity of the new list will both be equal to the size of the
     // given collection.
@@ -98,17 +73,15 @@ namespace Steep
       if (collection == null)
         Throw.ArgOutOfRange(nameof(collection));
 
-      Contract.EndContractBlock();
+      _size = 0;
+      _items = null;
 
-      var c = collection as System.Collections.Generic.ICollection<T>;
-      if (c != null)
+      Contract.EndContractBlock();
+      
+      if (collection is System.Collections.Generic.ICollection<T> c)
       {
         int count = c.Count;
-        if (count == 0)
-        {
-          _items = _emptyArray;
-        }
-        else
+        if (count > 0)
         {
           _items = new T[count];
           c.CopyTo(_items, 0);
@@ -116,9 +89,7 @@ namespace Steep
         }
       }
       else
-      {
-        _size = 0;
-        _items = _emptyArray;
+      {       
         // This enumerable could be empty.  Let Add allocate a new array, if needed.
         // Note it will also go to _defaultCapacity first, not 1, then 2, etc.
 
@@ -151,16 +122,14 @@ namespace Steep
           if (value > 0)
           {
             T[] newItems = new T[value];
+
             if (_size > 0)
-            {
               Array.Copy(_items, 0, newItems, 0, _size);
-            }
+              
             _items = newItems;
           }
           else
-          {
-            _items = _emptyArray;
-          }
+            _items = null;
         }
       }
     }
@@ -204,6 +173,7 @@ namespace Steep
         Throw.ArgOutOfRange();
 
       Contract.EndContractBlock();
+
       return ref _items[index];
     }
 
@@ -244,7 +214,9 @@ namespace Steep
     //
     public void Add(T item)
     {
-      if (_size == _items.Length)
+      if(_items == null) 
+        _items = new T[4];
+      else if (_size == _items.Length)
         EnsureCapacity(_size + 1);
 
       _items[_size++] = item;
@@ -422,21 +394,33 @@ namespace Steep
     // whichever is larger.
     void EnsureCapacity(int min)
     {
+      if(_items == null)
+      {
+        _items = new T[min];
+        return;
+      }
+
       if (_items.Length < min)
       {
         int newCapacity = _items.Length == 0 ? DefaultCapacity : _items.Length * 2;
+
         // Allow the list to grow to maximum possible capacity (~2G elements) before encountering overflow.
         // Note that this check works even when _items.Length overflowed thanks to the (uint) cast
-        if ((uint)newCapacity > Array_MaxArrayLength) newCapacity = Array_MaxArrayLength;
-        if (newCapacity < min) newCapacity = min;
+        if ((uint)newCapacity > Array_MaxArrayLength) 
+          newCapacity = Array_MaxArrayLength;
+
+        if (newCapacity < min) 
+          newCapacity = min;
+
         Capacity = newCapacity;
       }
     }
 
     public bool Exists(Predicate<T> match)
-    {
-      return FindIndex(match) != -1;
-    }
+      => FindIndex(match) != -1;
+
+    public bool Exists(PredicateRef<T> match)
+      => FindIndex(match) != -1;
 
     public Option<T> Find(Predicate<T> match)
     {
@@ -448,6 +432,20 @@ namespace Steep
       for (int i = 0; i < _size; i++)
         if (match(_items[i]))
           return _items[i];
+
+      return default;
+    }
+
+    public OptionRef<T> Find(PredicateRef<T> match)
+    {
+      if (match == null)
+        Throw.ArgOutOfRange("match");
+
+      Contract.EndContractBlock();
+
+      for (int i = 0; i < _size; i++)
+        if (match(ref _items[i]))
+          return Option.Some(ref _items[i]);
 
       return default;
     }
@@ -467,6 +465,21 @@ namespace Steep
       return list;
     }
 
+     public SList<T> FindAll(PredicateRef<T> match)
+    {
+      if (match == null)
+        Throw.ArgOutOfRange("match");
+
+      Contract.EndContractBlock();
+
+      var list = new SList<T>();
+      for (int i = 0; i < _size; i++)
+        if (match(ref _items[i]))
+          list.Add(_items[i]);
+
+      return list;
+    }
+
     public int FindIndex(Predicate<T> match)
     {
       Contract.Ensures(Contract.Result<int>() >= -1);
@@ -475,7 +488,23 @@ namespace Steep
       return FindIndex(0, _size, match);
     }
 
+    public int FindIndex(PredicateRef<T> match)
+    {
+      Contract.Ensures(Contract.Result<int>() >= -1);
+      Contract.Ensures(Contract.Result<int>() < Count);
+
+      return FindIndex(0, _size, match);
+    }
+
     public int FindIndex(int startIndex, Predicate<T> match)
+    {
+      Contract.Ensures(Contract.Result<int>() >= -1);
+      Contract.Ensures(Contract.Result<int>() < startIndex + Count);
+
+      return FindIndex(startIndex, _size - startIndex, match);
+    }
+
+   public int FindIndex(int startIndex, PredicateRef<T> match)
     {
       Contract.Ensures(Contract.Result<int>() >= -1);
       Contract.Ensures(Contract.Result<int>() < startIndex + Count);
@@ -500,10 +529,32 @@ namespace Steep
 
       int endIndex = startIndex + count;
       for (int i = startIndex; i < endIndex; i++)
-      {
         if (match(_items[i]))
           return i;
-      }
+
+      return -1;
+    }
+
+    public int FindIndex(int startIndex, int count, PredicateRef<T> match)
+    {
+      if ((uint)startIndex > (uint)_size)
+        Throw.ArgOutOfRange(nameof(startIndex), "Index");
+
+      if (count < 0 || startIndex > _size - count)
+        Throw.ArgOutOfRange(nameof(count), "Count");
+
+      if (match == null)
+        Throw.ArgOutOfRange(nameof(match));
+
+      Contract.Ensures(Contract.Result<int>() >= -1);
+      Contract.Ensures(Contract.Result<int>() < startIndex + count);
+      Contract.EndContractBlock();
+
+      int endIndex = startIndex + count;
+      for (int i = startIndex; i < endIndex; i++)
+        if (match(ref _items[i]))
+          return i;
+
       return -1;
     }
 
@@ -515,12 +566,9 @@ namespace Steep
       Contract.EndContractBlock();
 
       for (int i = _size - 1; i >= 0; i--)
-      {
         if (match(_items[i]))
-        {
           return _items[i];
-        }
-      }
+
       return default;
     }
 
@@ -543,7 +591,7 @@ namespace Steep
     public int FindLastIndex(int startIndex, int count, Predicate<T> match)
     {
       if (match == null)
-        Throw.ArgOutOfRange("match");
+        Throw.ArgOutOfRange(nameof(match));
 
       Contract.Ensures(Contract.Result<int>() >= -1);
       Contract.Ensures(Contract.Result<int>() <= startIndex);
@@ -553,18 +601,18 @@ namespace Steep
       {
         // Special case for 0 length List
         if (startIndex != -1)
-          Throw.ArgOutOfRange("startIndex", "Index");
+          Throw.ArgOutOfRange(nameof(startIndex), "Index");
       }
       else
       {
         // Make sure we're not out of range            
         if ((uint)startIndex >= (uint)_size)
-          Throw.ArgOutOfRange("startIndex", "Index");
+          Throw.ArgOutOfRange(nameof(startIndex), "Index");
       }
 
       // 2nd have of this also catches when startIndex == MAXINT, so MAXINT - 0 + 1 == -1, which is < 0.
       if (count < 0 || startIndex - count + 1 < 0)
-        Throw.ArgOutOfRange("count", "Count");
+        Throw.ArgOutOfRange(nameof(count), "Count");
 
       int endIndex = startIndex - count;
       for (int i = startIndex; i > endIndex; i--)
@@ -596,18 +644,18 @@ namespace Steep
     public SList<T> GetRange(int index, int count)
     {
       if (index < 0)
-        Throw.ArgOutOfRange("index", "NeedNonNegNum");
+        Throw.ArgOutOfRange(nameof(index), "NeedNonNegNum");
 
       if (count < 0)
-        Throw.ArgOutOfRange("count", "NeedNonNegNum");
+        Throw.ArgOutOfRange(nameof(count), "NeedNonNegNum");
 
       if (_size - index < count)
         Throw.ArgOutOfRange("InvalidOffLen");
-
-      Contract.Ensures(Contract.Result<SList<T>>() != null);
+      
       Contract.EndContractBlock();
 
-      var list = new SList<T>(count);
+      var list = new SList<T>();
+      list.EnsureCapacity(count);
       Array.Copy(_items, index, list._items, 0, count);
       list._size = count;
 
@@ -693,14 +741,18 @@ namespace Steep
     {
       // Note that insertions at the end are legal.
       if ((uint)index > (uint)_size)
-        Throw.ArgOutOfRange("index", "ListInsert");
+        Throw.ArgOutOfRange(nameof(index), "ListInsert");
 
       Contract.EndContractBlock();
-      if (_size == _items.Length) EnsureCapacity(_size + 1);
+
+      if(_items == null)
+        _items = new T[4];
+      else if (_size == _items.Length)
+        EnsureCapacity(_size + 1);
+
       if (index < _size)
-      {
         Array.Copy(_items, index, _items, index + 1, _size - index);
-      }
+        
       _items[index] = item;
       _size++;
     }
@@ -716,12 +768,11 @@ namespace Steep
         Throw.ArgOutOfRange("collection");
 
       if ((uint)index > (uint)_size)
-        Throw.ArgOutOfRange("index", "Index");
+        Throw.ArgOutOfRange(nameof(index), "Index");
 
       Contract.EndContractBlock();
 
-      var c = collection as System.Collections.Generic.ICollection<T>;
-      if (c != null)
+      if (collection is System.Collections.Generic.ICollection<T> c)
       {    // if collection is ICollection<T>
         int count = c.Count;
         if (count > 0)
@@ -731,18 +782,22 @@ namespace Steep
             Array.Copy(_items, index, _items, index + count, _size - index);
 
           // If we're inserting a List into itself, we want to be able to deal with that.
-          if (this == c)
+
+          if(c is SList<T> list)
           {
-            // Copy first part of _items to insert location
-            Array.Copy(_items, 0, _items, index, index);
-            // Copy last part of _items back to inserted location
-            Array.Copy(_items, index + count, _items, index * 2, _size - index);
-          }
-          else
-          {
-            T[] itemsToInsert = new T[count];
-            c.CopyTo(itemsToInsert, 0);
-            itemsToInsert.CopyTo(_items, index);
+            if (this._items == list._items)
+            {
+              // Copy first part of _items to insert location
+              Array.Copy(_items, 0, _items, index, index);
+              // Copy last part of _items back to inserted location
+              Array.Copy(_items, index + count, _items, index * 2, _size - index);
+            }
+            else
+            {
+              T[] itemsToInsert = new T[count];
+              c.CopyTo(itemsToInsert, 0);
+              itemsToInsert.CopyTo(_items, index);
+            }
           }
           _size += count;
         }
@@ -767,12 +822,11 @@ namespace Steep
     {
       Contract.Ensures(Contract.Result<int>() >= -1);
       Contract.Ensures(Contract.Result<int>() < Count);
+
       if (_size == 0)
-      {  // Special case for empty list
-        return -1;
-      }
-      else
-        return LastIndexOf(item, _size - 1, _size);
+        return -1; // Special case for empty list
+      
+      return LastIndexOf(item, _size - 1, _size);
     }
 
     // Returns the index of the last occurrence of a given value in a range of
@@ -823,10 +877,10 @@ namespace Steep
       }
 
       if (index >= _size)
-        Throw.ArgOutOfRange("index", "BiggerThanCollection");
+        Throw.ArgOutOfRange(nameof(index), "BiggerThanCollection");
 
       if (count > index + 1)
-        Throw.ArgOutOfRange("count", "BiggerThanCollection");
+        Throw.ArgOutOfRange(nameof(count), "BiggerThanCollection");
 
       return Array.LastIndexOf(_items, item, index, count);
     }
@@ -926,9 +980,7 @@ namespace Steep
 
     // Reverses the elements in this list.
     public void Reverse()
-    {
-      Reverse(0, Count);
-    }
+      => Reverse(0, Count);
 
     // Reverses the elements in a range of this list. Following a call to this
     // method, an element in the range given by index and count
@@ -941,10 +993,10 @@ namespace Steep
     public void Reverse(int index, int count)
     {
       if (index < 0)
-        Throw.ArgOutOfRange("index", "NeedNonNegNum");
+        Throw.ArgOutOfRange(nameof(index), "NeedNonNegNum");
 
       if (count < 0)
-        Throw.ArgOutOfRange("count", "NeedNonNegNum");
+        Throw.ArgOutOfRange(nameof(count), "NeedNonNegNum");
 
       if (_size - index < count)
         Throw.Arg("InvalidOffLen");
@@ -956,16 +1008,12 @@ namespace Steep
     // Sorts the elements in this list.  Uses the default comparer and 
     // Array.Sort.
     public void Sort()
-    {
-      Sort(0, Count, null);
-    }
+      => Sort(0, Count, null);
 
     // Sorts the elements in this list.  Uses Array.Sort with the
     // provided comparer.
     public void Sort(System.Collections.Generic.IComparer<T> comparer)
-    {
-      Sort(0, Count, comparer);
-    }
+      => Sort(0, Count, comparer);
 
     // Sorts the elements in a section of this list. The sort compares the
     // elements to each other using the given IComparer interface. If
@@ -978,10 +1026,10 @@ namespace Steep
     public void Sort(int index, int count, System.Collections.Generic.IComparer<T> comparer)
     {
       if (index < 0)
-        Throw.ArgOutOfRange("index", "NeedNonNegNum");
+        Throw.ArgOutOfRange(nameof(index), "NeedNonNegNum");
 
       if (count < 0)
-        Throw.ArgOutOfRange("count", "NeedNonNegNum");
+        Throw.ArgOutOfRange(nameof(count), "NeedNonNegNum");
 
       if (_size - index < count)
         Throw.Arg("InvalidOffLen");

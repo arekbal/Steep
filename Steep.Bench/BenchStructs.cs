@@ -8,7 +8,15 @@
     public int Value;
   }
 
-  public struct Value32
+   public struct Value32
+  {
+    long _0;
+    long _1;
+    long _2;
+    public long Value;
+  }
+
+  public struct Value64
   {
     long _0;
     long _1;
@@ -24,7 +32,7 @@
     public float Value;
   }
 
-  public struct Value64
+  public struct Value128
   {
     long _0;
     long _1;
@@ -47,7 +55,7 @@
     public long Value;
   }
 
-  public struct Value128
+  public struct Value256
   {
     long _0;
     long _1;

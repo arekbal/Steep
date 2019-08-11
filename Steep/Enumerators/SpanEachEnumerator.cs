@@ -9,7 +9,8 @@ namespace Steep.Enumerators
 
     public SList<T> ToSList()
     {
-      var list = new SList<T>(_src.Length);
+      var list = new SList<T>();
+      list.ReserveItems(_src.Length);
       foreach (var item in _src)
       {
         _action(item);

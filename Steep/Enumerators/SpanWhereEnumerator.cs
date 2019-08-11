@@ -10,11 +10,12 @@ namespace Steep.Enumerators
 
     public SList<T> ToSList()
     {
-      var fastList = new SList<T>(_src.Length);
+      var sList = new SList<T>();
+      sList.ReserveItems(_src.Length);
       foreach (var item in _src)
-        fastList.Add(item);
+        sList.Add(item);
 
-      return fastList;
+      return sList;
     }
 
     public SpanWhereEnumerator<T> GetEnumerator()
