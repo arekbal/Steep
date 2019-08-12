@@ -10,19 +10,19 @@ namespace Steep
     ///<summary>No Zig Zag, unsigned version, no </summary>
     public static int VarUInt15(ushort val, Span<byte> buffer)
     {
-      if ((val & (ushort)Bits.X7) > 0u)
+      if ((val & (ushort)Bit.X07) > 0u)
       {
         unsafe
         {
-          ushort a = (ushort)((val - (ushort)Bits.X7) >> 1);
-          Unsafe.AsRef<ushort>(buffer[0]) = (ushort)(a + (ushort)Bits.X7);
+          ushort a = (ushort)((val - (ushort)Bit.X07) >> 1);
+          Unsafe.AsRef<ushort>(buffer[0]) = (ushort)(a + (ushort)Bit.X07);
         }
         return 2;
       }
 
       buffer[0] = (byte)val;
 
-      return val > (ushort)Bits.X7 ? 2 : 1;
+      return val > (ushort)Bit.X07 ? 2 : 1;
     }
 
     ///<summary>Signed version</summary>
@@ -30,7 +30,7 @@ namespace Steep
     {
       var encoded = (val >> 15 - 1) ^ (val << 1);
 
-      return val > (ushort)Bits.X15 ? 2 : 1;
+      return val > (ushort)Bit.X15 ? 2 : 1;
     }
 
     ///<summary>Zig Zag, do not throw</summary>
@@ -38,7 +38,7 @@ namespace Steep
     {
       var encoded = (val >> 15 - 1) ^ (val << 1);
 
-      return val > (ushort)Bits.X15 ? 2 : 1;
+      return val > (ushort)Bit.X15 ? 2 : 1;
     }
   }
 }
