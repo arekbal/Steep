@@ -50,17 +50,23 @@ namespace Steep.Tests
     }
 
     [Test]
-    public void span_where()
+    public void span_filter()
     {
       var rand = new Random(4542235);
 
       var arr = Enumerable.Range(1, 100).Select(x => rand.Next(1000)).ToArray();
 
       var span = new Span<int>(arr);
-      foreach (var item in span.Where(x => x > 400))
+      
+      bool findAtLeastOne = false;
+      foreach (ref var item in span.Filter((ref int x) => x > 400))
       {
-
+        findAtLeastOne = true;
+        Console.WriteLine(item);
+        Assert.Greater(item, 400);
       }
+
+      Assert.AreEqual(findAtLeastOne, true);
     }
   }
 }

@@ -5,15 +5,15 @@ namespace Steep.Enumerators
   public ref struct SpanEachEnumerator<T>
   {
     internal Span<T> _src;
-    internal Action<T> _action;
+    internal ActionRef<T> _action;
 
     public SList<T> ToSList()
     {
       var list = new SList<T>();
       list.ReserveItems(_src.Length);
-      foreach (var item in _src)
+      foreach (ref var item in _src)
       {
-        _action(item);
+        _action(ref item);
         list.Add(item);
       }
 
@@ -25,9 +25,9 @@ namespace Steep.Enumerators
       T[] array = new T[_src.Length];
       int count = 0;
 
-      foreach (var item in _src)
+      foreach (ref var item in _src)
       {
-        _action(item);
+        _action(ref item);
         array[count++] = item;
       }
 
@@ -38,8 +38,8 @@ namespace Steep.Enumerators
 
     public void Eval()
     {
-      foreach (var item in _src)
-        _action(item);
+      foreach (ref var item in _src)
+        _action(ref item);
     }
   }
 }

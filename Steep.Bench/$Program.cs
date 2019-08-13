@@ -7,9 +7,8 @@ namespace Steep.Bench
   class Program
   {
     static void Main(string[] args)
-    {
-     
-      var summary = BenchmarkRunner.Run<SList_Find_refs>();
+    {     
+      var summary = BenchmarkRunner.Run<ref_enumerators_vs_linq>();
     }
   }
 }

@@ -2,23 +2,33 @@
 
 namespace Steep.Enumerators
 {
-  public ref struct SpanWhereEnumerator<T>
+  public ref struct SpanFilterRefEnumerator<T>
   {
     internal Span<T> _src;
-    internal Func<T, bool> _filter;
+    internal PredicateRef<T> _filter;
     internal int _i;
+
+    public int Count() {
+      int count = 0;
+      foreach (ref var item in _src)
+        if (_filter(ref item))
+          count++;
+
+      return count;
+    }
 
     public SList<T> ToSList()
     {
       var sList = new SList<T>();
       sList.ReserveItems(_src.Length);
-      foreach (var item in _src)
-        sList.Add(item);
+      foreach (ref var item in _src)
+        if (_filter(ref item))
+          sList.Add(item);
 
       return sList;
     }
 
-    public SpanWhereEnumerator<T> GetEnumerator()
+    public SpanFilterRefEnumerator<T> GetEnumerator()
     {
       _i = -1;
       return this;
@@ -28,9 +38,9 @@ namespace Steep.Enumerators
     {
       T[] array = new T[_src.Length];
       int count = 0;
-      foreach (var item in _src)
+      foreach (ref var item in _src)
       {
-        if (_filter(item))
+        if (_filter(ref item))
           array[count++] = item;
       }
 
@@ -47,6 +57,13 @@ namespace Steep.Enumerators
     public bool MoveNext()
     {
       _i++;
+      while(!_filter(ref _src[_i]))
+      {
+        _i++;
+        if(_i >= _src.Length)
+          return false;
+      }
+
       return _i < _src.Length;
     }
     public void Reset()

@@ -44,26 +44,25 @@ namespace Steep.Tests
 
       }
 
-      Assert.IsTrue(display == "Some(32)");
-
+      Assert.AreEqual("Some(32)", display);
 
       var t = typeof(Generic<Generic<float>>);
 
       display = Print.Type(t);
 
-      Assert.IsTrue(display == "Generic<Generic<float>>");
+      Assert.AreEqual("Generic<Generic<float>>", display);
 
 
       var m = Some(3.0f);
       display = m.ToString();
 
-      Assert.IsTrue(display == "Some(3.0f)");
+      Assert.AreEqual("Some(3.0f)", display);
 
 
       var p = Some(7.0);
       display = p.ToString();
 
-      Assert.IsTrue(display == "Some(7.0)");
+      Assert.AreEqual("Some(7.0)", display);
     }
   }
 }

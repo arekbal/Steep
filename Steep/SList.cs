@@ -7,7 +7,6 @@ using Steep.ErrorHandling;
 
 namespace Steep
 {
-  public delegate bool PredicateRef<T>(ref T obj);
   // https://github.com/dotnet/corefx/issues/19814
   // https://github.com/dotnet/corefx/issues/36415
   //[DebuggerTypeProxy(typeof(Mscorlib_CollectionDebugView<>))]  
@@ -631,15 +630,21 @@ namespace Steep
     /// <internalonly/>
     // NOTE: for IList<T>
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
-      => System.Linq.Enumerable.Skip(_items, _size).GetEnumerator();
+      => System.Linq.Enumerable.Take(_items, _size).GetEnumerator();
 
     // <internalonly/>
     // NOTE: for IList<T>
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => System.Linq.Enumerable.Skip(_items, _size).GetEnumerator();
+      => System.Linq.Enumerable.Take(_items, _size).GetEnumerator();
 
-    public ReadOnlySpan<T>.Enumerator GetEnumerator()
-      => new ReadOnlySpan<T>(_items, 0, _size).GetEnumerator();
+    public Span<T>.Enumerator GetEnumerator()
+      => new Span<T>(_items, 0, _size).GetEnumerator();
+
+    public Enumerators.SpanFilterRefEnumerator<T> Filter(PredicateRef<T> predicateRef)
+      => new Enumerators.SpanFilterRefEnumerator<T>{ _src = new Span<T>(_items, 0, _size), _filter = predicateRef };
+
+    public Enumerators.SpanMapRefEnumerator<T, TMapped> Map<TMapped>(MapRef<T, TMapped> mapRef)
+      => new Enumerators.SpanMapRefEnumerator<T, TMapped>{ _src = new Span<T>(_items, 0, _size), _map = mapRef };
 
     public SList<T> GetRange(int index, int count)
     {

@@ -13,7 +13,7 @@ namespace Steep.Examples
       list.EmplaceBack() = 100;
       list.EmplaceBack() = 1000;
 
-      foreach(var x in list)
+      foreach(ref var x in list)
         WriteLine(x);
 
       return 0;

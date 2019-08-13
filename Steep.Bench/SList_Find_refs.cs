@@ -28,7 +28,7 @@ namespace Steep.Bench
     public void find_by_ref_Int32()
     {
       var m = sListInt32[950];
-      sListInt32.Find((ref int x) => x == m);       
+      sListInt32.Find((ref int x) => x == m);
     }
 
     [Benchmark]
@@ -36,7 +36,7 @@ namespace Steep.Bench
     public void find_by_value_Int32()
     {
       var m = sListInt32[950];
-      sListInt32.Find((int x) => x == m);       
+      sListInt32.Find((int x) => x == m);
     }
 
     [Benchmark(Baseline = true)]
@@ -44,7 +44,7 @@ namespace Steep.Bench
     public void find_by_ref_Int64()
     {
       var m = sListInt64[950];
-      sListInt64.Find((ref Int64 x) => x == m);       
+      sListInt64.Find((ref Int64 x) => x == m);
     }
 
     [Benchmark]
@@ -52,7 +52,7 @@ namespace Steep.Bench
     public void find_by_value_Int64()
     {
       var m = sListInt64[950];
-      sListInt64.Find((Int64 x) => x == m);       
+      sListInt64.Find((Int64 x) => x == m);
     }
 
     [Benchmark(Baseline = true)]

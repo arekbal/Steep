@@ -91,20 +91,14 @@ namespace Steep
       return sortState;
     }
 
-    public static Enumerators.SpanSelectEnumerator<T, TResult> Select<T, TResult>(this Span<T> span, Func<T, TResult> map)
-    {
-      return new Enumerators.SpanSelectEnumerator<T, TResult> { _src = span, _map = map };
-    }
+    public static Enumerators.SpanMapRefEnumerator<T, TMapped> Map<T, TMapped>(this Span<T> span, MapRef<T, TMapped> map)
+      => new Enumerators.SpanMapRefEnumerator<T, TMapped> { _src = span, _map = map };
 
-    public static Enumerators.SpanWhereEnumerator<T> Where<T>(this Span<T> span, Func<T, bool> filter)
-    {
-      return new Enumerators.SpanWhereEnumerator<T> { _src = span, _filter = filter, _i = -1 };
-    }
+    public static Enumerators.SpanFilterRefEnumerator<T> Filter<T>(this Span<T> span, PredicateRef<T> filter)
+      => new Enumerators.SpanFilterRefEnumerator<T> { _src = span, _filter = filter, _i = -1 };
 
-    public static Enumerators.SpanEachEnumerator<T> Each<T>(this Span<T> span, Action<T> action)
-    {
-      return new Enumerators.SpanEachEnumerator<T> { _src = span, _action = action };
-    }
+    public static Enumerators.SpanEachEnumerator<T> Each<T>(this Span<T> span, ActionRef<T> action)
+      => new Enumerators.SpanEachEnumerator<T> { _src = span, _action = action };
 
     public static int CountNonZero(this Span<char> span)
     {
@@ -117,7 +111,7 @@ namespace Steep
       return span.Length;
     }
 
-    public static T[] ToArray<T>(this Enumerators.SpanWhereEnumerator<T> that)
+    public static T[] ToArray<T>(this Enumerators.SpanFilterRefEnumerator<T> that)
       where T : unmanaged
     {
       if (that._src.Length == 0)
@@ -131,9 +125,9 @@ namespace Steep
         int count = 0;
         var span = buffer.AsSpan();
 
-        foreach (var item in that._src)
+        foreach (ref var item in that._src)
         {
-          if (that._filter(item))
+          if (that._filter(ref item))
             span[count++] = item;
         }
 
@@ -207,9 +201,7 @@ namespace Steep
       }
     }
 
-    public delegate ref TResult FieldGetter<T, TResult>(ref T item);
-
-    public static StrideSpan<TResult> ToStride<T, TResult>(this Span<T> that, FieldGetter<T, TResult> func)
+    public static StrideSpan<TResult> ToStride<T, TResult>(this Span<T> that, MapRef<T, TResult> func)
       where T : unmanaged
     {
       if (that.Length == 0)
