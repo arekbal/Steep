@@ -18,7 +18,7 @@ namespace Steep.Bench
     {
       array = Enumerable.Range(1, 999).ToArray();
       list = new System.Collections.Generic.List<int>(array);
-      sList = new SList<int>(array);
+      sList = SList.MoveIn(array);
 
       var length = array.Length;
       for (var i = 0; i < length; i++)

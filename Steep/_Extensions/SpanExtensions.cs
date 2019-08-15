@@ -91,7 +91,7 @@ namespace Steep
       return sortState;
     }
 
-    public static Enumerators.SpanMapRefEnumerator<T, TMapped> Map<T, TMapped>(this Span<T> span, MapRef<T, TMapped> map)
+    public static Enumerators.SpanMapRefEnumerator<T, TMapped> Map<T, TMapped>(this Span<T> span, MapRefToRef<T, TMapped> map)
       => new Enumerators.SpanMapRefEnumerator<T, TMapped> { _src = span, _map = map };
 
     public static Enumerators.SpanFilterRefEnumerator<T> Filter<T>(this Span<T> span, PredicateRef<T> filter)
@@ -201,7 +201,7 @@ namespace Steep
       }
     }
 
-    public static StrideSpan<TResult> ToStride<T, TResult>(this Span<T> that, MapRef<T, TResult> func)
+    public static StrideSpan<TResult> ToStride<T, TResult>(this Span<T> that, MapRefToRef<T, TResult> func)
       where T : unmanaged
     {
       if (that.Length == 0)

@@ -5,7 +5,7 @@ namespace Steep.Enumerators
   public ref struct SpanMapRefEnumerator<T, TMapped>
   {
     internal Span<T> _src;
-    internal MapRef<T, TMapped> _map;
+    internal MapRefToRef<T, TMapped> _map;
 
     public SList<TMapped> ToSList()
     {
