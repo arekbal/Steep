@@ -3,9 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Steep
 { 
+  [StructLayout(LayoutKind.Sequential, Size = 1, Pack = 1)]
+  [DebuggerDisplay("{DebuggerDisplay,nq}")]
   public struct Option
   {
     ///<summary>Uses NaN to store 0f and 0f to store None state</summary>
@@ -287,5 +290,12 @@ namespace Steep
         default: return false;
       }
     }
+
+     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    string DebuggerDisplay
+      => byteIsSome != 0 ? "Some" : "None";
+
+    public override string ToString()
+      => byteIsSome != 0 ? "Some" : "None";
   }
 }

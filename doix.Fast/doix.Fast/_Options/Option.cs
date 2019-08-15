@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace doix.Fast
 {
-  [StructLayout(LayoutKind.Sequential, Size = 1)]
+  [StructLayout(LayoutKind.Sequential, Size = 1, Pack = 1)]
   [DebuggerDisplay("{DebuggerDisplay,nq}")]
   public struct Option
   {

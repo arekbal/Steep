@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Steep
 {
+  [StructLayout(LayoutKind.Sequential, Pack = 1)]
+  [DebuggerDisplay("{DebuggerDisplay,nq}")]
   public struct Option<T>
   {
     internal T val;
@@ -17,8 +19,6 @@ namespace Steep
     public bool IsSome 
       => byteIsSome != 0;
 
-    // No ifs on get. That just 'should' be faster. 
-    // TODO: Prove it in benchmarks
     public T Val => val;
 
     public bool TryVal(out T value)
