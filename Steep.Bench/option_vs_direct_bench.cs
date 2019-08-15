@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using static LangExt;
-
-using static Steep.Option;
+using static Steep.LangExt;
 
 namespace Steep.Bench
 {
@@ -24,7 +22,7 @@ namespace Steep.Bench
       for (var i = 0; i < valuesArray.Length; i++)
       {
         valuesArray[i] = i;
-        optionsArray[i] = Some(i);
+        optionsArray[i] = i;
       }
     }
 

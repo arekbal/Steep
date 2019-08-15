@@ -8,6 +8,10 @@ using System.Collections.Generic;
 using Steep.ErrorHandling;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
+  // these issues point out problem with original List<T>:
+  // https://github.com/dotnet/corefx/issues/19814
+  // https://github.com/dotnet/corefx/issues/36415
+
 namespace Steep
 {
   public static class SList
@@ -27,10 +31,6 @@ namespace Steep
     public static SList<T> MoveIn<T>(T[] arr, int size)
       => SList<T>.MoveIn(arr, size);
   }
-
-  // these issues point out problems with original List<T>:
-  // https://github.com/dotnet/corefx/issues/19814
-  // https://github.com/dotnet/corefx/issues/36415
 
   // [DebuggerTypeProxy(typeof(Mscorlib_CollectionDebugView<>))]  
   [DebuggerDisplay("Count = {Count}")]

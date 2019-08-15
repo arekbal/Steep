@@ -3,8 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using static LangExt;
-using static Steep.Option;
+using static Steep.LangExt;
 using static Steep.Result;
 
 namespace Steep.Tests

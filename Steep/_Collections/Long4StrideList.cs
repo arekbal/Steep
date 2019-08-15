@@ -3,9 +3,9 @@ using System.Runtime.CompilerServices;
 
 namespace Steep
 {
-  public class Long4InterleavedList : StrideList<long, long, long, long>
+  public class Long4StrideList : StrideList<long, long, long, long>
   {
-    public Long4InterleavedList(int capacity = DefaultCapacity) : base(capacity)
+    public Long4StrideList(int capacity = DefaultCapacity) : base(capacity)
     {
     }
 

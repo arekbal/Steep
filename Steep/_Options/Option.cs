@@ -293,9 +293,9 @@ namespace Steep
 
      [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     string DebuggerDisplay
-      => byteIsSome != 0 ? "Some" : "None";
+      => byteIsSome != 0 ? "Some()" : "None";
 
     public override string ToString()
-      => byteIsSome != 0 ? "Some" : "None";
+      => byteIsSome != 0 ? "Some()" : "None";
   }
 }

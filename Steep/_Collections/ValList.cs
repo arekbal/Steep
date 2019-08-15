@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using static System.Runtime.CompilerServices.MethodImplOptions;
 
 namespace Steep
 {
@@ -13,13 +14,13 @@ namespace Steep
     int _length;
     public int Length
     {
-      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      [MethodImpl(AggressiveInlining)]
       get => _length;
     }
 
     public int Capacity
     {
-      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      [MethodImpl(AggressiveInlining)]
       get => _buffer.Length;
     }
 
@@ -28,11 +29,11 @@ namespace Steep
       _buffer.Alloc(capacity);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(AggressiveInlining)]
     public void TrimExcess(bool forceCap = false)
       => Resize(_length, forceCap);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(AggressiveInlining)]
     public void Resize(int newCap, bool forceCap = false)
     {
       if (forceCap)
@@ -58,7 +59,7 @@ namespace Steep
       }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(AggressiveInlining)]
     public ref TValue EmplaceBack()
     {
       if (_length == _buffer.Length)

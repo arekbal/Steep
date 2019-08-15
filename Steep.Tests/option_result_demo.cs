@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using doix.Fast;
 
-using static LangExt;
-using static Steep.Option;
+using static Steep.LangExt;
 using static Steep.Result;
 
 namespace Steep.Tests
@@ -189,10 +188,6 @@ namespace Steep.Tests
 
     */
   }
-
-
-
-
 
   public class ResultCatchAttribute : Attribute
   {

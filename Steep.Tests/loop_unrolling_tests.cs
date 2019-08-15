@@ -3,8 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using static LangExt;
-using static Steep.Option;
+using static Steep.LangExt;
 
 namespace Steep.Tests
 {
@@ -19,13 +18,13 @@ namespace Steep.Tests
     {
       var x = not(true);
       var p = None;
-      return new ValueTask<Option<int>>(Some(12));
+      return new ValueTask<Option<int>>(12);
     }
 
     [Test]
     public async Task debugger_display()
     {
-      var oNullable = Some<Nullable<int>>(new Nullable<int>(32));
+      var oNullable = Some<Nullable<int>>(32);
 
       var o = oNullable.OrBind('4')(r => (char)r);
 
