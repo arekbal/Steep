@@ -2,6 +2,29 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "clean",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "clean",
+                "${workspaceFolder}/Steep.sln",
+                "/property:GenerateFullPaths=true"
+            ],            
+            "problemMatcher": "$msCompile",
+        },
+        {
+            "label": "build-solution",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Steep.sln",
+                "/property:GenerateFullPaths=true"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
+        },       
+        {
             "label": "build-core",
             "command": "dotnet",
             "type": "process",
@@ -12,7 +35,7 @@
             ],
             "problemMatcher": "$msCompile",
             "group": "build"
-        },
+        },       
         {
             "label": "build-examples",
             "command": "dotnet",

@@ -37,7 +37,7 @@ namespace Steep
         Throw.OptionIsNone();
 
         // unreachable as expected
-        return default(T);
+        return default;
       }
       set
       {

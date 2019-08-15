@@ -26,7 +26,7 @@ namespace Steep.Bench
       sList32Bytes = SList.MoveIn(Enumerable.Range(1, 999).Select(x => new Value32 { Value = x }).ToArray());
     }   
     
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     [BenchmarkCategory("Int32")]
     public void find_by_ref_Int32()
     {
@@ -34,7 +34,7 @@ namespace Steep.Bench
       sListInt32.Find((ref int x) => x == m);
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     [BenchmarkCategory("Int32")]
     public void find_by_value_Int32()
     {
@@ -42,7 +42,7 @@ namespace Steep.Bench
       sListInt32.Find(x => x == m);
     }
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     [BenchmarkCategory("Int64")]
     public void find_by_ref_Int64()
     {
@@ -50,7 +50,7 @@ namespace Steep.Bench
       sListInt64.Find((ref Int64 x) => x == m);
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     [BenchmarkCategory("Int64")]
     public void find_by_value_Int64()
     {
@@ -58,7 +58,7 @@ namespace Steep.Bench
       sListInt64.Find((Int64 x) => x == m);
     }
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     [BenchmarkCategory("32Bytes")]
     public void find_by_ref_32Bytes()
     {
@@ -66,7 +66,7 @@ namespace Steep.Bench
       sList32Bytes.Find((ref Value32 x) => x.Value == m.Value);
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     [BenchmarkCategory("32Bytes")]
     public void find_by_value_32Bytes()
     {
