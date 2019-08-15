@@ -9,8 +9,8 @@
                 "clean",
                 "${workspaceFolder}/Steep.sln",
                 "/property:GenerateFullPaths=true"
-            ],            
-            "problemMatcher": "$msCompile",
+            ],
+            "problemMatcher": "$msCompile"
         },
         {
             "label": "build-solution",
@@ -22,8 +22,11 @@
                 "/property:GenerateFullPaths=true"
             ],
             "problemMatcher": "$msCompile",
-            "group": "build"
-        },       
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
         {
             "label": "build-core",
             "command": "dotnet",
@@ -35,7 +38,7 @@
             ],
             "problemMatcher": "$msCompile",
             "group": "build"
-        },       
+        },
         {
             "label": "build-examples",
             "command": "dotnet",
@@ -46,10 +49,7 @@
                 "/property:GenerateFullPaths=true"
             ],
             "problemMatcher": "$msCompile",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "group": "build"
         },
         {
             "label": "build-bench",
@@ -86,7 +86,7 @@
         {
             "label": "test",
             "command": "dotnet",
-            "type": "process",            
+            "type": "process",
             "args": [
                 "test",
                 "${workspaceFolder}/Steep.Tests/Steep.Tests.csproj",
@@ -107,7 +107,7 @@
                 "${workspaceFolder}/Steep/Steep.csproj",
                 "/property:GenerateFullPaths=true"
             ],
-            "problemMatcher": "$msCompile",
+            "problemMatcher": "$msCompile"
         },
         {
             "label": "watch",
