@@ -5,7 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace doix.Fast.Bench
+using static BenchmarkDotNet.Configs.BenchmarkLogicalGroupRule;
+using static BenchmarkDotNet.Order.SummaryOrderPolicy;
+
+namespace Steep.Bench
 {
   public struct DisposableStruct : IDisposable
   {
@@ -23,60 +26,16 @@ namespace doix.Fast.Bench
     {
       disposableStruct.Dispose();
     }
-  }
+  } 
 
-  public struct DisposableStructStructContainer : IDisposable
-  {
-    DisposableStruct disposableStruct;
-
-    public void Dispose()
-    {
-      disposableStruct.Dispose();
-    }
-  }
-
- 
-
-  [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-  [CategoriesColumn]
+  [CategoriesColumn]  
+  [Orderer(FastestToSlowest)]
+  [GroupBenchmarksBy(ByParams, ByCategory)]  
   public class try_finally_vs_using
   {
     const int Length = 50_000_000;
 
-    [Benchmark]
-    public void usings()
-    {
-      var x = 0;
-      var disp = new DisposableStruct();
-      var length = Length;
-      for (var i = 0; i < length; i++)
-      {
-        using (disp)
-        {
-          x += i;
-        }
-      }
-    }    
-
-    [Benchmark(Baseline = true)]
-    public void try_finallies()
-    {
-      var x = 0;
-      var disp = new DisposableStruct();
-      var length = Length;
-      for (var i = 0; i < length; i++)
-      {
-        try
-        {
-          x += i;
-        }
-        finally
-        {
-          disp.Dispose();
-        }
-      }
-    }
-
+    
     public struct GenericDisposableUsing<TDisposable> : IDisposable
       where TDisposable : struct, IDisposable
     {
@@ -115,6 +74,41 @@ namespace doix.Fast.Bench
           {
             disposable.Dispose();
           }
+        }
+      }
+    }
+
+
+    [Benchmark]
+    public void usings()
+    {
+      var x = 0;
+      var disp = new DisposableStruct();
+      var length = Length;
+      for (var i = 0; i < length; i++)
+      {
+        using (disp)
+        {
+          x += i;
+        }
+      }
+    }    
+
+    [Benchmark(Baseline = true)]
+    public void try_finallies()
+    {
+      var x = 0;
+      var disp = new DisposableStruct();
+      var length = Length;
+      for (var i = 0; i < length; i++)
+      {
+        try
+        {
+          x += i;
+        }
+        finally
+        {
+          disp.Dispose();
         }
       }
     }

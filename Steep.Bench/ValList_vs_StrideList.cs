@@ -3,9 +3,13 @@ using BenchmarkDotNet.Configs;
 using System;
 using System.Linq;
 
+using static BenchmarkDotNet.Configs.BenchmarkLogicalGroupRule;
+using static BenchmarkDotNet.Order.SummaryOrderPolicy;
+
 namespace Steep.Bench
 {
-  [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
+  [GroupBenchmarksBy(ByCategory)]  
+  [Orderer(FastestToSlowest)]
   [CategoriesColumn]
   public class ValList_vs_StrideList : IDisposable
   {
@@ -44,7 +48,7 @@ namespace Steep.Bench
       }
     }
 
-    [Benchmark, BenchmarkCategory("16 Bytes Of Int")]
+    [Benchmark, BenchmarkCategory("4 Bytes Of Int")]
     public void list_of_4byte()
     {
       var sum = 0;
@@ -62,7 +66,7 @@ namespace Steep.Bench
         throw new Exception("Failed Sum calculation");
     }
 
-    [Benchmark, BenchmarkCategory("16 Bytes Of Int")]
+    [Benchmark, BenchmarkCategory("4 Bytes Of Int")]
     public void list_foreach_of_4byte()
     {
       var sum = 0;
@@ -80,7 +84,7 @@ namespace Steep.Bench
         throw new Exception("Failed Sum calculation");
     }
 
-    [Benchmark, BenchmarkCategory("16 Bytes Of Int")]
+    [Benchmark, BenchmarkCategory("4 Bytes Of Int")]
     public void list_as_span_of_4byte()
     {
       var sum = 0;
@@ -100,7 +104,7 @@ namespace Steep.Bench
         throw new Exception("Failed Sum calculation");
     }
 
-    [Benchmark, BenchmarkCategory("16 Bytes Of Int")]
+    [Benchmark, BenchmarkCategory("4 Bytes Of Int")]
     public void list_as_span_foreach_of_4byte()
     {
       var sum = 0;
@@ -120,7 +124,7 @@ namespace Steep.Bench
         throw new Exception("Failed Sum calculation");
     }
 
-    [Benchmark, BenchmarkCategory("16 Bytes Of Int")]
+    [Benchmark, BenchmarkCategory("4 Bytes Of Int")]
     public void list_through_array_of_4byte()
     {
       var sum = 0;
@@ -140,7 +144,7 @@ namespace Steep.Bench
         throw new Exception("Failed Sum calculation");
     }
 
-    [Benchmark, BenchmarkCategory("16 Bytes Of Int")]
+    [Benchmark, BenchmarkCategory("4 Bytes Of Int")]
     public void list_through_array_foreach_of_4byte()
     {
       var sum = 0;
@@ -197,7 +201,7 @@ namespace Steep.Bench
         throw new Exception("Failed Sum calculation");
     }
 
-    [Benchmark, BenchmarkCategory("16 Bytes Of Int")]
+    [Benchmark, BenchmarkCategory("4 Bytes Of Int")]
     public void valuelist_of_4byte()
     {
       var sum = 0;

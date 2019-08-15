@@ -110,7 +110,7 @@ namespace Steep
     {
       var list = new SList<T>();
 
-       if (collection == null)
+       if (collection is null)
         Throw.ArgOutOfRange(nameof(collection));
     
       Contract.EndContractBlock();
@@ -233,20 +233,13 @@ namespace Steep
       }
     }
 
-    static bool IsCompatibleObject(object value)
-    {
-      // Non-null values are fine.  Only accept nulls if T is a class or Nullable<U>.
-      // Note that default(T) is not equal to null for value types except when T is Nullable<U>. 
-      return ((value is T) || (value == null && default(T) == null));
-    }
-
     // Adds the given object to the end of this list. The size of the list is
     // increased by one. If required, the capacity of the list is doubled
     // before adding the new element.
     //
     public void Add(T item)
     {
-      if (_items == null)
+      if (_items is null)
         _items = new T[DefaultCapacity];
       else if (_size == _items.Length)
         EnsureCapacity(_size + 1);
@@ -355,10 +348,10 @@ namespace Steep
     //
     public bool Contains(T item) // TODO: Move to extension method as it internally checks if it is a class or struct
     {
-      if ((Object)item == null)
+      if ((Object)item is null)
       {
         for (int i = 0; i < _size; i++)
-          if ((Object)_items[i] == null)
+          if ((Object)_items[i] is null)
             return true;
 
         return false;
@@ -403,7 +396,7 @@ namespace Steep
     // whichever is larger.
     internal void EnsureCapacity(int min)
     {
-      if (_items == null)
+      if (_items is null)
       {
         _items = new T[min];
         return;
@@ -433,7 +426,7 @@ namespace Steep
 
     public OptionRef<T> Find(Predicate<T> match)
     {
-      if (match == null)
+      if (match is null)
         Throw.ArgOutOfRange("match");
 
       Contract.EndContractBlock();
@@ -447,7 +440,7 @@ namespace Steep
 
     public OptionRef<T> Find(PredicateRef<T> match)
     {
-      if (match == null)
+      if (match is null)
         Throw.ArgOutOfRange("match");
 
       Contract.EndContractBlock();
@@ -461,7 +454,7 @@ namespace Steep
 
     public SList<T> FindAll(Predicate<T> match)
     {
-      if (match == null)
+      if (match is null)
         Throw.ArgOutOfRange("match");
 
       Contract.EndContractBlock();
@@ -477,7 +470,7 @@ namespace Steep
 
     public SList<T> FindAll(PredicateRef<T> match)
     {
-      if (match == null)
+      if (match is null)
         Throw.ArgOutOfRange("match");
 
       Contract.EndContractBlock();
@@ -531,7 +524,7 @@ namespace Steep
       if (count < 0 || startIndex > _size - count)
         Throw.ArgOutOfRange(nameof(count), "Count");
 
-      if (match == null)
+      if (match is null)
         Throw.ArgOutOfRange(nameof(match));
 
       Contract.Ensures(Contract.Result<int>() >= -1);
@@ -556,7 +549,7 @@ namespace Steep
       if (count < 0 || startIndex > _size - count)
         Throw.ArgOutOfRange(nameof(count), "Count");
 
-      if (match == null)
+      if (match is null)
         Throw.ArgOutOfRange(nameof(match));
 
       Contract.Ensures(Contract.Result<int>() >= -1);
@@ -574,7 +567,7 @@ namespace Steep
 
     public T FindLast(Predicate<T> match)
     {
-      if (match == null)
+      if (match is null)
         Throw.ArgOutOfRange("match");
 
       Contract.EndContractBlock();
@@ -588,7 +581,7 @@ namespace Steep
 
     public T FindLast(PredicateRef<T> match)
     {
-      if (match == null)
+      if (match is null)
         Throw.ArgOutOfRange("match");
 
       Contract.EndContractBlock();
@@ -634,7 +627,7 @@ namespace Steep
 
     public int FindLastIndex(int startIndex, int count, Predicate<T> match)
     {
-      if (match == null)
+      if (match is null)
         Throw.ArgOutOfRange(nameof(match));
 
       Contract.Ensures(Contract.Result<int>() >= -1);
@@ -667,7 +660,7 @@ namespace Steep
 
     public int FindLastIndex(int startIndex, int count, PredicateRef<T> match)
     {
-      if (match == null)
+      if (match is null)
         Throw.ArgOutOfRange(nameof(match));
 
       Contract.Ensures(Contract.Result<int>() >= -1);
@@ -812,7 +805,7 @@ namespace Steep
 
       Contract.EndContractBlock();
 
-      if (_items == null)
+      if (_items is null)
         _items = new T[DefaultCapacity];
       else if (_size == _items.Length)
         EnsureCapacity(_size + 1);
@@ -832,7 +825,7 @@ namespace Steep
     public void InsertRange<TEnumerable>(int index, TEnumerable collection)
       where TEnumerable : System.Collections.Generic.IEnumerable<T>
     {
-      if (collection == null)
+      if (collection is null)
         Throw.ArgOutOfRange("collection");
 
       if ((uint)index > (uint)_size)
@@ -970,7 +963,7 @@ namespace Steep
     // The complexity is O(n).   
     public int RemoveAll(Predicate<T> match)
     {
-      if (match == null)
+      if (match is null)
         Throw.ArgNull("match");
 
       Contract.Ensures(Contract.Result<int>() >= 0);
@@ -1006,7 +999,7 @@ namespace Steep
     // The complexity is O(n).   
     public int RemoveAll(PredicateRef<T> match)
     {
-      if (match == null)
+      if (match is null)
         Throw.ArgNull("match");
 
       Contract.Ensures(Contract.Result<int>() >= 0);

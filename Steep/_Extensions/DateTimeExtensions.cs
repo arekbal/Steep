@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace doix.Fast
+namespace Steep
 {
   public static class DateTimeExtensions
   {

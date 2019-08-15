@@ -6,18 +6,22 @@ using System.Text;
 
 using static Steep.LangExt;
 
+using static BenchmarkDotNet.Configs.BenchmarkLogicalGroupRule;
+using static BenchmarkDotNet.Order.SummaryOrderPolicy;
+
 namespace Steep.Bench
 {
-  [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-  [CategoriesColumn]
-  public class option_vs_direct_bench
+   [CategoriesColumn]
+  [Orderer(FastestToSlowest)]
+  [GroupBenchmarksBy(ByCategory)] 
+  public class Option_vs_direct
   {
     public const int Length = 500_000;
 
     int[] valuesArray = new int[Length];
     Option<int>[] optionsArray = new Option<int>[Length];
 
-    public option_vs_direct_bench()
+    public Option_vs_direct()
     {
       for (var i = 0; i < valuesArray.Length; i++)
       {

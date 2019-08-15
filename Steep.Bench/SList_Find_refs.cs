@@ -3,11 +3,14 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 
+using static BenchmarkDotNet.Configs.BenchmarkLogicalGroupRule;
+using static BenchmarkDotNet.Order.SummaryOrderPolicy;
+
 namespace Steep.Bench
 {
-  //[DisassemblyDiagnoser(printAsm: true)]
-  [InProcess]
-  [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]  
+  [CategoriesColumn]
+  [Orderer(FastestToSlowest)]
+  [GroupBenchmarksBy(ByCategory)] 
   public class SList_Find_refs
   {
     SList<Int32> sListInt32;

@@ -3,10 +3,15 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using BenchmarkDotNet.Attributes;
 
+using static BenchmarkDotNet.Configs.BenchmarkLogicalGroupRule;
+using static BenchmarkDotNet.Order.SummaryOrderPolicy;
+
 namespace Steep.Bench
-{
-  //[DisassemblyDiagnoser(printAsm: true)]
-  public class list_vs_array
+{  
+  [CategoriesColumn]
+  [Orderer(FastestToSlowest)]
+  [GroupBenchmarksBy(ByCategory)] 
+  public class List_vs_Array
   {
     int[] array;
     System.Collections.Generic.List<int> list;
@@ -14,7 +19,7 @@ namespace Steep.Bench
 
     int calcSum;
 
-    public list_vs_array()
+    public List_vs_Array()
     {
       array = Enumerable.Range(1, 999).ToArray();
       list = new System.Collections.Generic.List<int>(array);
@@ -120,7 +125,7 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    public void steeplist_by_array_index()
+    public void slist_by_array_index()
     {
       var sum = 0;
       var length = sList.Count;
@@ -133,7 +138,7 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    public void steeplist_by_span_index()
+    public void slist_by_span_index()
     {
       var sum = 0;
       var length = sList.Count;
@@ -146,7 +151,7 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    public void steeplist_by_span_enumerator()
+    public void slist_by_span_enumerator()
     {
       var sum = 0;
       var length = sList.Count;
@@ -159,20 +164,20 @@ namespace Steep.Bench
         throw new Exception("calcSum != sum");
     }
 
-    [Benchmark(Baseline = true)]
-    public void steeplist_by_span_unrolled_vectors()
+    [Benchmark]
+    public void slist_by_span_ForEach()
     {
-      var sum = sList.AsSpan().Sum();
+      int sum = 0;
+      sList.AsSpan().ForEach(x => sum += x);
 
       if (calcSum != sum)
         throw new Exception("calcSum != sum");
     }
 
-    [Benchmark]
-    public void steeplist_by_span_ForEach()
+    [Benchmark(Baseline = true)]
+    public void slist_by_span_unrolled_vectors()
     {
-      int sum = 0;
-      sList.AsSpan().ForEach(x => sum += x);
+      var sum = sList.AsSpan().Sum();
 
       if (calcSum != sum)
         throw new Exception("calcSum != sum");

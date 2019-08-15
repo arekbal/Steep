@@ -7,8 +7,13 @@ using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 
-namespace doix.Fast.Bench
+using static BenchmarkDotNet.Configs.BenchmarkLogicalGroupRule;
+using static BenchmarkDotNet.Order.SummaryOrderPolicy;
+
+namespace Steep.Bench
 { 
+  [GroupBenchmarksBy(ByCategory, ByParams)]
+  [Orderer(FastestToSlowest)]
   public class vectorization_locality
   {
     int[] data;
@@ -24,7 +29,7 @@ namespace doix.Fast.Bench
         baseSum += data[i];
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public void array()
     {
       var sum = 0;
@@ -36,7 +41,7 @@ namespace doix.Fast.Bench
         throw new Exception("baseSum != sum");
     }
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public void vectorized()
     {
       var sum = 0;

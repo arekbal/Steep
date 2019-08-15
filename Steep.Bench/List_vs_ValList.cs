@@ -9,7 +9,7 @@ namespace Steep.Bench
 {
   [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
   [CategoriesColumn]
-  public class list_vs_valuelist : IDisposable
+  public class List_vs_ValList : IDisposable
   {
     readonly int _length = 50000;
 
@@ -25,7 +25,7 @@ namespace Steep.Bench
     readonly List<Value128> _listOf128Bytes;
     readonly ValList<Value128> _valsOf128Bytes;
 
-    public list_vs_valuelist()
+    public List_vs_ValList()
     {
       _listOfLongs = new List<long>(_length);
       foreach (var x in Enumerable.Range(1, _length))

@@ -3,10 +3,13 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 
+using static BenchmarkDotNet.Configs.BenchmarkLogicalGroupRule;
+using static BenchmarkDotNet.Order.SummaryOrderPolicy;
+
 namespace Steep.Bench
-{
-  //[DisassemblyDiagnoser(printAsm: true)]
-  [InProcess]
+{ 
+  [Orderer(FastestToSlowest)]
+  [CategoriesColumn]
   [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]  
   public class ref_enumerators_vs_linq
   {

@@ -29,6 +29,22 @@
             }
         },
         {
+            "label": "build-bench",
+            "command": "dotnet",
+            "type": "process",
+            "options": {
+                "cwd": "${workspaceFolder}/Steep.Bench"
+            },
+            "args": [
+                "build",
+                "-c",
+                "RELEASE",
+                "/property:GenerateFullPaths=true"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
+        },
+        {
             "label": "bench",
             "command": "dotnet",
             "type": "process",
