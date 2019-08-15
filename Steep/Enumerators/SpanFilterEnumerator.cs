@@ -8,45 +8,10 @@ namespace Steep.Enumerators
     internal PredicateRef<T> _filter;
     internal int _i;
 
-    public int Count() {
-      int count = 0;
-      foreach (ref var item in _src)
-        if (_filter(ref item))
-          count++;
-
-      return count;
-    }
-
-    public SList<T> ToSList()
-    {
-      var sList = new SList<T>();
-      sList.ReserveItems(_src.Length);
-      foreach (ref var item in _src)
-        if (_filter(ref item))
-          sList.Add(item);
-
-      return sList;
-    }
-
     public SpanFilterRefEnumerator<T> GetEnumerator()
     {
       _i = -1;
       return this;
-    }
-
-    public T[] ToArray()
-    {
-      T[] array = new T[_src.Length];
-      int count = 0;
-      foreach (ref var item in _src)
-      {
-        if (_filter(ref item))
-          array[count++] = item;
-      }
-
-      Array.Resize(ref array, count);
-
-      return array;
     }
 
     public ref T Current
@@ -71,10 +36,47 @@ namespace Steep.Enumerators
       _i = -1;
     }
 
-    public void Dispose()
+    // extra unnecesarry call...
+    // public void Dispose()
+    // {
+    //   _src = null;
+    //   _filter = null;
+    // }
+
+    public int Count() 
     {
-      _src = null;
-      _filter = null;
+      int count = 0;
+      foreach (ref var item in _src)
+        if (_filter(ref item))
+          count++;
+
+      return count;
+    }
+
+    public SList<T> ToSList()
+    {
+      var sList = new SList<T>();
+      sList.Capacity = _src.Length;
+      foreach (ref var item in _src)
+        if (_filter(ref item))
+          sList.Push(item);
+
+      return sList;
+    }
+
+    public T[] ToArray()
+    {
+      T[] array = new T[_src.Length];
+      int count = 0;
+      foreach (ref var item in _src)
+      {
+        if (_filter(ref item))
+          array[count++] = item;
+      }
+
+      Array.Resize(ref array, count);
+
+      return array;
     }
   }
 }

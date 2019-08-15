@@ -37,7 +37,7 @@ namespace Steep
   [Serializable]
   public struct SList<T> : IList<T>, IReadOnlyList<T>
   {
-    const int DefaultCapacity = 4;
+    internal const int DefaultCapacity = 4;
 
     internal const int Array_MaxArrayLength = 0X7FEFFFFF;
     internal const int Array_MaxByteArrayLength = 0x7FFFFFC7;
@@ -67,17 +67,6 @@ namespace Steep
 
     public ArraySegment<T> AsArraySegment()
       => _size == 0 ? new ArraySegment<T>() : new ArraySegment<T>(_items, 0, _size);
-
-    public int ReserveItems(int count) // TODO: makes sense only with structs... move it from `public` to extension method.
-    {
-      EnsureCapacity(_size + count);
-
-      var oldSize = _size;
-
-      _size += count;
-
-      return oldSize;
-    }
 
     public SList(int capacity)
     {
@@ -126,7 +115,7 @@ namespace Steep
         }
       }
       else
-        list.AddRange(collection);  
+        list.PushRange(collection);  
         
       return list;
     }
@@ -237,7 +226,8 @@ namespace Steep
     // increased by one. If required, the capacity of the list is doubled
     // before adding the new element.
     //
-    public void Add(T item)
+    // NOTE: intentionally renamed to Push from Add() to prevent collection initializers construction, promote faster MoveIn(array) instead.
+    public void Push(T item)
     {
       if (_items is null)
         _items = new T[DefaultCapacity];
@@ -247,11 +237,16 @@ namespace Steep
       _items[_size++] = item;
     }
 
+    void ICollection<T>.Add(T item) 
+    {
+      this.Push(item);
+    }
+
     // Adds the elements of the given collection to the end of this list. If
     // required, the capacity of the list is increased to twice the previous
     // capacity or the new size, whichever is larger.
     //
-    public void AddRange<TCollection>(TCollection collection)
+    public void PushRange<TCollection>(TCollection collection)
     where TCollection : System.Collections.Generic.IEnumerable<T>
     {
       Contract.Ensures(Count >= Contract.OldValue(Count));
@@ -463,7 +458,7 @@ namespace Steep
 
       for (int i = 0; i < _size; i++)
         if (match(_items[i]))
-          list.Add(_items[i]);
+          list.Push(_items[i]);
 
       return list;
     }
@@ -479,7 +474,7 @@ namespace Steep
 
       for (int i = 0; i < _size; i++)
         if (match(ref _items[i]))
-          list.Add(_items[i]);
+          list.Push(_items[i]);
 
       return list;
     }
@@ -705,7 +700,10 @@ namespace Steep
     public Enumerators.SpanFilterRefEnumerator<T> Filter(PredicateRef<T> predicateRef)
       => new Enumerators.SpanFilterRefEnumerator<T> { _src = new Span<T>(_items, 0, _size), _filter = predicateRef };
 
-    public Enumerators.SpanMapRefEnumerator<T, TMapped> Map<TMapped>(MapRefToRef<T, TMapped> mapRef)
+    public Enumerators.SpanMapRefToRefEnumerator<T, TMapped> Map<TMapped>(MapRefToRef<T, TMapped> mapRef)
+      => new Enumerators.SpanMapRefToRefEnumerator<T, TMapped> { _src = new Span<T>(_items, 0, _size), _map = mapRef };
+
+    public Enumerators.SpanMapRefEnumerator<T, TMapped> Map<TMapped>(MapRef<T, TMapped> mapRef)
       => new Enumerators.SpanMapRefEnumerator<T, TMapped> { _src = new Span<T>(_items, 0, _size), _map = mapRef };
 
     public SList<T> GetRange(int index, int count) // TODO: replace with span slices and so on...

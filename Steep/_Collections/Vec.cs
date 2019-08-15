@@ -5,11 +5,13 @@ using Steep.ErrorHandling;
 
 namespace Steep
 {
+  // TODO: small memory allocator
   [UnsafeValueType]
   public struct Vec<T> : IDisposable
   where T : unmanaged
   {
-    public readonly static int SizeOfItem = Unsafe.SizeOf<T>();
+    const int DefaultCapacity = 8; // TODO: Replace with MinByteSize
+    static int SizeOfItem = Unsafe.SizeOf<T>();
 
     IntPtr p;
     int length;
@@ -63,10 +65,13 @@ namespace Steep
     {
       if (p == IntPtr.Zero)
       {
-        p = Marshal.AllocHGlobal(4 * SizeOfItem);
-        capacity = 4;
+        p = Marshal.AllocHGlobal(DefaultCapacity * SizeOfItem);
+        capacity = DefaultCapacity;
         length++;
-        unsafe { return ref Unsafe.AsRef<T>(new IntPtr(p.ToInt64() + ((length - 1) * SizeOfItem)).ToPointer()); }
+        unsafe 
+        { 
+          return ref Unsafe.AsRef<T>(new IntPtr(p.ToInt64() + ((length - 1) * SizeOfItem)).ToPointer());
+        }
       }
 
       if (capacity == length)
@@ -76,7 +81,10 @@ namespace Steep
         p = Marshal.ReAllocHGlobal(p, new IntPtr(capacity * SizeOfItem));
       }
       length++;
-      unsafe { return ref Unsafe.AsRef<T>(new IntPtr(p.ToInt64() + ((length - 1) * SizeOfItem)).ToPointer()); }
+      unsafe 
+      {
+        return ref Unsafe.AsRef<T>(new IntPtr(p.ToInt64() + ((length - 1) * SizeOfItem)).ToPointer()); 
+      }
     }
 
     public void Reserve(int count)
@@ -153,7 +161,10 @@ namespace Steep
         if (length == 0)
           return new Span<T>();
 
-        unsafe { return new Span<T>(p.ToPointer(), length); }
+        unsafe 
+        {
+          return new Span<T>(p.ToPointer(), length); 
+        }
       }
     }
 

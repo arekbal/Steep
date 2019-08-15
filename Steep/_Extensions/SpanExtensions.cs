@@ -91,7 +91,10 @@ namespace Steep
       return sortState;
     }
 
-    public static Enumerators.SpanMapRefEnumerator<T, TMapped> Map<T, TMapped>(this Span<T> span, MapRefToRef<T, TMapped> map)
+    public static Enumerators.SpanMapRefToRefEnumerator<T, TMapped> Map<T, TMapped>(this Span<T> span, MapRefToRef<T, TMapped> map)
+      => new Enumerators.SpanMapRefToRefEnumerator<T, TMapped> { _src = span, _map = map };
+
+    public static Enumerators.SpanMapRefEnumerator<T, TMapped> Map<T, TMapped>(this Span<T> span, MapRef<T, TMapped> map)
       => new Enumerators.SpanMapRefEnumerator<T, TMapped> { _src = span, _map = map };
 
     public static Enumerators.SpanFilterRefEnumerator<T> Filter<T>(this Span<T> span, PredicateRef<T> filter)
@@ -140,15 +143,7 @@ namespace Steep
     }
 
     public static SList<T> ToSList<T>(this Span<T> that)
-    {
-      var list = new SList<T>();
-      list.ReserveItems(that.Length);
-
-      for (var i = 0; i < that.Length; i++)
-        list.ItemByRef(i) = that[i];
-
-      return list;
-    }
+      => SList<T>.MoveIn(that.ToArray());
 
     public static Span<T> SkipTake<T>(this Span<T> that, int skip, int take)
     {

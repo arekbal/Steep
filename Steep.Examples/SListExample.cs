@@ -8,13 +8,21 @@ namespace Steep.Examples
     public int Exec() 
     {
       var list = new SList<int>(4);
-      list.EmplaceBack() = 1;
-      list.EmplaceBack() = 10;
-      list.EmplaceBack() = 100;
-      list.EmplaceBack() = 1000;
+      list.Emplace() = 1;
+      list.Emplace() = 10;
+      list.Emplace() = 100;
+      list.Emplace() = 1000;
 
       foreach(ref var x in list)
         WriteLine(x);
+
+      foreach(ref var x in list.Filter((ref int x) => x < 100))
+        WriteLine(x);
+
+      foreach(var x in list.Map((ref int x) => (char)x + 10))
+        WriteLine(x);
+
+      var aList = SList.MoveIn(new []{ 'a', 'b', 'c'});
 
       return 0;
     }

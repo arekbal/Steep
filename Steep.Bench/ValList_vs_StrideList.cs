@@ -33,8 +33,8 @@ namespace Steep.Bench
       {
         valList.EmplaceBack() = i;
         valListValue16.EmplaceBack().Value = i;
-        plainIntList.Add(i);
-        plainValue16List.Add(new Value16 { Value = i });
+        plainIntList.Push(i);
+        plainValue16List.Push(new Value16 { Value = i });
         strideList.EmplaceBack().W = i;
       }
 

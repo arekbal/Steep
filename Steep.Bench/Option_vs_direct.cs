@@ -21,6 +21,7 @@ namespace Steep.Bench
     int[] valuesArray = new int[Length];
     Option<int>[] optionsArray = new Option<int>[Length];
     Option.NotZeroInt32[] notZeroOptionsArray = new Option.NotZeroInt32[Length];
+    Option.NotMaxInt32[] notMaxOptionsArray = new Option.NotMaxInt32[Length];
 
     public Option_vs_direct()
     {
@@ -29,6 +30,7 @@ namespace Steep.Bench
         valuesArray[i] = i;
         optionsArray[i] = i;
         notZeroOptionsArray[i] = Option.NotZero(i);
+        notMaxOptionsArray[i] = Option.NotMax(i);
       }
     }
 
@@ -65,6 +67,18 @@ namespace Steep.Bench
       for (var i = 1; i < length; i++)
       {
         sum += notZeroOptionsArray[i].Val;
+      }
+    }
+
+    [Benchmark]
+    [BenchmarkCategory("Int32")]
+    public void option_value_not_max_int32()
+    {
+      var sum = 0;
+      var length = Length;
+      for (var i = 1; i < length; i++)
+      {
+        sum += notMaxOptionsArray[i].Val;
       }
     }
 

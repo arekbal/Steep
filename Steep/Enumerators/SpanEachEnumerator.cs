@@ -10,11 +10,11 @@ namespace Steep.Enumerators
     public SList<T> ToSList()
     {
       var list = new SList<T>();
-      list.ReserveItems(_src.Length);
+      list.Capacity = _src.Length;
       foreach (ref var item in _src)
       {
         _action(ref item);
-        list.Add(item);
+        list.Push(item);
       }
 
       return list;
