@@ -5,11 +5,8 @@ branches:
     - master
     - dev
 
-
   except:
     - gh-pages
-
-shallow_clone: true
 
 configuration: RELEASE
 

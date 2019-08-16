@@ -6,7 +6,7 @@ $NET_CORE_APP_VER = '2.2'
 
 if($IsWindows -eq $true)
 {
-  Use-Cmd 'GIT VERSION INSTALL' 'choco install GitVersion.Portable'  
+  Use-Cmd 'GIT VERSION INSTALL' 'choco install GitVersion.Portable --no-progress'
   Use-Cmd 'GIT VERSION' 'GitVersion "$PROJECT_DIR" -updateassemblyinfo'
 }
 else
