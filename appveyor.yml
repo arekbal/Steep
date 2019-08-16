@@ -10,5 +10,4 @@ shallow_clone: true
 
 configuration: RELEASE
 
-build_script: 
-  - .\build.ps1
+build_script: build.ps1
