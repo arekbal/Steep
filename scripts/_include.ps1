@@ -54,13 +54,15 @@ function Show-Var
 }
 
 $PROJECT_DIR = if ($env:PROJECT_DIR) { $env:PROJECT_DIR } else { $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath('.\') } #$PSScriptRoot
-$BUILD_CONFIGURATION = if ($env:BUILD_CONFIGURATION) { $env:BUILD_CONFIGURATION } else { 'Release' }
+$BUILD_CONFIGURATION = if ($env:BUILD_CONFIGURATION) { $env:BUILD_CONFIGURATION } else { 'RELEASE' }
+$NET_CORE_APP_VER = if ($env:NET_CORE_APP_VER) { $env:NET_CORE_APP_VER } else { '2.2' }
 $BUILD_LOGGER = $env:BUILD_LOGGER
 
 Write-Output ""
 Show-Var 'PROJECT_DIR'
 Show-Var 'BUILD_CONFIGURATION'
 Show-Var 'BUILD_LOGGER'
+Show-Var 'NET_CORE_APP_VER'
 
 trap [System.Exception]
 {

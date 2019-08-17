@@ -1,6 +1,5 @@
 
 $PROJECT_DIR = if ($env:PROJECT_DIR) { $env:PROJECT_DIR } else { $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath('.\') }
-$NET_CORE_APP_VER = '2.2'
 
 . $PROJECT_DIR\scripts\_include.ps1
 
@@ -11,7 +10,7 @@ if($IsWindows -eq $true)
 }
 else
 {
-  Write-Host 'GIT VERSION NOT IMPLEMENTED FOR Linux/MacOS' -ForegroundColor 'Red'
+  Write-Host 'GIT VERSION - NOT IMPLEMENTED FOR Linux/MacOS' -ForegroundColor 'Red'
 }
 
 Use-Cmd 'CLEAN' 'dotnet clean "$PROJECT_DIR\Steep.sln" -v m'
