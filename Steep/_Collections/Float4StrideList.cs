@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Steep
 {
+  
   public class Float4StrideList : StrideList<float, float, float, float>
   {
     public Float4StrideList(int capacity = DefaultCapacity) : base(capacity)

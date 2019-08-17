@@ -7,8 +7,8 @@ branches:
 
   except:
     - gh-pages
-    - dev-benchmarks
-    - master-benchmarks
+    - dev-bench
+    - master-bench
 
 configuration: RELEASE
 

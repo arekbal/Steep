@@ -3,6 +3,6 @@ $ROOT = if ($env:ROOT) { $env:ROOT } else { $ExecutionContext.SessionState.Path.
 
 . $ROOT\scripts\_include.ps1
 
-Use-Cmd 'BENCH' 'dotnet run -p "$ROOT\Steep.Bench\Steep.Bench.csproj" -c RELEASE -v m'
+Use-Cmd 'TESTS' 'dotnet test -c $BUILD_CONFIGURATION'
 
 Print 'DONE'

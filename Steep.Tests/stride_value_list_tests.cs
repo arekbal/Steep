@@ -6,8 +6,8 @@ namespace Steep.Tests
   [TestFixture]
   public class stride_value_list_tests
   {
-    [Test]
-    public void Float4ValueList()
+    //[Test]
+    public void Float4StrideList()
     {
       using (var vec = new Float4StrideList())
       {

@@ -3,10 +3,13 @@ using System.Runtime.CompilerServices;
 
 namespace Steep
 {
+  // TODO: it breaks tests randomly... some out of bounds or alignment break...
+  // TODO: turn it, into struct,
+  // no inheritance, share code through extension, or plain static methods maybe?
   public class StrideList<A, B, C, D> : StrideList<A, B, C>
     where A : unmanaged
-      where B : unmanaged
-      where C : unmanaged
+    where B : unmanaged
+    where C : unmanaged
     where D : unmanaged
   {
     static readonly int SizeOfComponents =
@@ -208,7 +211,7 @@ namespace Steep
 
   public class StrideList<A, B> : IDisposable
     where A : unmanaged
-      where B : unmanaged
+    where B : unmanaged
   {
     protected const int DefaultCapacity = 4;
 

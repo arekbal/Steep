@@ -53,13 +53,31 @@ function Show-Var
   Write-Host $ExecutionContext.InvokeCommand.ExpandString('$title = $var') -ForegroundColor $InfoColor
 }
 
-$PROJECT_DIR = if ($env:PROJECT_DIR) { $env:PROJECT_DIR } else { $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath('.\') } #$PSScriptRoot
+function Nuget-PP
+{
+  param([String]$proj)
+  
+  Use-Cmd 'GET_LATEST_VERSION' "nuget list $proj | select -last 1" -ignore $true
+  $LATEST_VERSION = Invoke-Expression 'nuget list $proj' | Select-Object -last 1
+  $LATEST_VERSION = $LATEST_VERSION.Substring($proj.Length + 1) 
+  Print-Var 'LATEST_VERSION'
+  
+  if ([System.Version]::Parse($VERSION).CompareTo([System.Version]::Parse($LATEST_VERSION)) -gt 0)
+  {  
+    Use-Cmd "PACK $proj" 'dotnet pack "$ROOT\$proj" --no-dependencies /p:PackageVersion=$VERSION -c $BUILD_CONFIGURATION --no-build -v m' 
+    $cmd = 'dotnet nuget push "$ROOT\$proj\bin\$BUILD_CONFIGURATION\$proj.$VERSION.nupkg" -s "$NUGET_SERVER"'
+    if($NUGET_APIKEY) { $cmd = $cmd + " -k $NUGET_APIKEY" }
+    Use-Cmd "PUSH $proj" $cmd
+  }
+}
+
+$ROOT = if ($env:ROOT) { $env:ROOT } else { $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath('.\') } #$PSScriptRoot
 $BUILD_CONFIGURATION = if ($env:BUILD_CONFIGURATION) { $env:BUILD_CONFIGURATION } else { 'RELEASE' }
 $NET_CORE_APP_VER = if ($env:NET_CORE_APP_VER) { $env:NET_CORE_APP_VER } else { '2.2' }
 $BUILD_LOGGER = $env:BUILD_LOGGER
 
 Write-Output ""
-Show-Var 'PROJECT_DIR'
+Show-Var 'ROOT'
 Show-Var 'BUILD_CONFIGURATION'
 Show-Var 'BUILD_LOGGER'
 Show-Var 'NET_CORE_APP_VER'
