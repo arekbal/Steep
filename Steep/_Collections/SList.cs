@@ -160,7 +160,7 @@ namespace Steep
       get
       {
         if (_size == 0)
-          return new OptionRef<T>();
+          return default;
 
         return Option.Some(ref _items[0]);
       }
@@ -171,7 +171,7 @@ namespace Steep
       get
       {
         if (_size == 0)
-          return new OptionRef<T>();
+          return default;
 
         return Option.Some(ref _items[_size - 1]);
       }
@@ -326,7 +326,6 @@ namespace Steep
       return BinarySearch(0, Count, item, comparer);
     }
 
-
     // Clears the contents of List.
     public void Clear()
     {
@@ -341,7 +340,7 @@ namespace Steep
     // It does a linear, O(n) search.  Equality is determined by calling
     // item.Equals().
     //
-    public bool Contains(T item) // TODO: Move to extension method as it internally checks if it is a class or struct
+    public bool Contains(T item) // TODO: Move to extension method as it internally checks if it is a class or struct, struct can use ref as well
     {
       if ((Object)item is null)
       {

@@ -27,7 +27,7 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    [BenchmarkCategory(nameof(Bytes16))]
+    [BenchmarkCategory(Cats.Bytes16, Cats.SList)]
     public int SList16_Emplace__enumerate_by_ref()
     {
       var list = new SList<Bytes16>();
@@ -46,7 +46,7 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    [BenchmarkCategory(nameof(Bytes16))]
+    [BenchmarkCategory(Cats.Bytes16, Cats.List)]
     public int List16()
     {
       var list = new List<Bytes16>();
@@ -65,7 +65,7 @@ namespace Steep.Bench
     }
 
     [Benchmark(Baseline = true)]    
-    [BenchmarkCategory(nameof(Bytes16))]
+    [BenchmarkCategory(Cats.Bytes16, Cats.Vec)]
     public int Vec16_Emplace__enumerate_by_ref()
     {
       using var vector = new Vec<Bytes16>();
@@ -84,7 +84,7 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    [BenchmarkCategory(nameof(Bytes32))]
+    [BenchmarkCategory(Cats.Bytes32, Cats.SList)]
     public int SList32_Emplace__enumerate_by_ref()
     {
       var list = new SList<Bytes32>();
@@ -103,7 +103,7 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    [BenchmarkCategory(nameof(Bytes32))]
+    [BenchmarkCategory(Cats.Bytes32, Cats.List)]
     public int List32()
     {
       var list = new List<Bytes32>();
@@ -122,7 +122,7 @@ namespace Steep.Bench
     }
 
     [Benchmark(Baseline = true)]
-    [BenchmarkCategory(nameof(Bytes32))]
+    [BenchmarkCategory(Cats.Bytes32, Cats.Vec)]
     public int Vec32_Emplace__enumerate_by_ref()
     {
       using var vec = new Vec<Bytes32>();
@@ -141,7 +141,7 @@ namespace Steep.Bench
     }
 
     [Benchmark(Baseline = true)]
-    [BenchmarkCategory(nameof(Bytes64))]
+    [BenchmarkCategory(Cats.Bytes64, Cats.Vec)]
     public int Vec64_Emplace__enumerate_by_ref()
     {
       using var vec = new Vec<Bytes64>();
@@ -160,7 +160,7 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    [BenchmarkCategory(nameof(Bytes64))]
+    [BenchmarkCategory(Cats.Bytes64, Cats.SList)]
     public int SList64_Emplace__enumerate_by_ref()
     {
       var list = new SList<Bytes64>();
@@ -179,7 +179,7 @@ namespace Steep.Bench
     }
 
     [Benchmark]
-    [BenchmarkCategory(nameof(Bytes64))]
+    [BenchmarkCategory(Cats.Bytes64, Cats.List)]
     public int List64()
     {
       var list = new List<Bytes64>();
