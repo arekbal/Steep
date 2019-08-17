@@ -1,8 +1,9 @@
-Set-StrictMode -Version latest 
+Set-StrictMode -Version latest
 $ErrorActionPreference = "Stop"
 
 $InfoColor = "Yellow"
 $ErrorColor = "Red"
+$NewLine = [Environment]::NewLine
 
 function Use-Cmd 
 {
@@ -20,17 +21,17 @@ function Use-Cmd
 	  
 	  if ($LastExitCode -ne 0)
 	  {
-		##throw 'failed running the command:"$cmd"'
-		$message =  "ERROR: Failed running the command: '$cmd', returns code $LastExitCode"
-		Write-Host $message -ForegroundColor $ErrorColor
-		exit $LastExitCode
+      ##throw 'failed running the command:"$cmd"'
+      $message =  "ERROR: Failed running the command: '$cmd', returns code $LastExitCode"
+      Write-Host $message -ForegroundColor $ErrorColor
+      exit $LastExitCode
 	  }
   }
   
   trap [System.Exception]
   {
     #Write-Error 'ERROR'
-	Write-Error $_.Exception	
+	Write-Error $_.Exception
     exit 1
   }
 }
@@ -76,15 +77,9 @@ $BUILD_CONFIGURATION = if ($env:BUILD_CONFIGURATION) { $env:BUILD_CONFIGURATION 
 $NET_CORE_APP_VER = if ($env:NET_CORE_APP_VER) { $env:NET_CORE_APP_VER } else { '2.2' }
 $BUILD_LOGGER = $env:BUILD_LOGGER
 
-Write-Output ""
-Show-Var 'ROOT'
-Show-Var 'BUILD_CONFIGURATION'
-Show-Var 'BUILD_LOGGER'
-Show-Var 'NET_CORE_APP_VER'
-
 trap [System.Exception]
 {
-    Write-Host 'ERROR' -ForegroundColor $ErrorColor
+  Write-Host 'ERROR' -ForegroundColor $ErrorColor
 	Write-Error $_.Exception	
-    exit 1
+  exit 1
 }

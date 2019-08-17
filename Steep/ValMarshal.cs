@@ -15,7 +15,7 @@ namespace Steep
       public static readonly int Val = SizeOf(typeof(T));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]    
     public static int SizeOf<T>()
       where T : unmanaged
     {
@@ -25,7 +25,6 @@ namespace Steep
     /// <summary>
     /// Slower variant without cache, cache the result yourself, or use generic version (cached)
     /// </summary>
-    /// <param name="valueType"></param>
     public static int SizeOf(Type valueType)
     {
       if (valueType.IsGenericType)
