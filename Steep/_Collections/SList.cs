@@ -7,10 +7,11 @@ using System.Diagnostics.Contracts;
 using System.Collections.Generic;
 using Steep.ErrorHandling;
 using static System.Runtime.CompilerServices.MethodImplOptions;
+using Steep.Enumerators;
 
-  // these issues point out problem with original List<T>:
-  // https://github.com/dotnet/corefx/issues/19814
-  // https://github.com/dotnet/corefx/issues/36415
+// these issues point out problem with original List<T>:
+// https://github.com/dotnet/corefx/issues/19814
+// https://github.com/dotnet/corefx/issues/36415
 
 namespace Steep
 {
@@ -187,7 +188,7 @@ namespace Steep
       }
     }
 
-    public ref T ItemByRef(int index)
+    public ref T RefAt(int index)
     {
       // Following trick can reduce the range check by one
       if ((uint)index >= (uint)_size)
@@ -231,8 +232,9 @@ namespace Steep
     {
       if (_items is null)
         _items = new T[DefaultCapacity];
-      else if (_size == _items.Length)
-        EnsureCapacity(_size + 1);
+      else 
+        if (_size == _items.Length)
+          EnsureCapacity(_size + 1);
 
       _items[_size++] = item;
     }
@@ -627,8 +629,6 @@ namespace Steep
       Contract.Ensures(Contract.Result<int>() >= -1);
       Contract.Ensures(Contract.Result<int>() <= startIndex);
 
-      Contract.EndContractBlock();
-
       if (_size == 0)
       {
         if (startIndex != -1) // Special case for 0 length List
@@ -643,6 +643,9 @@ namespace Steep
       // 2nd have of this also catches when startIndex == MAXINT, so MAXINT - 0 + 1 == -1, which is < 0.
       if (count < 0 || startIndex - count + 1 < 0)
         Throw.ArgOutOfRange(nameof(count), "Count");
+
+        
+      Contract.EndContractBlock();
 
       int endIndex = startIndex - count;
       for (int i = startIndex; i > endIndex; i--)
@@ -676,8 +679,11 @@ namespace Steep
       // 2nd have of this also catches when startIndex == MAXINT, so MAXINT - 0 + 1 == -1, which is < 0.
       if (count < 0 || startIndex - count + 1 < 0)
         Throw.ArgOutOfRange(nameof(count), "Count");
+        
+      Contract.EndContractBlock();
 
       int endIndex = startIndex - count;
+
       for (int i = startIndex; i > endIndex; i--)
         if (match(ref _items[i]))
           return i;
@@ -692,18 +698,57 @@ namespace Steep
     // NOTE: for IList<T>
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => System.Linq.Enumerable.Take(_items, _size).GetEnumerator();
+    
+    public ArraySliceEnumerator<T> GetEnumerator()
+      => new ArraySliceEnumerator<T> { _src = _items, _length = _size, _i = -1 };
 
-    public Span<T>.Enumerator GetEnumerator()
-      => new Span<T>(_items, 0, _size).GetEnumerator();
+    public ArraySliceEnumerator<T> Skip(int skip)
+    {
+      if(skip < 0) // TODO: unneeded?
+        Throw.ArgOutOfRange(nameof(skip));
+      
+      Contract.EndContractBlock();
 
-    public Enumerators.SpanFilterRefEnumerator<T> Filter(PredicateRef<T> predicateRef)
-      => new Enumerators.SpanFilterRefEnumerator<T> { _src = new Span<T>(_items, 0, _size), _filter = predicateRef };
+      return new ArraySliceEnumerator<T> { _src = _items, _length = Math.Max(_size - skip, 0), _i = skip - 1 };
+    }
 
-    public Enumerators.SpanMapRefToRefEnumerator<T, TMapped> Map<TMapped>(MapRefToRef<T, TMapped> mapRef)
-      => new Enumerators.SpanMapRefToRefEnumerator<T, TMapped> { _src = new Span<T>(_items, 0, _size), _map = mapRef };
+    public ArraySliceEnumerator<T> Take(int take)
+    {
+      if(take < 0) // TODO: unneeded?
+        Throw.ArgOutOfRange(nameof(take));
+      
+      Contract.EndContractBlock();
 
-    public Enumerators.SpanMapRefEnumerator<T, TMapped> Map<TMapped>(MapRef<T, TMapped> mapRef)
-      => new Enumerators.SpanMapRefEnumerator<T, TMapped> { _src = new Span<T>(_items, 0, _size), _map = mapRef };
+      return new ArraySliceEnumerator<T> { _src = _items, _length = Math.Min(_size, take), _i = -1 };
+    }
+
+    public ArraySliceEnumerator<T> Slice(int skip, int take)
+    {
+      if(skip < 0) // TODO: unneeded?
+        Throw.ArgOutOfRange(nameof(skip));
+
+      if(take < 0) // TODO: unneeded?
+        Throw.ArgOutOfRange(nameof(take));
+      
+      Contract.EndContractBlock();
+
+      return  new ArraySliceEnumerator<T> { _src = _items, _length = Math.Min(_size, skip + take), _i = skip - 1 };
+    }
+
+    public ArrayLengthReversedEnumerator<T> Reversed()
+      => new ArrayLengthReversedEnumerator<T> { _src = _items, _length = _size };
+
+    public SpanFilterEnumerator<T> Filter(Predicate<T> predicate)
+      => new SpanFilterEnumerator<T> { _src = new Span<T>(_items, 0, _size), _filter = predicate, _i = -1 };
+
+    public SpanFilterRefEnumerator<T> Filter(PredicateRef<T> predicateRef)
+      => new SpanFilterRefEnumerator<T> { _src = new Span<T>(_items, 0, _size), _filter = predicateRef, _i = -1 };
+
+    public SpanMapRefToRefEnumerator<T, TMapped> Map<TMapped>(MapRefToRef<T, TMapped> mapRef)
+      => new SpanMapRefToRefEnumerator<T, TMapped> { _src = new Span<T>(_items, 0, _size), _map = mapRef, _i = -1 };
+
+    public SpanMapRefEnumerator<T, TMapped> Map<TMapped>(MapRef<T, TMapped> mapRef)
+      => new SpanMapRefEnumerator<T, TMapped> { _src = new Span<T>(_items, 0, _size), _map = mapRef, _i = -1 };
 
     public SList<T> GetRange(int index, int count) // TODO: replace with span slices and so on...
     {
@@ -1076,7 +1121,7 @@ namespace Steep
 
     // Reverses the elements in this list.
     public void Reverse()
-      => Reverse(0, _size);
+      => Array.Reverse(_items, 0, _size);
 
     // Reverses the elements in a range of this list. Following a call to this
     // method, an element in the range given by index and count
@@ -1085,7 +1130,7 @@ namespace Steep
     // 
     // This method uses the Array.Reverse method to reverse the
     // elements.
-    // 
+    //
     public void Reverse(int index, int count)
     {
       if (index < 0)
@@ -1105,13 +1150,18 @@ namespace Steep
     // Sorts the elements in this list.  Uses the default comparer and 
     // Array.Sort.
     public void Sort()
-      => Sort(0, Count, Comparer<T>.Default);
+      => Array.Sort(_items, 0, _size, Comparer<T>.Default);
+
+      // Sorts the elements in this list.  Uses the default comparer and 
+    // Array.Sort.
+    public void SortDescending()
+      => Array.Sort(_items, 0, _size, DescendingComparer<T>.Default);
 
     // Sorts the elements in this list.  Uses Array.Sort with the
     // provided comparer.
     public void Sort<TComparer>(TComparer comparer)
       where TComparer : System.Collections.Generic.IComparer<T>
-      => Sort(0, Count, comparer);
+      => Array.Sort(_items, 0, _size, comparer); // replace this impl and boxing of struct?!?
 
     // Sorts the elements in a section of this list. The sort compares the
     // elements to each other using the given IComparer interface. If
@@ -1135,10 +1185,11 @@ namespace Steep
 
       Contract.EndContractBlock();
 
+      // replace this impl and boxing of struct?!?
       Array.Sort(_items, index, count, comparer);
     }
 
-    // DISABLED --- missing Array.FunctiorComparer
+    // DISABLED --- missing Array.FunctorComparer
     // public void Sort(Comparison<T> comparison)
     // {
     //  if (comparison == null)

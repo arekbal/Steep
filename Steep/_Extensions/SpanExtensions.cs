@@ -6,7 +6,7 @@ namespace Steep
 {
   public static class SpanExtensions
   {
-    public static float Sum(this Span<float> that)
+    public static float Sum(ref this Span<float> that)
     {
       var vectors = GetVectors(ref that);
 
@@ -42,7 +42,7 @@ namespace Steep
       return sum;
     }
 
-    public static Span<T> Skip<T>(this Span<T> that, int count)
+    public static Span<T> Skip<T>(ref this Span<T> that, int count)
     {
       if (count >= that.Length)
         return default;
@@ -50,7 +50,7 @@ namespace Steep
       return that.Slice(count);
     }
 
-    public static Span<T> Take<T>(this Span<T> that, int count)
+    public static Span<T> Take<T>(ref this Span<T> that, int count)
     {
       if (count >= that.Length)
         return that;
@@ -58,14 +58,14 @@ namespace Steep
       return that.Slice(0, count);
     }
 
-    internal static void Swap<T>(this Span<T> that, int a, int b)
+    internal static void Swap<T>(ref this Span<T> that, int a, int b)
     {
       var temp = that[a];
       that[a] = that[b];
       that[b] = temp;
     }
 
-    public static SortState GetSortState<T>(this Span<T> that, bool verify = true, IComparer<T> comparer = null)
+    public static SortState GetSortState<T>(ref this Span<T> that, bool verify = true, IComparer<T> comparer = null)
     {
       if (that.Length < 2)
         return SortState.SingleOrZero;
@@ -142,10 +142,10 @@ namespace Steep
       }
     }
 
-    public static SList<T> ToSList<T>(this Span<T> that)
+    public static SList<T> ToSList<T>(ref this Span<T> that)
       => SList<T>.MoveIn(that.ToArray());
 
-    public static Span<T> SkipTake<T>(this Span<T> that, int skip, int take)
+    public static Span<T> SkipTake<T>(ref this Span<T> that, int skip, int take)
     {
       if (that.Length < skip)
         return default;

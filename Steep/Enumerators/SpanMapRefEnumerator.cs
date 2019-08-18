@@ -8,9 +8,8 @@ namespace Steep.Enumerators
     internal MapRef<T, TMapped> _map;
     internal int _i;
 
-     public SpanMapRefEnumerator<T, TMapped> GetEnumerator()
+    public SpanMapRefEnumerator<T, TMapped> GetEnumerator()
     {
-      _i = -1;
       return this;
     }
 
@@ -25,10 +24,9 @@ namespace Steep.Enumerators
 
       return _i < _src.Length;
     }
+
     public void Reset()
-    {
-      _i = -1;
-    }
+      => _i = -1;
 
     public SList<TMapped> ToSList()
     {
@@ -36,6 +34,7 @@ namespace Steep.Enumerators
       list.Capacity = _src.Length;
 
       var i = 0;
+      
       foreach (ref var item in _src)
       {
         list[i] = _map(ref item);

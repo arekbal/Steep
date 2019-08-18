@@ -1,4 +1,4 @@
-param([object]$f)
+param([object]$f, [string[]]$allCats, [string[]]$anyCats)
 
 $ROOT = if ($env:ROOT) { $env:ROOT } else { $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath('.\') }
 
@@ -7,11 +7,11 @@ $ROOT = if ($env:ROOT) { $env:ROOT } else { $ExecutionContext.SessionState.Path.
 
 if($f -ne $null)
 {
-  Use-Cmd 'BENCH' 'dotnet run -p "$ROOT\Steep.Bench\Steep.Bench.csproj" -c RELEASE -v m -- -m -f *$f*'
+  Use-Cmd 'BENCH' 'dotnet run -p "$ROOT\Steep.Bench\Steep.Bench.csproj" -c RELEASE -v m -- -m --stopOnFirstError -f *$f*'
 }
 else
 {
-  Use-Cmd 'BENCH' 'dotnet run -p "$ROOT\Steep.Bench\Steep.Bench.csproj" -c RELEASE -v m -- -m -f ** --join'
+  Use-Cmd 'BENCH' 'dotnet run -p "$ROOT\Steep.Bench\Steep.Bench.csproj" -c RELEASE -v m -- -m --stopOnFirstError --join'
 }
 
 Print 'DONE'

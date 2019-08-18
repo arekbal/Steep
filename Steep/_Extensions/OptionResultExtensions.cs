@@ -6,7 +6,7 @@ namespace Steep
 {
   public static class Extensions
   {
-    public static TVal Expect<TVal, TErr>(this Result<TVal, TErr> that)
+    public static TVal Expect<TVal, TErr>(ref this Result<TVal, TErr> that)
     {
       if (that.byteIsErr != 0)
         Throw.Expectation(that.Err);
@@ -14,7 +14,7 @@ namespace Steep
       return that.val;
     }
 
-    public static TVal Or<TVal, TErr>(this Result<TVal, TErr> that, TVal val)
+    public static TVal Or<TVal, TErr>(ref this Result<TVal, TErr> that, TVal val)
     {
       if (that.byteIsErr != 0)
         return val;
@@ -22,7 +22,7 @@ namespace Steep
       return that.val;
     }
 
-    public static TVal Or<TVal, TErr>(this Result<TVal, TErr> that, Func<TVal> valFactory)
+    public static TVal Or<TVal, TErr>(ref this Result<TVal, TErr> that, Func<TVal> valFactory)
     {
       if (that.byteIsErr != 0)
         return valFactory();
@@ -30,7 +30,7 @@ namespace Steep
       return that.val;
     }
 
-    public static Result<TNewVal, TErr> Map<TVal, TErr, TNewVal>(this Result<TVal, TErr> that, Func<TVal, TNewVal> map)
+    public static Result<TNewVal, TErr> Map<TVal, TErr, TNewVal>(ref this Result<TVal, TErr> that, Func<TVal, TNewVal> map)
     {
       if (that.byteIsErr != 0)
         return new Result<TNewVal, TErr> { err = that.err, byteIsErr = 1 };
@@ -38,7 +38,7 @@ namespace Steep
       return new Result<TNewVal, TErr> { val = map(that.val) };
     }
 
-    public static Result<TVal, TNewErr> MapErr<TVal, TErr, TNewErr>(this Result<TVal, TErr> that, Func<TErr, TNewErr> map)
+    public static Result<TVal, TNewErr> MapErr<TVal, TErr, TNewErr>(ref this Result<TVal, TErr> that, Func<TErr, TNewErr> map)
     {
       if (that.byteIsErr != 0)
         return new Result<TVal, TNewErr> { err = map(that.err), byteIsErr = 1 };
@@ -46,7 +46,7 @@ namespace Steep
       return new Result<TVal, TNewErr> { val = that.val };
     }
 
-    public static Result<TVal, TErr> ToResult<TVal, TErr>(this Option<TVal> that, TErr err)
+    public static Result<TVal, TErr> ToResult<TVal, TErr>(ref this Option<TVal> that, TErr err)
     {
       if (that.byteIsSome != 0)
         return new Result<TVal, TErr> { val = that.val };
@@ -54,7 +54,7 @@ namespace Steep
       return new Result<TVal, TErr> { err = err, byteIsErr = 1 };
     }
 
-    public static Result<TVal, TErr> ToResult<TVal, TErr>(this Option<TVal> that, Func<TErr> errFactory)
+    public static Result<TVal, TErr> ToResult<TVal, TErr>(ref this Option<TVal> that, Func<TErr> errFactory)
     {
       if (that.byteIsSome != 0)
         return new Result<TVal, TErr> { val = that.val };

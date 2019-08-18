@@ -62,7 +62,6 @@ namespace Steep.Tests
       foreach (ref var item in span.Filter((ref int x) => x > 400))
       {
         findAtLeastOne = true;
-        Console.WriteLine(item);
         Assert.Greater(item, 400);
       }
 

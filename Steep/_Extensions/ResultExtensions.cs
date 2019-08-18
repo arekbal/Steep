@@ -6,7 +6,7 @@ namespace Steep
 {
   public static class ResultExtensions
   {
-    public static TVal Expect<TVal, TErr>(this Result<TVal, TErr> that)
+    public static TVal Expect<TVal, TErr>(ref this Result<TVal, TErr> that)
     {
       if (that.byteIsErr != 0)
         Throw.Expectation(that.Err);
@@ -14,7 +14,7 @@ namespace Steep
       return that.val;
     }
 
-    public static TVal Or<TVal, TErr>(this Result<TVal, TErr> that, TVal val)
+    public static TVal Or<TVal, TErr>(ref this Result<TVal, TErr> that, TVal val)
     {
       if (that.byteIsErr != 0)
         return val;
@@ -22,7 +22,7 @@ namespace Steep
       return that.val;
     }
 
-    public static TVal Or<TVal, TErr>(this Result<TVal, TErr> that, Func<TVal> valFactory)
+    public static TVal Or<TVal, TErr>(ref this Result<TVal, TErr> that, Func<TVal> valFactory)
     {
       if (that.byteIsErr != 0)
         return valFactory();
@@ -30,7 +30,7 @@ namespace Steep
       return that.val;
     }
 
-    public static bool AsVar<TVal, TErr>(this Result<TVal, TErr> that, out TVal val)
+    public static bool AsVar<TVal, TErr>(ref this Result<TVal, TErr> that, out TVal val)
     {
       if (that.byteIsErr == 0)
       {

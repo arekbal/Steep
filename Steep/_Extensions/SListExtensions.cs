@@ -2,7 +2,7 @@ namespace Steep
 {
   public static class SListExtensions 
   {
-    public static int ReserveItems<T>(this SList<T> that, int count) where T: struct
+    public static int ReserveItems<T>(ref this SList<T> that, int count) where T: struct
     {
       that.EnsureCapacity(that._size + count);
 
@@ -13,7 +13,7 @@ namespace Steep
       return oldSize;
     }
 
-    public static ref T Emplace<T>(this SList<T> that) where T: struct
+    public static ref T Emplace<T>(ref this SList<T> that) where T: struct
     {
       if(that._items is null)
       {

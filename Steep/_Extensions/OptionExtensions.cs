@@ -13,7 +13,7 @@ namespace Steep
       return new Option<T>();
     }
 
-    public static Option<T> Unwrap<T>(this Option<Option<Option<T>>> o)
+    public static Option<T> Unwrap<T>(ref this Option<Option<Option<T>>> o)
     {
       if (o.byteIsSome != 0)
       {
@@ -25,7 +25,7 @@ namespace Steep
       return new Option<T>();
     }
 
-    public static Ptr<T> AsPtr<T>(this OptionRef<T> o) where T : unmanaged
+    public static Ptr<T> AsPtr<T>(ref this OptionRef<T> o) where T : unmanaged
     {
       if (o.byteIsSome == 0)
         Throw.OptionIsNone();
@@ -33,7 +33,7 @@ namespace Steep
       return new Ptr<T> { p = o.p };
     }
 
-    public static bool TryAsPtr<T>(this OptionRef<T> o, out Ptr<T> ptr) where T : unmanaged
+    public static bool TryAsPtr<T>(ref this OptionRef<T> o, out Ptr<T> ptr) where T : unmanaged
     {
       if (o.byteIsSome != 0)
       {
@@ -45,7 +45,7 @@ namespace Steep
       return false;
     }
 
-    public static ReadOnlyPtr<T> AsPtr<T>(this OptionReadOnlyRef<T> o) where T : unmanaged
+    public static ReadOnlyPtr<T> AsPtr<T>(ref this OptionReadOnlyRef<T> o) where T : unmanaged
     {
       if (o.byteIsSome == 0)
         Throw.OptionIsNone();
@@ -53,7 +53,7 @@ namespace Steep
       return new ReadOnlyPtr<T> { p = o.p };
     }
 
-    public static bool TryAsPtr<T>(this OptionReadOnlyRef<T> o, out ReadOnlyPtr<T> ptr) where T : unmanaged
+    public static bool TryAsPtr<T>(ref this OptionReadOnlyRef<T> o, out ReadOnlyPtr<T> ptr) where T : unmanaged
     {
       if (o.byteIsSome != 0)
       {
@@ -65,7 +65,7 @@ namespace Steep
       return false;
     }
 
-    public static TVal Expect<TVal>(this Option<TVal> that)
+    public static TVal Expect<TVal>(ref this Option<TVal> that)
     {
       if (that.byteIsSome == 0)
         Throw.Expectation();
@@ -73,7 +73,7 @@ namespace Steep
       return that.val;
     }
 
-    public static TVal Expect<TVal>(this Option<TVal> that, string err)
+    public static TVal Expect<TVal>(ref this Option<TVal> that, string err)
     {
       if (that.byteIsSome == 0)
         Throw.Expectation(err);
@@ -81,7 +81,7 @@ namespace Steep
       return that.val;
     }
 
-    public static TVal Or<TVal>(this Option<TVal> that, TVal altVal)
+    public static TVal Or<TVal>(ref this Option<TVal> that, TVal altVal)
     {
       if (that.byteIsSome == 0)
         return altVal;
@@ -89,7 +89,7 @@ namespace Steep
       return that.val;
     }
 
-    public static Option<TVal> Or<TVal>(this Option<TVal> that, Option<TVal> b)
+    public static Option<TVal> Or<TVal>(ref this Option<TVal> that, Option<TVal> b)
     {
       if (that.byteIsSome == 0)
         return b;
@@ -97,7 +97,7 @@ namespace Steep
       return that;
     }
 
-    public static TVal OrMake<TVal>(this Option<TVal> that, Func<TVal> valFactory)
+    public static TVal OrMake<TVal>(ref this Option<TVal> that, Func<TVal> valFactory)
     {
       if (that.byteIsSome == 0)
         return valFactory();
@@ -105,7 +105,7 @@ namespace Steep
       return that.val;
     }
 
-    public static T OrDefault<T>(this Option<T> that)
+    public static T OrDefault<T>(ref this Option<T> that)
       => that ? that.Val : default;
 
     public static bool AsVar<T>(this Option<T> that, out T x)
@@ -148,7 +148,7 @@ namespace Steep
       return (Func<T, TResult> action) => { return val(); };
     }
 
-    public static Option<TNewVal> Map<TVal, TNewVal>(this Option<TVal> that, Func<TVal, TNewVal> map)
+    public static Option<TNewVal> Map<TVal, TNewVal>(ref this Option<TVal> that, Func<TVal, TNewVal> map)
     {
       if (that.byteIsSome == 0)
         return new Option<TNewVal>();
