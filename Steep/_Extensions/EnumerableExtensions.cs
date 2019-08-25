@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
+#if V1
+
 namespace Steep
 {
   public static class EnumerableExtensions
@@ -50,3 +52,4 @@ namespace Steep
     }
   }
 }
+#endif

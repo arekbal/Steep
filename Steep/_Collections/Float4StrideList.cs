@@ -4,9 +4,10 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
+#if V1
+
 namespace Steep
-{
-  
+{  
   public class Float4StrideList : StrideList<float, float, float, float>
   {
     public Float4StrideList(int capacity = DefaultCapacity) : base(capacity)
@@ -135,3 +136,4 @@ namespace Steep
       => ItemRefAt(base.EmplaceBack());
   }
 }
+#endif

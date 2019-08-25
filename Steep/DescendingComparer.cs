@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 namespace Steep
 {
   public sealed class DescendingComparer<T> : IComparer<T>

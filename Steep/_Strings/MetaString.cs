@@ -1,5 +1,7 @@
 ﻿using System;
 
+#if V1
+
 namespace Steep
 {
   public static class MetaString
@@ -472,3 +474,4 @@ namespace Steep
     //}
   }
 }
+#endif

@@ -4,6 +4,8 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
+#if V1
+
 namespace Steep
 {
   public class Float3StrideList : StrideList<float, float, float>
@@ -115,3 +117,4 @@ namespace Steep
       => ItemRefAt(base.EmplaceBack());
   }
 }
+#endif

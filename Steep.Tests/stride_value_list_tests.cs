@@ -1,6 +1,8 @@
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 
+#if V0
+
 namespace Steep.Tests
 {
   [TestFixture]
@@ -84,3 +86,4 @@ namespace Steep.Tests
     }
   }
 }
+#endif

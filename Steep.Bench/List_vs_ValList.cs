@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
+#if V0
+
 namespace Steep.Bench
 {
   [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
@@ -161,3 +163,4 @@ namespace Steep.Bench
     }
   }
 }
+#endif

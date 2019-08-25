@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using doix.Fast;
+
+#if V0
 
 using static Steep.LangExt;
 using static Steep.Result;
@@ -194,3 +195,4 @@ namespace Steep.Tests
 
   }
 }
+#endif

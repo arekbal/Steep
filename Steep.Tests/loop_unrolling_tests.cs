@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+
+#if V0
+
 using static Steep.LangExt;
 
 namespace Steep.Tests
@@ -46,3 +49,4 @@ namespace Steep.Tests
     }
   }
 }
+#endif

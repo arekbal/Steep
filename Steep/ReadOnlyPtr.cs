@@ -2,6 +2,8 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+#if V1
+
 namespace Steep
 {
   [UnsafeValueType]
@@ -26,3 +28,4 @@ namespace Steep
     }
   }
 }
+#endif

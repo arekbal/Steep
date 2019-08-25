@@ -6,6 +6,8 @@ using System.Linq;
 using static BenchmarkDotNet.Configs.BenchmarkLogicalGroupRule;
 using static BenchmarkDotNet.Order.SummaryOrderPolicy;
 
+#if V0
+
 namespace Steep.Bench
 {
   [GroupBenchmarksBy(ByCategory)]  
@@ -275,3 +277,4 @@ namespace Steep.Bench
     }
   }
 }
+#endif

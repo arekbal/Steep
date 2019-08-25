@@ -3,9 +3,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
+#if V1
+
 namespace Steep
 {
-  public ref struct ByReference<TValue>
+  public ref struct ByRef<TValue>
   {
     IntPtr _ptr;
 
@@ -42,15 +44,14 @@ namespace Steep
       }
     }
 
-
 #if DEBUG
     [MonitoringDescription("debug only property")]
     TValue Value => Ref;
 #endif
 
-    public static ByReference<TValue> Create(ref TValue refVal)
+    public static ByRef<TValue> Create(ref TValue refVal)
     {
-      ByReference<TValue> x = default;
+      ByRef<TValue> x = default;
       unsafe
       {
         x._ptr = (IntPtr)Unsafe.AsPointer(ref refVal);
@@ -58,6 +59,5 @@ namespace Steep
       return x;
     }
   }
-
-
 }
+#endif

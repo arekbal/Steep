@@ -4,6 +4,8 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
+#if V1
+
 namespace Steep
 {
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -309,3 +311,4 @@ namespace Steep
     }
   }
 }
+#endif

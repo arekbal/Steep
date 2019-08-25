@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 
+#if V0
+
 using static BenchmarkDotNet.Configs.BenchmarkLogicalGroupRule;
 using static BenchmarkDotNet.Order.SummaryOrderPolicy;
 
@@ -198,3 +200,4 @@ namespace Steep.Bench
     }
   }
 }
+#endif

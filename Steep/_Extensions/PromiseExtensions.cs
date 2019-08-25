@@ -1,5 +1,7 @@
 ﻿using System;
 
+#if V1
+
 namespace Steep
 {
   public static class PromiseExtensions
@@ -15,3 +17,4 @@ namespace Steep
     }
   }
 }
+#endif

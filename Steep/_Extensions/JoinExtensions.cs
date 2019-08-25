@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 
+#if V1
+
 namespace Steep
 {
   public static class JoinExtensions
@@ -7,8 +9,8 @@ namespace Steep
     public ref struct JoinResult<TValA, TValB>
     {
       int _key;
-      ByReference<TValA> _aRef;
-      ByReference<TValB> _bRef;
+      ByRef<TValA> _aRef;
+      ByRef<TValB> _bRef;
 
       public int Key => _key;
 
@@ -23,8 +25,8 @@ namespace Steep
       public static JoinResult<TValA, TValB> Create(int key, ref TValA aRef, ref TValB bRef)
       {
         JoinResult<TValA, TValB> x = default;
-        x._aRef = ByReference<TValA>.Create(ref aRef);
-        x._bRef = ByReference<TValB>.Create(ref bRef);
+        x._aRef = ByRef<TValA>.Create(ref aRef);
+        x._bRef = ByRef<TValB>.Create(ref bRef);
         x._key = key;
         return x;
       }
@@ -33,9 +35,9 @@ namespace Steep
     public ref struct JoinResult<TValA, TValB, TValC>
     {
       int _key;
-      ByReference<TValA> _aRef;
-      ByReference<TValB> _bRef;
-      ByReference<TValC> _cRef;
+      ByRef<TValA> _aRef;
+      ByRef<TValB> _bRef;
+      ByRef<TValC> _cRef;
 
       public int Key => _key;
 
@@ -54,9 +56,9 @@ namespace Steep
       public static JoinResult<TValA, TValB, TValC> Create(int key, ref TValA aRef, ref TValB bRef, ref TValC cRef)
       {
         JoinResult<TValA, TValB, TValC> x = default;
-        x._aRef = ByReference<TValA>.Create(ref aRef);
-        x._bRef = ByReference<TValB>.Create(ref bRef);
-        x._cRef = ByReference<TValC>.Create(ref cRef);
+        x._aRef = ByRef<TValA>.Create(ref aRef);
+        x._bRef = ByRef<TValB>.Create(ref bRef);
+        x._cRef = ByRef<TValC>.Create(ref cRef);
         x._key = key;
         return x;
       }
@@ -212,3 +214,4 @@ namespace Steep
     }
   }
 }
+#endif

@@ -2,6 +2,8 @@
 using System.Runtime.CompilerServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
+#if V1
+
 namespace Steep
 {
   public class ValList<TValue> : IDisposable
@@ -258,3 +260,4 @@ namespace Steep
     }
   }
 }
+#endif

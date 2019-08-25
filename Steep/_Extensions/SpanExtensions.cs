@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Steep.Enumerators;
+
+
 
 namespace Steep
 {
@@ -68,7 +71,10 @@ namespace Steep
     public static SortState GetSortState<T>(ref this Span<T> that, bool verify = true, IComparer<T> comparer = null)
     {
       if (that.Length < 2)
-        return SortState.SingleOrZero;
+        if(that.Length == 1)
+          return SortState.Single;
+        else
+          return SortState.Zero;
 
       comparer = comparer ?? Comparer<T>.Default;
 
@@ -82,11 +88,13 @@ namespace Steep
         for (var i = 2; i < that.Length; i++)
           if (comparer.Compare(that[i - 1], that[i]) < 0)
             return SortState.NotSorted;
+
+        return sortState;
       }
-      else
-        for (var i = 2; i < that.Length; i++)
-          if (comparer.Compare(that[i - 1], that[i]) > 0)
-            return SortState.NotSorted;
+
+      for (var i = 2; i < that.Length; i++)
+        if (comparer.Compare(that[i - 1], that[i]) > 0)
+          return SortState.NotSorted;
 
       return sortState;
     }
@@ -100,47 +108,18 @@ namespace Steep
     public static Enumerators.SpanFilterRefEnumerator<T> Filter<T>(this Span<T> span, PredicateRef<T> filter)
       => new Enumerators.SpanFilterRefEnumerator<T> { _src = span, _filter = filter, _i = -1 };
 
-    public static Enumerators.SpanEachEnumerator<T> Each<T>(this Span<T> span, ActionRef<T> action)
-      => new Enumerators.SpanEachEnumerator<T> { _src = span, _action = action };
+    public static Enumerators.SpanEachRefEnumerator<T> Each<T>(this Span<T> span, ActionRef<T> action)
+      => new Enumerators.SpanEachRefEnumerator<T> { _src = span, _action = action };
 
-    public static int CountNonZero(this Span<char> span)
+    public static int CountWhileNonZero(this Span<char> span)
     {
       for (var i = 0; i < span.Length; i++)
-      {
         if (span[i] == 0)
           return i;
-      }
 
       return span.Length;
     }
 
-    public static T[] ToArray<T>(this Enumerators.SpanFilterRefEnumerator<T> that)
-      where T : unmanaged
-    {
-      if (that._src.Length == 0)
-        return Array.Empty<T>();
-
-      UnmanagedBuffer<T> buffer = default;
-      buffer.Alloc(that._src.Length);
-
-      try
-      {
-        int count = 0;
-        var span = buffer.AsSpan();
-
-        foreach (ref var item in that._src)
-        {
-          if (that._filter(ref item))
-            span[count++] = item;
-        }
-
-        return span.Slice(0, count).ToArray();
-      }
-      finally
-      {
-        buffer.Free();
-      }
-    }
 
     public static SList<T> ToSList<T>(ref this Span<T> that)
       => SList<T>.MoveIn(that.ToArray());
@@ -193,19 +172,6 @@ namespace Steep
           sum += that[i];
 
         return sum;
-      }
-    }
-
-    public static StrideSpan<TResult> ToStride<T, TResult>(this Span<T> that, MapRefToRef<T, TResult> func)
-      where T : unmanaged
-    {
-      if (that.Length == 0)
-        return default;
-
-      ref var fieldRef = ref func(ref that[0]);
-      unsafe
-      {
-        return StrideSpan<TResult>.Create(Unsafe.AsPointer(ref fieldRef), ValMarshal.SizeOf<T>(), that.Length);
       }
     }
 
@@ -270,9 +236,7 @@ namespace Steep
         length = that.Length;
 
         for (; i < length; i++)
-        {
           seed = func(that[i], seed);
-        }
       }
       else
         for (i = 0; i < length; i++)
@@ -283,4 +247,47 @@ namespace Steep
       return seed;
     }
   }
+
+  #if V1
+    public static T[] ToArray<T>(this Enumerators.SpanFilterRefEnumerator<T> that)
+      where T : unmanaged
+    {
+      if (that._src.Length == 0)
+        return Array.Empty<T>();
+
+      UnmanagedBuffer<T> buffer = default;
+      buffer.Alloc(that._src.Length);
+
+      try
+      {
+        int count = 0;
+        var span = buffer.AsSpan();
+
+        foreach (ref var item in that._src)
+        {
+          if (that._filter(ref item))
+            span[count++] = item;
+        }
+
+        return span.Slice(0, count).ToArray();
+      }
+      finally
+      {
+        buffer.Free();
+      }
+    }
+
+    public static StrideSpan<TResult> ToStride<T, TResult>(this Span<T> that, MapRefToRef<T, TResult> func)
+      where T : unmanaged
+    {
+      if (that.Length == 0)
+        return default;
+
+      ref var fieldRef = ref func(ref that[0]);
+      unsafe
+      {
+        return StrideSpan<TResult>.Create(Unsafe.AsPointer(ref fieldRef), ValMarshal.SizeOf<T>(), that.Length);
+      }
+    }    
+#endif
 }

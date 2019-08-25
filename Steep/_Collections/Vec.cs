@@ -3,6 +3,8 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Steep.ErrorHandling;
 
+#if V1
+
 namespace Steep
 {
   // TODO: small memory allocator
@@ -174,3 +176,4 @@ namespace Steep
     }
   }
 }
+#endif

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
+#if V1
+
 namespace Steep
 {
+
   // TODO: it breaks tests randomly... some out of bounds or alignment break...
   // TODO: turn it, into struct,
   // no inheritance, share code through extension, or plain static methods maybe?
@@ -380,3 +383,4 @@ namespace Steep
     }
   }
 }
+#endif

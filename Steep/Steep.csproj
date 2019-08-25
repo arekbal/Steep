@@ -14,6 +14,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>preview</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+    <!-- <DefineConstants>V1</DefineConstants> -->
   </PropertyGroup>
 
   

@@ -6,6 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
+#if V1
+
 namespace Steep.Tests
 {
   [TestFixture]
@@ -116,3 +118,4 @@ namespace Steep.Tests
     }
   }
 }
+#endif

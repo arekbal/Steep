@@ -2,6 +2,8 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+#if V1
+
 namespace Steep
 {
   ///<summary>
@@ -48,3 +50,4 @@ namespace Steep
     }
   }
 }
+#endif

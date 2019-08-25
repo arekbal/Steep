@@ -1,12 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetName>Steep.Bench</TargetName>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>preview</LangVersion>
-  </PropertyGroup>
+ 
 
 
   <ItemGroup>
@@ -16,6 +10,14 @@
     <PackageReference Include="BenchmarkDotNet" Version="0.11.5" />
   </ItemGroup>
 
- 
+  <PropertyGroup>
+    <TargetName>Steep.Bench</TargetName>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>preview</LangVersion>
+
+    <!-- <DefineConstants>V1</DefineConstants> -->
+  </PropertyGroup>
 
 </Project>

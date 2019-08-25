@@ -12,7 +12,6 @@ using Steep.Enumerators;
 // these issues point out problem with original List<T>:
 // https://github.com/dotnet/corefx/issues/19814
 // https://github.com/dotnet/corefx/issues/36415
-
 namespace Steep
 {
   public static class SList
@@ -71,9 +70,11 @@ namespace Steep
 
     public SList(int capacity)
     {
+      if(capacity < 1)
+        Throw.ArgOutOfRange(nameof(capacity), "TooSmallCapacity");
+
       _size = 0;
-      _items = null;
-      EnsureCapacity(capacity);
+      _items = new T[capacity];
     }
 
     public static SList<T> MoveIn(T[] items, int size)
@@ -98,12 +99,12 @@ namespace Steep
     public static SList<T> Copy<TEnumerable>(TEnumerable collection)
       where TEnumerable : System.Collections.Generic.IEnumerable<T> 
     {
-      var list = new SList<T>();
-
-       if (collection is null)
+      if (collection is null)
         Throw.ArgOutOfRange(nameof(collection));
     
       Contract.EndContractBlock();
+
+      var list = new SList<T>();
 
       if (collection is System.Collections.Generic.ICollection<T> c)
       {
@@ -112,12 +113,12 @@ namespace Steep
         {
           list._items = new T[count];
           c.CopyTo(list._items, 0);
-          list._size = count;
         }
-      }
-      else
-        list.PushRange(collection);  
-        
+
+        return list;
+      }   
+
+      list.PushRange(collection);
       return list;
     }
 
@@ -130,12 +131,12 @@ namespace Steep
       get
       {
         Contract.Ensures(Contract.Result<int>() >= 0);
-        return _items.Length;
+        return _items != null ? _items.Length : 0;
       }
       set
       {
         if (value < _size)
-          Throw.ArgOutOfRange(nameof(Capacity), "SmallCapacity");
+          Throw.ArgOutOfRange(nameof(Capacity), "TooSmallCapacity");
 
         Contract.EndContractBlock();
 
@@ -150,8 +151,10 @@ namespace Steep
 
             _items = newItems;
           }
-          else
+          else {          
             _items = null;
+            _size = 0;
+          }
         }
       }
     }
@@ -630,20 +633,15 @@ namespace Steep
       Contract.Ensures(Contract.Result<int>() <= startIndex);
 
       if (_size == 0)
-      {
         if (startIndex != -1) // Special case for 0 length List
           Throw.ArgOutOfRange(nameof(startIndex), "Index");
-      }
       else
-      {
         if ((uint)startIndex >= (uint)_size) // Make sure we're not out of range    
           Throw.ArgOutOfRange(nameof(startIndex), "Index");
-      }
 
       // 2nd have of this also catches when startIndex == MAXINT, so MAXINT - 0 + 1 == -1, which is < 0.
       if (count < 0 || startIndex - count + 1 < 0)
         Throw.ArgOutOfRange(nameof(count), "Count");
-
         
       Contract.EndContractBlock();
 
@@ -1212,7 +1210,7 @@ namespace Steep
       Contract.Ensures(Contract.Result<T[]>() != null);
       Contract.Ensures(Contract.Result<T[]>().Length == Count);
 
-      T[] array = new T[_size];
+      T[] array = new T[_size];      
       Array.Copy(_items, 0, array, 0, _size);
       return array;
     }

@@ -2,6 +2,8 @@
 using System;
 using Steep.ErrorHandling;
 
+#if V1
+
 namespace Steep
 {
   public static class ResultExtensions
@@ -91,3 +93,4 @@ namespace Steep
     }
   }
 }
+#endif

@@ -2,9 +2,11 @@
 using System;
 using Steep.ErrorHandling;
 
+#if V1
+
 namespace Steep
 {
-  public static class Extensions
+  public static class OptionResultExtensions
   {
     public static TVal Expect<TVal, TErr>(ref this Result<TVal, TErr> that)
     {
@@ -63,3 +65,4 @@ namespace Steep
     }
   }
 }
+#endif
