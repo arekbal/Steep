@@ -6,7 +6,7 @@ This objective is being achieved in many forms and with varying impact:
   but significantly improving performance for most use cases.
 2. Option and Result are there to promote robust returns and replace nulls and throwing exceptions.
 3. Vec is like a SList but for dynamically resizable unmamaged memory. Where managed types are unnecesarry,
- more can be achieved with custom small object allocator and plain alloc free.
+ more can be achieved with custom small object allocator and plain alloc/free.
 4. StrideVec, StrideSpan is there for procesor cache friendly iteration operations.
 5. Enumerators are meant to replace some of use cases of System.Linq with lighter substitution.
 6. Promise is a lighter (memory wise) version of System.Threading.Task.
