@@ -18,6 +18,7 @@ Couple of techniques used to achieve improvements:
 - changes in APIs so moves and borrows are allowed and safety is sometimes achieved by different means(entry, two step API) 
   and sometimes burden is pushed onto developer(SList.MoveIn()).
 - ignoring less common or legacy use cases.
-- using modern Lang features like ref returns and ref locals. 
+- using modern Lang features like ref returns and ref locals.
+- by not using expensive abstractions (readonly fields, inheritance, exceptions).
 - using vectorisation where applicable.
 - by providing flyweight(Promise) versions of considerably bloated types(Task). 
