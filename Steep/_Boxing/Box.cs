@@ -5,7 +5,7 @@ namespace Steep
   public interface IBox<T> : IDisposable
    where T : struct
   {
-    T Value { get; }
+    T Val { get; }
     ref readonly T Ref { get; }
   }
 
@@ -13,7 +13,7 @@ namespace Steep
     where T : struct
   {
     internal T _val;
-    public T Value => _val;
+    public T Val => _val;
 
     public ref T Ref => ref _val;
 
@@ -21,11 +21,7 @@ namespace Steep
 
     public void Dispose()
     {
-      // TODO: might still ignore not IDisposable Disposables, use alternative like Cached DynamicMethod???
-      if (_val is IDisposable d)
-      {
-        d.Dispose();
-      }
+      DisposableUtil.TryDispose<T>(ref _val);
     }
 
     public Box()
