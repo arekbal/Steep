@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Steep.ErrorHandling;
 
+#if NOT_READY
+
 namespace Steep
 {
   [UnsafeValueType]
@@ -58,9 +60,7 @@ namespace Steep
       return copy;
     }
 
-    /// <summary>
-    /// Frees previous data
-    /// </summary>
+    /// <summary> Frees previous data </summary>
     /// <param name="length"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Alloc(int length)
@@ -152,3 +152,4 @@ namespace Steep
     public void Dispose() => Free();
   }
 }
+#endif

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
+#if NOT_READY
+
 namespace Steep
 {
   public class Long4StrideList : StrideList<long, long, long, long>
@@ -86,3 +88,4 @@ namespace Steep
       => ItemRefAt(base.EmplaceBack());
   }
 }
+#endif

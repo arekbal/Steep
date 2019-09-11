@@ -1,9 +1,10 @@
-﻿using System;
+﻿
+using System;
 
 namespace Steep
 {
   public interface IBox<T> : IDisposable
-   where T : struct
+    where T : struct
   {
     T Val { get; }
     ref readonly T Ref { get; }

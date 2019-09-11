@@ -16,6 +16,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>    
     <LangVersion>preview</LangVersion>
+   
+    <!-- <DefineConstants>NOT_READY</DefineConstants> -->
   </PropertyGroup>
 
 </Project>

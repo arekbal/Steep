@@ -2,6 +2,8 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+#if NOT_READY
+
 namespace Steep
 {
   public struct Arena : IDisposable
@@ -74,3 +76,4 @@ namespace Steep
     }
   }
 }
+#endif

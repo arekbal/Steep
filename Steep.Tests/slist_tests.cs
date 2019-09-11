@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-
-using static Steep.LangExt;
-using static Steep.Result;
+using Steep;
 
 namespace Steep.Tests
 {
@@ -48,6 +46,19 @@ namespace Steep.Tests
       Assert.AreEqual(3, slist[4]);
       Assert.AreEqual(2, slist[5]);
       Assert.AreEqual(1, slist[6]);
+    }
+
+    [Test]
+    public void slist_int_toarray()
+    {
+      var slist = SList.MoveIn(new [] {1, 3, 5, 7, 4, 6, 2, 31, 233, 65, 62, 36, 66, 225, 223});
+      var arr = slist.ToArray();
+
+      Assert.AreEqual(slist.Count, arr.Length);
+
+      var count = slist.Count;
+      for(var i = 0; i < count; i++)
+        Assert.AreEqual(slist[i], arr[i]);
     }
   }
 }

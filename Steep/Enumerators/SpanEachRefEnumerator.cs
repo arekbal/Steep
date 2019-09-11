@@ -2,7 +2,7 @@
 
 namespace Steep.Enumerators
 {
-  public ref struct SpanEachEnumerator<T>
+  public ref struct SpanEachRefEnumerator<T>
   {
     internal Span<T> _src;
     internal ActionRef<T> _action;

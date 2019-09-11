@@ -2,6 +2,8 @@
 using System;
 using System.Threading.Tasks;
 
+#if NOT_READY
+
 namespace Steep
 {
   public struct Result
@@ -155,3 +157,4 @@ namespace Steep
     public static implicit operator Result<TVal, TErr>(ResultErr<TErr> o) => new Result<TVal, TErr> { err = o.err, byteIsErr = 1 };
   }
 }
+#endif

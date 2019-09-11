@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 
 namespace Steep
 {
   public static class BoxExtensions
   {
-    public static void Dispose<T>(this Box<T> that)
-    where T : struct, IDisposable
+    public static void Dispose<TDisposable>(this IBox<TDisposable> that)
+      where TDisposable : struct, IDisposable
     {
-      that._val.Dispose();
+      that.Ref.Dispose();
     }
   }
 }

@@ -2,6 +2,8 @@
 using System;
 using System.Runtime.CompilerServices;
 
+#if NOT_READY
+
 namespace Steep
 {
   [UnsafeValueType]
@@ -32,3 +34,4 @@ namespace Steep
     public ReadOnlyPtr<T> AsReadOnly() => new ReadOnlyPtr<T> { p = p };
   }
 }
+#endif

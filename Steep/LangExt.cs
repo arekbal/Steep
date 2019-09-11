@@ -5,6 +5,8 @@ using static System.Runtime.CompilerServices.MethodImplOptions;
 using Steep;
 using System.Runtime.CompilerServices;
 
+#if NOT_READY
+
 namespace Steep
 {
   public static class LangExt
@@ -83,3 +85,4 @@ namespace Steep
     public static Promise<T> DoneWith<T>(T val) => Promise<T>.DoneWith(val);
   }
 }
+#endif

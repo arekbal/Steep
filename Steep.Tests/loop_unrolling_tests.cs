@@ -1,6 +1,9 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+
+#if V0
+
 using static Steep.LangExt;
 
 namespace Steep.Tests
@@ -44,3 +47,4 @@ namespace Steep.Tests
     }
   }
 }
+#endif

@@ -1,6 +1,8 @@
 ﻿using System;
 using Steep.ErrorHandling;
 
+#if NOT_READY
+
 namespace Steep
 {
   public enum VarUInt30ByteSize : byte
@@ -171,3 +173,4 @@ namespace Steep
     }
   }
 }
+#endif

@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
+#if NOT_READY
+
 namespace Steep
 {
   public ref struct KeyValueRef<TKey, TValue>
   {
-    ByReference<TKey> _keyRef;
+    ByRef<TKey> _keyRef;
 
-    ByReference<TValue> _valueRef;
+    ByRef<TValue> _valueRef;
 
     public TKey Key => _keyRef.Ref;
 
@@ -24,9 +26,10 @@ namespace Steep
     public static KeyValueRef<TKey, TValue> Create(ref TKey keyRef, ref TValue valueRef)
     {
       KeyValueRef<TKey, TValue> x = default;
-      x._keyRef = ByReference<TKey>.Create(ref keyRef);
-      x._valueRef = ByReference<TValue>.Create(ref valueRef);
+      x._keyRef = ByRef<TKey>.Create(ref keyRef);
+      x._valueRef = ByRef<TValue>.Create(ref valueRef);
       return x;
     }
   }
 }
+#endif

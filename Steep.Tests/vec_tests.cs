@@ -1,5 +1,7 @@
 using NUnit.Framework;
 
+#if V0
+
 namespace Steep.Tests
 {
   struct Struct16
@@ -29,3 +31,4 @@ namespace Steep.Tests
     }
   }
 }
+#endif

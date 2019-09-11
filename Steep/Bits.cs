@@ -1,6 +1,8 @@
 
 using System;
 
+#if NOT_READY
+
 namespace Steep
 {
   [Flags]
@@ -147,3 +149,4 @@ namespace Steep
     X63 = 0b_1111_1111_1111_1111__1111_1111_1111_1111___1111_1111_1111_1111__1111_1111_1111_1111,
   }
 }
+#endif

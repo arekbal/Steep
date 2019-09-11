@@ -2,6 +2,8 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
+#if NOT_READY
+
 namespace Steep
 {
   public ref struct ReadOnlyUnmanagedSpan<T>
@@ -70,3 +72,4 @@ namespace Steep
     }
   }
 }
+#endif

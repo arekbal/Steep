@@ -8,7 +8,8 @@ namespace Steep
   {
     Asc,
     Desc,
-    SingleOrZero,
+    Single,
+    Zero,
     NotSorted
   }
 }

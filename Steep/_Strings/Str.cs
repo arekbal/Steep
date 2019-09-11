@@ -1,4 +1,7 @@
-﻿namespace Steep
+﻿
+#if NOT_READY
+
+namespace Steep
 {
   public interface IStr
   {
@@ -89,3 +92,4 @@
     public override string ToString() => this.StrToString();
   }
 }
+#endif

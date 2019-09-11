@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
+#if NOT_READY
+
 namespace Steep
 {
   public class Int4StrideList : StrideList<int, int, int, int>
@@ -81,3 +83,4 @@ namespace Steep
       => ItemRefAt(base.EmplaceBack());
   }
 }
+#endif

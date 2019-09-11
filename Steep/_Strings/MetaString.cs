@@ -1,4 +1,8 @@
-﻿using System;
+﻿
+
+#if NOT_READY
+
+using System;
 
 namespace Steep
 {
@@ -472,3 +476,4 @@ namespace Steep
     //}
   }
 }
+#endif

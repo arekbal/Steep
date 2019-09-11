@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+#if NOT_READY
+
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Steep.ErrorHandling;
@@ -174,3 +177,4 @@ namespace Steep
     }
   }
 }
+#endif

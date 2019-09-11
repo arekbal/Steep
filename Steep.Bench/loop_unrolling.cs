@@ -3,6 +3,8 @@ using BenchmarkDotNet.Configs;
 using System.Collections.Generic;
 using System.Linq;
 
+#if V0
+
 using static Steep.LangExt;
 
 namespace Steep.Bench
@@ -163,3 +165,4 @@ namespace Steep.Bench
     }
   }
 }
+#endif

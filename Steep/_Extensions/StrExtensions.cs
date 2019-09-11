@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
+#if NOT_READY
+
 namespace Steep
 {
   public static class StrExtensions
@@ -273,3 +275,4 @@ namespace Steep
     }
   }
 }
+#endif

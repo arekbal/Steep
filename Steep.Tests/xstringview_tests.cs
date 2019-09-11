@@ -5,6 +5,9 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+
+#if V0
+
 using static Steep.LangExt;
 
 namespace doix.Fast.Tests
@@ -85,3 +88,4 @@ namespace doix.Fast.Tests
     }
   }
 }
+#endif

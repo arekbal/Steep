@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.CompilerServices;
 
+#if NOT_READY
+
 namespace Steep
 {
   public partial class IntIndexVec<T> : IDisposable
@@ -57,3 +59,4 @@ namespace Steep
     }
   }
 }
+#endif

@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
@@ -52,19 +51,4 @@ namespace Steep
       o.Dispose();
     }
   }
-
-  public struct Disposable
-  {
-    public void Dispose()
-    {
-
-    }
-
-
-    public static void DisposeWrap(ref Disposable disposable)
-    {
-      disposable.Dispose();
-    }
-  }
-
 }

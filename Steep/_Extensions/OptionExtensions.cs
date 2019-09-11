@@ -25,46 +25,6 @@ namespace Steep
       return new Option<T>();
     }
 
-    public static Ptr<T> AsPtr<T>(ref this OptionRef<T> o) where T : unmanaged
-    {
-      if (o.byteIsSome == 0)
-        Throw.OptionIsNone();
-
-      return new Ptr<T> { p = o.p };
-    }
-
-    public static bool TryAsPtr<T>(ref this OptionRef<T> o, out Ptr<T> ptr) where T : unmanaged
-    {
-      if (o.byteIsSome != 0)
-      {
-        ptr = new Ptr<T> { p = o.p };
-        return true;
-      }
-
-      ptr = default(Ptr<T>);
-      return false;
-    }
-
-    public static ReadOnlyPtr<T> AsPtr<T>(ref this OptionReadOnlyRef<T> o) where T : unmanaged
-    {
-      if (o.byteIsSome == 0)
-        Throw.OptionIsNone();
-
-      return new ReadOnlyPtr<T> { p = o.p };
-    }
-
-    public static bool TryAsPtr<T>(ref this OptionReadOnlyRef<T> o, out ReadOnlyPtr<T> ptr) where T : unmanaged
-    {
-      if (o.byteIsSome != 0)
-      {
-        ptr = new ReadOnlyPtr<T> { p = o.p };
-        return true;
-      }
-
-      ptr = default(ReadOnlyPtr<T>);
-      return false;
-    }
-
     public static TVal Expect<TVal>(ref this Option<TVal> that)
     {
       if (that.byteIsSome == 0)
@@ -155,5 +115,49 @@ namespace Steep
 
       return new Option<TNewVal> { val = map(that.val), byteIsSome = 1 };
     }
+
+#if NOT_READY
+
+    public static Ptr<T> AsPtr<T>(ref this OptionRef<T> o) where T : unmanaged
+    {
+      if (o.byteIsSome == 0)
+        Throw.OptionIsNone();
+
+      return new Ptr<T> { p = o.p };
+    }
+
+    public static bool TryAsPtr<T>(ref this OptionRef<T> o, out Ptr<T> ptr) where T : unmanaged
+    {
+      if (o.byteIsSome != 0)
+      {
+        ptr = new Ptr<T> { p = o.p };
+        return true;
+      }
+
+      ptr = default(Ptr<T>);
+      return false;
+    }
+
+    public static ReadOnlyPtr<T> AsPtr<T>(ref this OptionReadOnlyRef<T> o) where T : unmanaged
+    {
+      if (o.byteIsSome == 0)
+        Throw.OptionIsNone();
+
+      return new ReadOnlyPtr<T> { p = o.p };
+    }
+
+    public static bool TryAsPtr<T>(ref this OptionReadOnlyRef<T> o, out ReadOnlyPtr<T> ptr) where T : unmanaged
+    {
+      if (o.byteIsSome != 0)
+      {
+        ptr = new ReadOnlyPtr<T> { p = o.p };
+        return true;
+      }
+
+      ptr = default(ReadOnlyPtr<T>);
+      return false;
+    }
+
+#endif
   }
 }

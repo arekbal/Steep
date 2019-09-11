@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+#if V0
+
 using static Steep.LangExt;
 
 using static BenchmarkDotNet.Configs.BenchmarkLogicalGroupRule;
@@ -120,3 +122,4 @@ namespace Steep.Bench
     }
   }
 }
+#endif

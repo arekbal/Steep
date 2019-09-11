@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
+#if NOT_READY
+
 namespace Steep
 {
   public enum PromiseState
@@ -866,3 +868,4 @@ namespace Steep
     }
   }
 }
+#endif

@@ -1,6 +1,8 @@
 using System.Runtime.CompilerServices;
 using NUnit.Framework;
 
+#if V0
+
 namespace Steep.Tests
 {
   struct Struct12
@@ -73,3 +75,4 @@ namespace Steep.Tests
     }
   }
 }
+#endif

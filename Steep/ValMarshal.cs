@@ -64,6 +64,7 @@ namespace Steep
 
       while (count >= Vector<byte>.Count)
       {
+        // TODO: no need for new here... use deref.
         new Vector<byte>(src, srcOffset).CopyTo(dst, dstOffset);
         count -= Vector<byte>.Count;
         srcOffset += Vector<byte>.Count;
@@ -72,6 +73,7 @@ namespace Steep
 
       if (orgCount > Vector<byte>.Count)
       {
+        // TODO: no need for new here... use deref.
         new Vector<byte>(src, orgCount - Vector<byte>.Count).CopyTo(dst, orgCount - Vector<byte>.Count);
         return;
       }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+#if NOT_READY
+
+using System;
 using System.Runtime.CompilerServices;
 
 namespace Steep
@@ -380,3 +383,4 @@ namespace Steep
     }
   }
 }
+#endif

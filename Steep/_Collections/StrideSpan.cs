@@ -3,6 +3,8 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Steep.ErrorHandling;
 
+#if NOT_READY
+
 namespace Steep
 {
   public ref struct StrideSpan<TValue>
@@ -89,3 +91,4 @@ namespace Steep
     }
   }
 }
+#endif

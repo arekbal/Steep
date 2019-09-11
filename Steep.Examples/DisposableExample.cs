@@ -41,13 +41,13 @@ namespace Steep.Examples
       Disposable d = default;
       DisposableUtil.Dispose(ref d);
 
+      using (var b = new Box<Disposable>())
+      {
+      }
+
       using (var b = new Box<NonDisposable>())
       {
         b.Ref.HelloWorld();
-      }
-
-      using (var b = new Box<Disposable>())
-      {
       }
 
       return 0;
