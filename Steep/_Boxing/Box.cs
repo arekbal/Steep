@@ -3,6 +3,11 @@ using System;
 
 namespace Steep
 {
+
+  ///<summary>
+  ///  Meant to wrap struct so it could be treated like an Object.
+  ///  Provides only read-only access.
+  ///</summary>
   public interface IBox<T> : IDisposable
     where T : struct
   {
@@ -10,6 +15,7 @@ namespace Steep
     ref readonly T Ref { get; }
   }
 
+  ///<summary>Meant to wrap struct so it could be treated like an Object.</summary>
   public class Box<T> : IBox<T>
     where T : struct
   {
@@ -20,11 +26,6 @@ namespace Steep
 
     ref readonly T IBox<T>.Ref => ref _val;
 
-    public void Dispose()
-    {
-      DisposableUtil.TryDispose<T>(ref _val);
-    }
-
     public Box()
     {
     }
@@ -33,5 +34,13 @@ namespace Steep
     {
       _val = val;
     }
+
+    public void Dispose()
+    {
+      DisposableUtil.TryDispose<T>(ref _val);
+    }
+
+    public IBox<T> AsReadOnly()
+      => this;
   }
 }
