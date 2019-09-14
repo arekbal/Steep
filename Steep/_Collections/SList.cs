@@ -64,6 +64,9 @@ namespace Steep
       public Entry Prev
         => new Entry { _index = _index - 1, _slist = _slist };
 
+      public Entry MoveBy(int offset)
+        => new Entry { _index = _index + offset, _slist = _slist };
+
       public bool IsFirst => _index == 0 && _slist.Ref._size > 0;
 
       public bool IsLast => _index == _slist.Ref._size - 1 && _slist.Ref._size > 0;
@@ -730,6 +733,9 @@ namespace Steep
     public ArraySliceEnumerator<T> GetEnumerator()
       => new ArraySliceEnumerator<T> { _src = _items, _length = _size, _i = -1 };
 
+    public SListEntryEnumerator<T> Entries
+      => new SListEntryEnumerator<T> { _index = -1, _slist = ByRef<SList<T>>.Create(ref this) };
+
     public ArraySliceEnumerator<T> Skip(int skip)
     {
       if (skip < 0) // TODO: unneeded?
@@ -1173,6 +1179,15 @@ namespace Steep
       if (index < _size)
         Array.Copy(_items, index + 1, _items, index, _size - index);
 
+      _items[_size] = default;
+    }
+
+    public void Pop()
+    {
+      if (_size == 0)
+        return;
+
+      _size--;
       _items[_size] = default;
     }
 

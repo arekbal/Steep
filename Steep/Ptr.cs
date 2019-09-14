@@ -11,7 +11,7 @@ namespace Steep
   {
     internal IntPtr p;
 
-    public readonly ref T Ref
+    public ref T Ref
     {
       get
       {

@@ -24,7 +24,7 @@ namespace Steep.Examples
       list.Emplace() = 6;
 
       list.First.Ref = 32;
-      list.Last.Prev.Ref = 55;
+      list.Last.Prev.MoveBy(-2).Ref = 55;
 
       list.At(4).Ref = 777;
 
@@ -34,11 +34,14 @@ namespace Steep.Examples
         f.Ref = 33;
       }
 
-      var entry = list.Find(6);
+      var ent = list.Find(6);
 
-      entry.Ref = 11;
+      ent.Ref = 11;
 
       list.First.Remove();
+
+      foreach (var entry in list.Entries)
+        WriteLine(entry.Val);
 
       foreach (ref var x in list)
         WriteLine(x);
