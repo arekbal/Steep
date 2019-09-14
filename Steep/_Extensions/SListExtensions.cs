@@ -64,6 +64,26 @@ namespace Steep
       return -1;
     }
 
+    public static SList<T>.Entry Find<T>(ref this SList<T> that, ref T item)
+      where T : struct, IEquatableRef<T>
+    {
+      for (var i = 0; i < that._size; i++)
+        if (item.Equals(ref that._items[i]))
+          return new SList<T>.Entry { _index = i, _slist = ByRef<SList<T>>.Create(ref that) };
+
+      return new SList<T>.Entry { _index = that._size, _slist = ByRef<SList<T>>.Create(ref that) };
+    }
+
+    public static SList<T>.Entry Find<T>(ref this SList<T> that, ref T item, ref IEqualityRefComparer<T> comparer)
+     where T : struct
+    {
+      for (var i = 0; i < that._size; i++)
+        if (comparer.Equals(ref item, ref that._items[i]))
+          return new SList<T>.Entry { _index = i, _slist = ByRef<SList<T>>.Create(ref that) };
+
+      return new SList<T>.Entry { _index = that._size, _slist = ByRef<SList<T>>.Create(ref that) };
+    }
+
     public static bool Contains<T>(ref this SList<T> that, T item) where T : struct
     {
       var c = System.Collections.Generic.EqualityComparer<T>.Default;

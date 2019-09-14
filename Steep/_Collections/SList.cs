@@ -54,6 +54,10 @@ namespace Steep
       public void Insert(T item)
         => _slist.RawRef.Insert(_index, item);
 
+      public bool HasNext => _index + 1 < _slist.Ref._size && _slist.Ref._size > 0;
+
+      public bool HasPrev => _index - 1 > -1 && _slist.Ref._size > 0;
+
       public Entry Next
         => new Entry { _index = _index + 1, _slist = _slist };
 
@@ -66,11 +70,7 @@ namespace Steep
 
       public ref T Ref => ref _slist.RawRef._items[_index];
 
-      public T Val
-      {
-        get => _slist.RawRef._items[_index];
-        set => _slist.RawRef._items[_index] = value;
-      }
+      public T Val => _slist.RawRef._items[_index];
     }
 
     internal const int DefaultCapacity = 4;
@@ -202,6 +202,8 @@ namespace Steep
 
     public Entry Last
       => new Entry { _index = this._size - 1, _slist = ByRef<SList<T>>.Create(ref this) };
+
+    public Entry At(int index) => new Entry { _index = index, _slist = ByRef<SList<T>>.Create(ref this) };
 
     // Read-only property describing how many elements are in the List.
     public int Count
@@ -457,6 +459,12 @@ namespace Steep
           return new Entry { _index = i, _slist = ByRef<SList<T>>.Create(ref this) };
 
       return default;
+    }
+
+    public Entry Find(T val)
+    {
+      var index = IndexOf(val);
+      return new Entry { _index = index == -1 ? _size : index, _slist = ByRef<SList<T>>.Create(ref this) };
     }
 
     public Entry Find(PredicateRef<T> match)

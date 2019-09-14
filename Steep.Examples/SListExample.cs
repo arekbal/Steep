@@ -24,12 +24,19 @@ namespace Steep.Examples
       list.Emplace() = 6;
 
       list.First.Ref = 32;
+      list.Last.Prev.Ref = 55;
+
+      list.At(4).Ref = 777;
 
       var f = list.Find((ref int x) => x > 33);
       if (f.IsSome)
       {
         f.Ref = 33;
       }
+
+      var entry = list.Find(6);
+
+      entry.Ref = 11;
 
       list.First.Remove();
 
