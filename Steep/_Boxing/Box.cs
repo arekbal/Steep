@@ -3,10 +3,9 @@ using System;
 
 namespace Steep
 {
-
   ///<summary>
   ///  Meant to wrap struct so it could be treated like an Object.
-  ///  Provides only read-only access.
+  ///  Interface provides only read-only access.
   ///</summary>
   public interface IBox<T> : IDisposable
     where T : struct

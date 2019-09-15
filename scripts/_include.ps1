@@ -73,7 +73,7 @@ function Nuget-PP
 }
 
 $ROOT = if ($env:ROOT) { $env:ROOT } else { $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath('.\') } #$PSScriptRoot
-$BUILD_CONFIGURATION = if ($env:BUILD_CONFIGURATION) { $env:BUILD_CONFIGURATION } else { 'RELEASE' }
+$BUILD_CONFIGURATION = if ($env:BUILD_CONFIGURATION) { $env:BUILD_CONFIGURATION } else { 'Release' }
 $NET_CORE_APP_VER = if ($env:NET_CORE_APP_VER) { $env:NET_CORE_APP_VER } else { '2.2' }
 $BUILD_LOGGER = $env:BUILD_LOGGER
 

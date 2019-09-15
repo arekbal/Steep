@@ -16,9 +16,6 @@
     <LangVersion>preview</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
-    <!-- <DefineConstants>NOT_READY</DefineConstants> -->
-  </PropertyGroup>
-
-  
+  </PropertyGroup>  
 
 </Project>

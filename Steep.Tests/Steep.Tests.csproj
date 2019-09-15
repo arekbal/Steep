@@ -14,10 +14,9 @@
     <TargetName>Steep.Tests</TargetName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <IsPackable>false</IsPackable>    
+    <IsPackable>false</IsPackable>
     <LangVersion>preview</LangVersion>
-   
-    <!-- <DefineConstants>NOT_READY</DefineConstants> -->
   </PropertyGroup>
 
 </Project>
+
