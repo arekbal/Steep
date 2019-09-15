@@ -9,7 +9,7 @@ function Build
   }
   else
   {
-    Write-Host 'GIT VERSION - NOT IMPLEMENTED FOR Linux/MacOS' -ForegroundColor 'Red'
+    Write-Host 'GIT VERSION - NOT IMPLEMENTED FOR Linux/MacOS, relying on plain shell commands there' -ForegroundColor 'DarkCyan'
   }
 
   Use-Cmd 'CLEAN' 'dotnet clean "$ROOT\Steep.sln" -v m'
@@ -25,13 +25,21 @@ function Build
     $VERSION = Invoke-Expression 'gitversion "$ROOT" -showvariable MajorMinorPatch'
     Show-Var 'VERSION'
 
-    Use-Cmd 'GET_GIT_BRANCHNAME' 'gitversion "$ROOT" -showvariable BranchName' -ignore $true
+    Use-Cmd 'GET_GIT_BRANCHNAME' 'git symbolic-ref --short HEAD' -ignore $true
     $BRANCH = Invoke-Expression 'gitversion "$ROOT" -showvariable BranchName'  
     Show-Var 'BRANCH'
   }
   else
   {
-    Write-Host 'GIT VERSION - NOT IMPLEMENTED FOR Linux/MacOS' -ForegroundColor 'Red'
+    Use-Cmd 'GET_GIT_VERSION' '(git describe --abbrev=0 --match v*).substring(1)' -ignore $true
+    $VERSION = (Invoke-Expression 'git describe --abbrev=0 --match v*').substring(1)
+    Show-Var 'VERSION'
+
+    Use-Cmd 'GET_GIT_BRANCHNAME' 'git symbolic-ref --short HEAD' -ignore $true
+    $BRANCH = Invoke-Expression 'git symbolic-ref --short HEAD'  
+    Show-Var 'BRANCH'
+
+    # Write-Host 'GIT VERSION - NOT IMPLEMENTED FOR Linux/MacOS' -ForegroundColor 'Red'
   }
 
   Print 'DONE'
