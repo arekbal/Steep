@@ -17,7 +17,6 @@ function Build {
   Use-Cmd 'BUILD' 'dotnet build "$ROOT\Steep.sln" -c $BUILD_CONFIGURATION -v m'
 
   Use-Cmd 'TESTS' 'dotnet test Steep.Tests -c $BUILD_CONFIGURATION -v m'
- 
- 
-  Print 'DONE'
+  
+  Print 'Build | DONE'
 }

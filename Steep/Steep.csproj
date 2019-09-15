@@ -10,6 +10,12 @@
   </ItemGroup>
   
   <PropertyGroup>  
+    <PackageId>Steep</PackageId>
+    <PackageTags>Steep performance speed fast doix</PackageTags>
+   
+    <Authors>Arek Bal</Authors>
+    <Company>doix</Company>
+
     <TargetName>Steep</TargetName>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
