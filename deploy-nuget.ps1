@@ -19,4 +19,4 @@ if ($BRANCH -eq 'master') {
   Nuget-PP 'Steep'
 }
 
-Print 'DONE'
+Print 'Deploy-Nuget DONE'
