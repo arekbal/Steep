@@ -18,7 +18,7 @@ namespace Steep
   {
     [MethodImpl(AggressiveInlining)]
     public static SList<T> Copy<T, TEnumerable>(TEnumerable collection)
-      where TEnumerable : System.Collections.Generic.IEnumerable<T> 
+      where TEnumerable : System.Collections.Generic.IEnumerable<T>
     {
       return SList<T>.Copy(collection);
     }
@@ -37,6 +37,45 @@ namespace Steep
   [Serializable]
   public struct SList<T> : IList<T>, IReadOnlyList<T>
   {
+    public ref struct Entry
+    {
+      internal int _index;
+      internal ByRef<SList<T>> _slist;
+
+      public int Index => _index;
+
+      public bool IsSome => _index > -1 && _index < _slist.RawRef._size;
+
+      public bool IsNone => _index < 0 || _index >= _slist.RawRef._size;
+
+      public void Remove()
+        => _slist.RawRef.RemoveAt(_index);
+
+      public void Insert(T item)
+        => _slist.RawRef.Insert(_index, item);
+
+      public bool HasNext => _index + 1 < _slist.Ref._size && _slist.Ref._size > 0;
+
+      public bool HasPrev => _index - 1 > -1 && _slist.Ref._size > 0;
+
+      public Entry Next
+        => new Entry { _index = _index + 1, _slist = _slist };
+
+      public Entry Prev
+        => new Entry { _index = _index - 1, _slist = _slist };
+
+      public Entry MoveBy(int offset)
+        => new Entry { _index = _index + offset, _slist = _slist };
+
+      public bool IsFirst => _index == 0 && _slist.Ref._size > 0;
+
+      public bool IsLast => _index == _slist.Ref._size - 1 && _slist.Ref._size > 0;
+
+      public ref T Ref => ref _slist.RawRef._items[_index];
+
+      public T Val => _slist.RawRef._items[_index];
+    }
+
     internal const int DefaultCapacity = 4;
 
     internal const int Array_MaxArrayLength = 0X7FEFFFFF;
@@ -57,7 +96,7 @@ namespace Steep
       => _size == 0 ? new Span<T>() : new Span<T>(_items, 0, _size);
 
     public ReadOnlySpan<T> AsReadOnlySpan()
-      => _size == 0  ? new ReadOnlySpan<T>() : new ReadOnlySpan<T>(_items, 0, _size);
+      => _size == 0 ? new ReadOnlySpan<T>() : new ReadOnlySpan<T>(_items, 0, _size);
 
     public Memory<T> AsMemory()
       => _size == 0 ? new Memory<T>() : new Memory<T>(_items, 0, _size);
@@ -70,7 +109,7 @@ namespace Steep
 
     public SList(int capacity)
     {
-      if(capacity < 1)
+      if (capacity < 1)
         Throw.ArgOutOfRange(nameof(capacity), "TooSmallCapacity");
 
       _size = 0;
@@ -79,7 +118,7 @@ namespace Steep
 
     public static SList<T> MoveIn(T[] items, int size)
     {
-      if(size > items.Length)
+      if (size > items.Length)
         Throw.ArgOutOfRange(nameof(size), "SizeBiggerThanArrLength");
 
       var list = new SList<T>();
@@ -95,13 +134,13 @@ namespace Steep
       list._size = items.Length;
       return list;
     }
-    
+
     public static SList<T> Copy<TEnumerable>(TEnumerable collection)
-      where TEnumerable : System.Collections.Generic.IEnumerable<T> 
+      where TEnumerable : System.Collections.Generic.IEnumerable<T>
     {
       if (collection is null)
         Throw.ArgOutOfRange(nameof(collection));
-    
+
       Contract.EndContractBlock();
 
       var list = new SList<T>();
@@ -116,7 +155,7 @@ namespace Steep
         }
 
         return list;
-      }   
+      }
 
       list.PushRange(collection);
       return list;
@@ -151,7 +190,8 @@ namespace Steep
 
             _items = newItems;
           }
-          else {          
+          else
+          {
             _items = null;
             _size = 0;
           }
@@ -159,27 +199,14 @@ namespace Steep
       }
     }
 
-    public OptionRef<T> First
-    {
-      get
-      {
-        if (_size == 0)
-          return default;
+    public Entry First
+      => new Entry { _index = 0, _slist = ByRef<SList<T>>.Create(ref this) };
 
-        return Option.Some(ref _items[0]);
-      }
-    }
 
-    public OptionRef<T> Last
-    {
-      get
-      {
-        if (_size == 0)
-          return default;
+    public Entry Last
+      => new Entry { _index = this._size - 1, _slist = ByRef<SList<T>>.Create(ref this) };
 
-        return Option.Some(ref _items[_size - 1]);
-      }
-    }
+    public Entry At(int index) => new Entry { _index = index, _slist = ByRef<SList<T>>.Create(ref this) };
 
     // Read-only property describing how many elements are in the List.
     public int Count
@@ -235,9 +262,9 @@ namespace Steep
     {
       if (_items is null)
         _items = new T[DefaultCapacity];
-      else 
+      else
         if (_size == _items.Length)
-          EnsureCapacity(_size + 1);
+        EnsureCapacity(_size + 1);
 
       _items[_size++] = item;
     }
@@ -423,7 +450,7 @@ namespace Steep
     public bool Exists(PredicateRef<T> match)
       => FindIndex(match) != -1;
 
-    public OptionRef<T> Find(Predicate<T> match)
+    public Entry Find(Predicate<T> match)
     {
       if (match is null)
         Throw.ArgOutOfRange("match");
@@ -432,12 +459,18 @@ namespace Steep
 
       for (int i = 0; i < _size; i++)
         if (match(_items[i]))
-          return Option.Some(ref _items[i]);
+          return new Entry { _index = i, _slist = ByRef<SList<T>>.Create(ref this) };
 
       return default;
     }
 
-    public OptionRef<T> Find(PredicateRef<T> match)
+    public Entry Find(T val)
+    {
+      var index = IndexOf(val);
+      return new Entry { _index = index == -1 ? _size : index, _slist = ByRef<SList<T>>.Create(ref this) };
+    }
+
+    public Entry Find(PredicateRef<T> match)
     {
       if (match is null)
         Throw.ArgOutOfRange("match");
@@ -446,9 +479,9 @@ namespace Steep
 
       for (int i = 0; i < _size; i++)
         if (match(ref _items[i]))
-          return Option.Some(ref _items[i]);
+          return new Entry { _index = i, _slist = ByRef<SList<T>>.Create(ref this) };
 
-      return default;
+      return new Entry { _index = _size, _slist = ByRef<SList<T>>.Create(ref this) };
     }
 
     public SList<T> FindAll(Predicate<T> match)
@@ -564,7 +597,7 @@ namespace Steep
       return -1;
     }
 
-    public T FindLast(Predicate<T> match)
+    public Entry FindLast(Predicate<T> match)
     {
       if (match is null)
         Throw.ArgOutOfRange("match");
@@ -573,12 +606,12 @@ namespace Steep
 
       for (int i = _size - 1; i >= 0; i--)
         if (match(_items[i]))
-          return _items[i];
+          return new Entry { _index = i, _slist = ByRef<SList<T>>.Create(ref this) };
 
-      return default;
+      return new Entry { _index = -1, _slist = ByRef<SList<T>>.Create(ref this) };
     }
 
-    public T FindLast(PredicateRef<T> match)
+    public Entry FindLast(PredicateRef<T> match)
     {
       if (match is null)
         Throw.ArgOutOfRange("match");
@@ -587,9 +620,9 @@ namespace Steep
 
       for (int i = _size - 1; i >= 0; i--)
         if (match(ref _items[i]))
-          return _items[i];
+          return new Entry { _index = i, _slist = ByRef<SList<T>>.Create(ref this) };
 
-      return default;
+      return new Entry { _index = -1, _slist = ByRef<SList<T>>.Create(ref this) };
     }
 
     public int FindLastIndex(Predicate<T> match)
@@ -635,14 +668,14 @@ namespace Steep
       if (_size == 0)
         if (startIndex != -1) // Special case for 0 length List
           Throw.ArgOutOfRange(nameof(startIndex), "Index");
-      else
+        else
         if ((uint)startIndex >= (uint)_size) // Make sure we're not out of range    
           Throw.ArgOutOfRange(nameof(startIndex), "Index");
 
       // 2nd have of this also catches when startIndex == MAXINT, so MAXINT - 0 + 1 == -1, which is < 0.
       if (count < 0 || startIndex - count + 1 < 0)
         Throw.ArgOutOfRange(nameof(count), "Count");
-        
+
       Contract.EndContractBlock();
 
       int endIndex = startIndex - count;
@@ -677,7 +710,7 @@ namespace Steep
       // 2nd have of this also catches when startIndex == MAXINT, so MAXINT - 0 + 1 == -1, which is < 0.
       if (count < 0 || startIndex - count + 1 < 0)
         Throw.ArgOutOfRange(nameof(count), "Count");
-        
+
       Contract.EndContractBlock();
 
       int endIndex = startIndex - count;
@@ -696,15 +729,18 @@ namespace Steep
     // NOTE: for IList<T>
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => System.Linq.Enumerable.Take(_items, _size).GetEnumerator();
-    
+
     public ArraySliceEnumerator<T> GetEnumerator()
       => new ArraySliceEnumerator<T> { _src = _items, _length = _size, _i = -1 };
 
+    public SListEntryEnumerator<T> Entries
+      => new SListEntryEnumerator<T> { _index = -1, _slist = ByRef<SList<T>>.Create(ref this) };
+
     public ArraySliceEnumerator<T> Skip(int skip)
     {
-      if(skip < 0) // TODO: unneeded?
+      if (skip < 0) // TODO: unneeded?
         Throw.ArgOutOfRange(nameof(skip));
-      
+
       Contract.EndContractBlock();
 
       return new ArraySliceEnumerator<T> { _src = _items, _length = Math.Max(_size - skip, 0), _i = skip - 1 };
@@ -712,9 +748,9 @@ namespace Steep
 
     public ArraySliceEnumerator<T> Take(int take)
     {
-      if(take < 0) // TODO: unneeded?
+      if (take < 0) // TODO: unneeded?
         Throw.ArgOutOfRange(nameof(take));
-      
+
       Contract.EndContractBlock();
 
       return new ArraySliceEnumerator<T> { _src = _items, _length = Math.Min(_size, take), _i = -1 };
@@ -722,15 +758,15 @@ namespace Steep
 
     public ArraySliceEnumerator<T> Slice(int skip, int take)
     {
-      if(skip < 0) // TODO: unneeded?
+      if (skip < 0) // TODO: unneeded?
         Throw.ArgOutOfRange(nameof(skip));
 
-      if(take < 0) // TODO: unneeded?
+      if (take < 0) // TODO: unneeded?
         Throw.ArgOutOfRange(nameof(take));
-      
+
       Contract.EndContractBlock();
 
-      return  new ArraySliceEnumerator<T> { _src = _items, _length = Math.Min(_size, skip + take), _i = skip - 1 };
+      return new ArraySliceEnumerator<T> { _src = _items, _length = Math.Min(_size, skip + take), _i = skip - 1 };
     }
 
     public ArrayLengthReversedEnumerator<T> Reversed()
@@ -742,11 +778,68 @@ namespace Steep
     public SpanFilterRefEnumerator<T> Filter(PredicateRef<T> predicateRef)
       => new SpanFilterRefEnumerator<T> { _src = new Span<T>(_items, 0, _size), _filter = predicateRef, _i = -1 };
 
+    public SpanFilterSliceEnumerator<T> FilterSlice(Predicate<T> predicateRef, int skip, int take)
+      => new SpanFilterSliceEnumerator<T>
+      {
+        _src = new Span<T>(_items, 0, _size),
+        _filter = predicateRef,
+        _skip = skip,
+        _take = take,
+        _i = -1
+      };
+
+    public SpanFilterMapEnumerator<T, TMapped> FilterMap<TMapped>(Predicate<T> predicate, Func<T, TMapped> map)
+      => new SpanFilterMapEnumerator<T, TMapped>
+      {
+        _src = new Span<T>(_items, 0, _size),
+        _filter = predicate,
+        _map = map,
+        _i = -1
+      };
+
+    public SpanFilterRefSliceEnumerator<T> FilterSlice(PredicateRef<T> predicateRef, int skip, int take)
+      => new SpanFilterRefSliceEnumerator<T>
+      {
+        _src = new Span<T>(_items, 0, _size),
+        _filter = predicateRef,
+        _skip = skip,
+        _take = take,
+        _i = -1
+      };
+
+    public SpanFilterRefMapEnumerator<T, TMapped> FilterMap<TMapped>(PredicateRef<T> predicateRef, Func<T, TMapped> map)
+      => new SpanFilterRefMapEnumerator<T, TMapped>
+      {
+        _src = new Span<T>(_items, 0, _size),
+        _filter = predicateRef,
+        _map = map,
+        _i = -1
+      };
+
+    public SpanFilterRefMapRefEnumerator<T, TMapped> FilterMap<TMapped>(PredicateRef<T> predicateRef, MapRef<T, TMapped> map)
+      => new SpanFilterRefMapRefEnumerator<T, TMapped>
+      {
+        _src = new Span<T>(_items, 0, _size),
+        _filter = predicateRef,
+        _map = map,
+        _i = -1
+      };
+
+    public SpanFilterRefMapRefToRefEnumerator<T, TMapped> FilterMap<TMapped>(PredicateRef<T> predicateRef, MapRefToRef<T, TMapped> map)
+      => new SpanFilterRefMapRefToRefEnumerator<T, TMapped>
+      {
+        _src = new Span<T>(_items, 0, _size),
+        _filter = predicateRef,
+        _map = map,
+        _i = -1
+      };
+
     public SpanMapRefToRefEnumerator<T, TMapped> Map<TMapped>(MapRefToRef<T, TMapped> mapRef)
       => new SpanMapRefToRefEnumerator<T, TMapped> { _src = new Span<T>(_items, 0, _size), _map = mapRef, _i = -1 };
 
     public SpanMapRefEnumerator<T, TMapped> Map<TMapped>(MapRef<T, TMapped> mapRef)
       => new SpanMapRefEnumerator<T, TMapped> { _src = new Span<T>(_items, 0, _size), _map = mapRef, _i = -1 };
+
 
     public SList<T> GetRange(int index, int count) // TODO: replace with span slices and so on...
     {
@@ -1089,6 +1182,15 @@ namespace Steep
       _items[_size] = default;
     }
 
+    public void Pop()
+    {
+      if (_size == 0)
+        return;
+
+      _size--;
+      _items[_size] = default;
+    }
+
     // Removes a range of elements from this list.
     // 
     public void RemoveRange(int index, int count)
@@ -1150,7 +1252,7 @@ namespace Steep
     public void Sort()
       => Array.Sort(_items, 0, _size, Comparer<T>.Default);
 
-      // Sorts the elements in this list.  Uses the default comparer and 
+    // Sorts the elements in this list.  Uses the default comparer and 
     // Array.Sort.
     public void SortDescending()
       => Array.Sort(_items, 0, _size, DescendingComparer<T>.Default);
@@ -1210,7 +1312,7 @@ namespace Steep
       Contract.Ensures(Contract.Result<T[]>() != null);
       Contract.Ensures(Contract.Result<T[]>().Length == Count);
 
-      T[] array = new T[_size];      
+      T[] array = new T[_size];
       Array.Copy(_items, 0, array, 0, _size);
       return array;
     }

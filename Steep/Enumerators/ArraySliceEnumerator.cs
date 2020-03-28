@@ -43,7 +43,7 @@ namespace Steep.Enumerators
       var sList = new SList<T>();
       sList.Capacity = _length;
 
-      for(var i = _i + 1; i < _length; i++)
+      for (var i = _i + 1; i < _length; i++)
         sList.Push(_src[i]);
 
       return sList;
@@ -51,9 +51,9 @@ namespace Steep.Enumerators
 
     public T[] ToArray()
     {
-      T[] array = new T[_length - _i + 1];      
-      
-      for(var i = _i + 1; i < _length; i++)
+      T[] array = new T[_length - _i + 1];
+
+      for (var i = _i + 1; i < _length; i++)
         array[i] = _src[i];
 
       return array;

@@ -3,21 +3,25 @@
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.3" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.6.0-preview.19073.11" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.6.0-preview.19073.11" />
     <PackageReference Include="System.Runtime.Numerics" Version="4.3.0" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.0-preview.18571.3" />
   </ItemGroup>
   
   <PropertyGroup>  
+    <PackageId>Steep</PackageId>
+    <PackageTags>Steep performance speed fast doix</PackageTags>
+   
+    <Authors>Arek Bal</Authors>
+    <Company>doix</Company>
+
     <TargetName>Steep</TargetName>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>preview</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
-    <!-- <DefineConstants>V1</DefineConstants> -->
-  </PropertyGroup>
-
-  
+  </PropertyGroup>  
 
 </Project>

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-
+﻿
 #if NOT_READY
+
+using System;
+using System.Runtime.CompilerServices;
 
 namespace Steep
 {
-
   // TODO: it breaks tests randomly... some out of bounds or alignment break...
   // TODO: turn it, into struct,
   // no inheritance, share code through extension, or plain static methods maybe?

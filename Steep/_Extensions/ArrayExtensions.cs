@@ -32,15 +32,40 @@ namespace Steep
         length = that.Length;
 
         for (; i < length; i++)
-        {
           action(that[i]);
-        }
       }
       else
         for (; i < length; i++)
-        {
           action(that[i]);
+    }
+
+    public static void ForEach<T>(this T[] that, ActionRef<T> action)
+    {
+      const int UnrollSize = 4;
+
+      int length = that.Length;
+      var i = 0;
+
+      if (length > 8)
+      {
+        length = (length / UnrollSize) * UnrollSize;
+
+        for (; i < length; i += UnrollSize)
+        {
+          action(ref that[i]);
+          action(ref that[i + 1]);
+          action(ref that[i + 2]);
+          action(ref that[i + 3]);
         }
+
+        length = that.Length;
+
+        for (; i < length; i++)
+          action(ref that[i]);
+      }
+      else
+        for (; i < length; i++)
+          action(ref that[i]);
     }
 
     public static T Fold<T>(this T[] that, T seed, Func<T, T, T> func)

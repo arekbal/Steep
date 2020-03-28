@@ -1,5 +1,5 @@
 using System;
-namespace Steep .Enumerators
+namespace Steep.Enumerators
 {
   public ref struct ArrayLengthReversedEnumerator<T>
   {

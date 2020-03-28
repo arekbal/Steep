@@ -1,9 +1,10 @@
-﻿using System;
+﻿
+#if NOT_READY
+
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Steep.ErrorHandling;
-
-#if NOT_READY
 
 namespace Steep
 {
@@ -12,7 +13,7 @@ namespace Steep
   public struct Vec<T> : IDisposable
   where T : unmanaged
   {
-    const int DefaultCapacity = 8; // TODO: Replace with MinByteSize
+    const int DefaultCapacity = 8; // TODO: Replace with MinByteSize // pointless without small alloc
     static int SizeOfItem = Unsafe.SizeOf<T>();
 
     IntPtr p;
@@ -176,4 +177,5 @@ namespace Steep
     }
   }
 }
+
 #endif

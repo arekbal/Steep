@@ -6,10 +6,11 @@ namespace Steep.Examples
 {
   class Program
   {
-    static IExample[] Examples = new IExample[]
-    {  
+    static IExample[] Examples =
+    {
       new SListExample(),
-      new OptionExample()
+      new OptionExample(),
+      new DisposableExample()
     };
 
     static int Exec(IExample ex)
@@ -18,7 +19,7 @@ namespace Steep.Examples
 
       var result = ex.Exec();
 
-      if(result != 0)
+      if (result != 0)
         WriteLine($"ErrorCode '{result}'\n");
       else
         WriteLine("Done\n");
@@ -28,22 +29,24 @@ namespace Steep.Examples
 
     static int Main(string[] args)
     {
-      if(args.Length > 0) {
+      if (args.Length > 0)
+      {
         var exampleName = args[0];
 
-        foreach(var ex in Examples)
-          if(ex.Name == exampleName)
+        foreach (var ex in Examples)
+          if (ex.Name == exampleName)
             return Exec(ex);
-        
+
         WriteLine($"Failed to find example: '{exampleName}'");
         return -1;
       }
 
       WriteLine($"Running all examples (no example name passed in arg[0])\n");
 
-      foreach(var ex in Examples) {
+      foreach (var ex in Examples)
+      {
         var result = Exec(ex);
-        if(result != 0)
+        if (result != 0)
           return result;
       }
 

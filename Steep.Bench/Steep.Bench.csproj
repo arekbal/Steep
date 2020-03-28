@@ -17,7 +17,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>preview</LangVersion>
 
-    <!-- <DefineConstants>V1</DefineConstants> -->
   </PropertyGroup>
 
 </Project>

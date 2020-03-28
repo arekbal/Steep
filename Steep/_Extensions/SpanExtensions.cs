@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Steep.Enumerators;
-
-
 
 namespace Steep
 {
@@ -71,7 +68,7 @@ namespace Steep
     public static SortState GetSortState<T>(ref this Span<T> that, bool verify = true, IComparer<T> comparer = null)
     {
       if (that.Length < 2)
-        if(that.Length == 1)
+        if (that.Length == 1)
           return SortState.Single;
         else
           return SortState.Zero;
@@ -249,6 +246,7 @@ namespace Steep
   }
 
   #if NOT_READY
+  
     public static T[] ToArray<T>(this Enumerators.SpanFilterRefEnumerator<T> that)
       where T : unmanaged
     {

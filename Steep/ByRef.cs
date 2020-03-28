@@ -1,13 +1,14 @@
-﻿using System;
+﻿
+#if NOT_READY
+
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-#if NOT_READY
-
 namespace Steep
 {
-  public ref struct ByRef<TValue>
+  ref struct ByRef<TValue>
   {
     IntPtr _ptr;
 

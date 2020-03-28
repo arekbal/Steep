@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 namespace Steep
 {
   ///<summary>
-  /// Biggest type comes first. c# limitation circumvented
+  /// Biggest type comes first. C# limitation circumvented.
   /// There should be analyzer for this in the future...
   ///</summary>
   public struct Union2<TA, TB>
