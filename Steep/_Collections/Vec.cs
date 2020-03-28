@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Steep.ErrorHandling;
 
-#if V1
+#if NOT_READY
 
 namespace Steep
 {

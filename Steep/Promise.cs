@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-#if V1
+#if NOT_READY
 
 namespace Steep
 {

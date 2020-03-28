@@ -242,7 +242,7 @@ namespace Steep
       _items[_size++] = item;
     }
 
-    void ICollection<T>.Add(T item) 
+    void ICollection<T>.Add(T item)
     {
       this.Push(item);
     }

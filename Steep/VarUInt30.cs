@@ -1,7 +1,7 @@
 ﻿using System;
 using Steep.ErrorHandling;
 
-#if V1
+#if NOT_READY
 
 namespace Steep
 {

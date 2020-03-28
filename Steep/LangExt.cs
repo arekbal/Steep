@@ -5,7 +5,7 @@ using static System.Runtime.CompilerServices.MethodImplOptions;
 using Steep;
 using System.Runtime.CompilerServices;
 
-#if V1
+#if NOT_READY
 
 namespace Steep
 {

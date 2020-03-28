@@ -248,7 +248,7 @@ namespace Steep
     }
   }
 
-  #if V1
+  #if NOT_READY
     public static T[] ToArray<T>(this Enumerators.SpanFilterRefEnumerator<T> that)
       where T : unmanaged
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-#if V1
+#if NOT_READY
 
 namespace Steep
 {

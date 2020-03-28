@@ -1,6 +1,6 @@
 ﻿using System;
 
-#if V1
+#if NOT_READY
 
 namespace Steep
 {

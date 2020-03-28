@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-#if V1
+#if NOT_READY
 
 namespace Steep.Tests
 {

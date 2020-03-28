@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Steep.ErrorHandling;
 
-#if V1
+#if NOT_READY
 
 namespace Steep
 {

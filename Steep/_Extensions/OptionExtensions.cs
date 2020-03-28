@@ -116,7 +116,7 @@ namespace Steep
       return new Option<TNewVal> { val = map(that.val), byteIsSome = 1 };
     }
 
-#if V1
+#if NOT_READY
 
     public static Ptr<T> AsPtr<T>(ref this OptionRef<T> o) where T : unmanaged
     {

@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-#if V1
+#if NOT_READY
 
 namespace Steep
 {
