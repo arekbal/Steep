@@ -19,6 +19,6 @@ Couple of techniques used to achieve improvements:
   and sometimes burden is pushed onto developer(SList.MoveIn()).
 - ignoring less common or legacy use cases.
 - using modern Lang features like ref returns and ref locals.
-- by not using expensive abstractions (readonly fields, inheritance, exceptions).
+- by not using relatively expensive abstractions (readonly fields, virtual overloading, exceptions).
 - using vectorisation where applicable.
 - by providing flyweight(Promise) versions of considerably bloated types(Task). 
