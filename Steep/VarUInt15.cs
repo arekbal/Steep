@@ -1,7 +1,8 @@
-﻿using System;
-using Steep.ErrorHandling;
-
+﻿
 #if NOT_READY
+
+using System;
+using Steep.ErrorHandling;
 
 namespace Steep
 {

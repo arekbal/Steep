@@ -1,11 +1,12 @@
 ﻿
+
+#if NOT_READY
+
 using System;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
 using Steep;
 using System.Runtime.CompilerServices;
-
-#if NOT_READY
 
 namespace Steep
 {

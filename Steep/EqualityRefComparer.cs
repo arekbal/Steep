@@ -2,10 +2,10 @@ using System;
 
 namespace Steep
 {
-  public static class EqualityRefComparer
-  {
+  // public static class EqualityRefComparer
+  // {
 
-  }
+  // }
 
   // public struct EqualityRefComparer<T> : IEqualityRefComparer<T>
   // {

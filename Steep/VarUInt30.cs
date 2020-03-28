@@ -1,7 +1,8 @@
-﻿using System;
-using Steep.ErrorHandling;
-
+﻿
 #if NOT_READY
+
+using System;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
@@ -15,7 +16,7 @@ namespace Steep
 
   public struct VarUInt30
   {
-    public const uint MaxValue = uint.MaxValue >> 02;
+    public const uint MaxVal = uint.MaxValue >> 02;
 
     const uint Flag0 = 1u << 31;
     const uint Flag1 = 1u << 30;
@@ -44,64 +45,64 @@ namespace Steep
       }
     }
 
-    public uint EncodedValue => (_val << 2) + (uint)(_val & FlagsBoth) / Offset;
+    public uint EncodedVal => (_val << 2) + (uint)(_val & FlagsBoth) / Offset;
 
-    public uint RawValue => _val;
+    public uint RawVal => _val;
 
     public static implicit operator ulong(VarUInt30 val)
     {
-      var v = val._val & MaxValue;
+      var v = val._val & MaxVal;
       return v;
     }
 
     public static implicit operator long(VarUInt30 val)
     {
-      var v = val._val & MaxValue;
+      var v = val._val & MaxVal;
       return (long)v;
     }
 
     public static explicit operator uint(VarUInt30 val)
     {
-      var v = val._val & MaxValue;
+      var v = val._val & MaxVal;
       return (uint)v;
     }
 
     public static explicit operator int(VarUInt30 val)
     {
-      var v = val._val & MaxValue;
+      var v = val._val & MaxVal;
       return (int)v;
     }
 
     public static explicit operator ushort(VarUInt30 val)
     {
-      var v = val._val & MaxValue;
+      var v = val._val & MaxVal;
       return (ushort)v;
     }
 
     public static explicit operator short(VarUInt30 val)
     {
-      var v = val._val & MaxValue;
+      var v = val._val & MaxVal;
       return (short)v;
     }
 
     public static explicit operator byte(VarUInt30 val)
     {
-      var v = val._val & MaxValue;
+      var v = val._val & MaxVal;
       return (byte)v;
     }
 
     public static explicit operator sbyte(VarUInt30 val)
     {
-      var v = val._val & MaxValue;
+      var v = val._val & MaxVal;
       return (sbyte)v;
     }
 
     public static implicit operator VarUInt30(uint val)
     {
-      if (val > MaxValue)
+      if (val > MaxVal)
         Throw.Overflow(Errors.VarUInt30Overflow);
 
-      var v = val & MaxValue;
+      var v = val & MaxVal;
 
       var bits = (uint)1 << 22;
 
@@ -133,12 +134,12 @@ namespace Steep
     public static (VarUInt30ByteSize, uint) EncodeValue(uint val)
     {
       VarUInt30 x = val;
-      return (x.ByteSize, x.EncodedValue);
+      return (x.ByteSize, x.EncodedVal);
     }
 
     // TODO: Drop BitConverter... creates new array
     public Span<byte> GetEncodedBytes()
-     => new Span<byte>(BitConverter.GetBytes(EncodedValue), 0, (int)ByteSize);
+     => new Span<byte>(BitConverter.GetBytes(EncodedVal), 0, (int)ByteSize);
 
     public static Span<byte> GetEncodedBytes(uint val)
     {

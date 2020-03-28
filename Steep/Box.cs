@@ -8,7 +8,7 @@ namespace Steep
     where T : struct, IDisposable
   {
     internal T _val;
-    public T Value => _val;
+    public T Val => _val;
 
     public ref T Ref => ref _val;
 

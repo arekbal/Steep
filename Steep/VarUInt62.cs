@@ -1,7 +1,8 @@
-﻿using System;
-using Steep.ErrorHandling;
-
+﻿
 #if NOT_READY
+
+using System;
+using Steep.ErrorHandling;
 
 namespace Steep
 {
@@ -15,7 +16,7 @@ namespace Steep
 
   public struct VarUInt62
   {
-    public const ulong MaxValue = ulong.MaxValue >> 02;
+    public const ulong MaxVal = ulong.MaxValue >> 02;
 
     const ulong Flag0 = 1uL << 63;
     const ulong Flag1 = 1uL << 62;
@@ -44,9 +45,9 @@ namespace Steep
       }
     }
 
-    public ulong EncodedValue => (_val << 2) + (ulong)(_val & FlagsBoth) / Offset;
+    public ulong EncodedVal => (_val << 2) + (ulong)(_val & FlagsBoth) / Offset;
 
-    public ulong RawValue => _val;
+    public ulong RawVal => _val;
 
     public static implicit operator ulong(VarUInt62 val)
     {

@@ -126,7 +126,7 @@ namespace Steep
   {
     internal TVal val;
 
-    public TVal Value => val;
+    public TVal Val => val;
 
     public const bool IsOk = true;
 

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace Steep
 {
-  public static class Print
+  internal static class Print
   {
     public static string Type<T>()
       => Type(typeof(T));

@@ -1,9 +1,10 @@
-﻿using System;
+﻿
+#if NOT_READY
+
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
-
-#if NOT_READY
 
 namespace Steep
 {

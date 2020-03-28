@@ -14,7 +14,7 @@ namespace Steep.Examples
 
     public int Exec()
     {
-      //!begin example SList
+      //!begin-example SList
       var list = new SList<int>(7);
       list.Emplace() = 0;
       list.Push(1);
@@ -76,7 +76,7 @@ namespace Steep.Examples
 
       list.SortDescending();
 
-      //!end example SList
+      //!end-example SList
 
       return 0;
     }

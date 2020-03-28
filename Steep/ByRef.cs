@@ -45,7 +45,7 @@ namespace Steep
 
 #if DEBUG
     [MonitoringDescription("debug only property")]
-    TValue Value => Ref;
+    TValue Val => Ref;
 #endif
 
     public static ByRef<TValue> Create(ref TValue refVal)

@@ -1,8 +1,8 @@
 
+#if NOT_READY
+
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-#if NOT_READY
 
 namespace Steep
 {

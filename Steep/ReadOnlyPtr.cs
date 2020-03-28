@@ -1,8 +1,9 @@
+
+#if NOT_READY
+
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-#if NOT_READY
 
 namespace Steep
 {
@@ -19,7 +20,7 @@ namespace Steep
       }
     }
 
-    public T Value
+    public T Val
     {
       get
       {

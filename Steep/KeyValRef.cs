@@ -1,12 +1,13 @@
-﻿using System;
+﻿
+#if NOT_READY
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-#if NOT_READY
-
 namespace Steep
 {
-  public ref struct KeyValueRef<TKey, TValue>
+  public ref struct KeyValRef<TKey, TValue>
   {
     ByRef<TKey> _keyRef;
 
@@ -16,9 +17,9 @@ namespace Steep
 
     public ref TKey KeyRef => ref _keyRef.Ref;
 
-    public ref TValue ValueRef => ref _valueRef.Ref;
+    public ref TValue ValRef => ref _valueRef.Ref;
 
-    public TValue Value => _valueRef.Ref;
+    public TValue Val => _valueRef.Ref;
 
     public KeyValuePair<TKey, TValue> ToKeyValuePair()
       => new KeyValuePair<TKey, TValue>(Key, Value);
