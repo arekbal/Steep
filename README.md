@@ -22,3 +22,6 @@ Couple of techniques used to achieve improvements:
 - by not using relatively expensive abstractions (readonly fields, virtual overloading, exceptions).
 - using vectorisation where applicable.
 - by providing flyweight(Promise) versions of considerably bloated types(Task). 
+
+
+[Docs](https://github.com/arekbal/Steep/tree/dev/docs)
