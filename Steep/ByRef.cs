@@ -1,6 +1,4 @@
 ﻿
-#if NOT_READY
-
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -61,4 +59,3 @@ namespace Steep
     }
   }
 }
-#endif

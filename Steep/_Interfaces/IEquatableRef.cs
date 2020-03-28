@@ -1,6 +1,4 @@
 
-#if NOT_READY
-
 namespace Steep
 {
   public interface IEquatableRef<T>
@@ -8,5 +6,3 @@ namespace Steep
     bool Equals(ref T other);
   }
 }
-
-#endif
