@@ -24,9 +24,9 @@ namespace Steep
     public KeyValuePair<TKey, TValue> ToKeyValuePair()
       => new KeyValuePair<TKey, TValue>(Key, Value);
 
-    public static KeyValueRef<TKey, TValue> Create(ref TKey keyRef, ref TValue valueRef)
+    public static KeyValRef<TKey, TValue> Create(ref TKey keyRef, ref TValue valueRef)
     {
-      KeyValueRef<TKey, TValue> x = default;
+      KeyValRef<TKey, TValue> x = default;
       x._keyRef = ByRef<TKey>.Create(ref keyRef);
       x._valueRef = ByRef<TValue>.Create(ref valueRef);
       return x;
