@@ -9,7 +9,7 @@ namespace Steep
 {
   public static class Encoder
   {
-    ///<summary>No Zig Zag, unsigned version, no </summary>
+    ///<summary>No Zig Zag, unsigned version</summary>
     public static int VarUInt15(ushort val, Span<byte> buffer)
     {
       if ((val & (ushort)Bit.X07) > 0u)

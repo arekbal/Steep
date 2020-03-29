@@ -1,11 +1,8 @@
 ﻿
 
 #if NOT_READY
-<<<<<<< HEAD
-=======
 
 using System;
->>>>>>> 113bd64f929606d4520b826bbec4c8f5cba634de
 
 namespace Steep
 {

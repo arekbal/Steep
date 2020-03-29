@@ -41,7 +41,7 @@ namespace Steep
 
       return sum;
     }
-
+    
     public static Span<T> Skip<T>(ref this Span<T> that, int count)
     {
       if (count >= that.Length)
@@ -246,7 +246,7 @@ namespace Steep
   }
 
   #if NOT_READY
-  
+
     public static T[] ToArray<T>(this Enumerators.SpanFilterRefEnumerator<T> that)
       where T : unmanaged
     {
