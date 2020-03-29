@@ -28,6 +28,7 @@ namespace Steep.Examples
 
     public int Exec()
     {
+      //!example-begin Disposable
       NonDisposable m = default;
       DisposableUtil.TryDispose(ref m);
 
@@ -48,6 +49,7 @@ namespace Steep.Examples
       {
         b.Ref.HelloWorld();
       }
+      //!example-end Disposable
 
       return 0;
     }
