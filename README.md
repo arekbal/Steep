@@ -1,4 +1,8 @@
+This project development got suspended since I stopped focusing on C# development a year ago.
+
+
 ### Steep
+
 Is performance oriented dotnet package.
 It comes with a bunch of data types helping capable developers write 'faster' programs.
 This objective is being achieved in many forms and with varying impact:
